@@ -1,0 +1,14 @@
+.navbar-brand{
+	height: 90px;
+}
+.logo{
+	height: 100%;
+	object-fit: contain;
+}
+.container{
+	display: flex;
+	justify-content: center;
+}
+.navbar{
+	background-color: green;
+}

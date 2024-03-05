@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-4" style="padding: 40px">
+    <!-- ต้นทาง -->
+    <div class="startTrip">
+      <div class="starTriptitle"><p>ต้นทาง</p></div>
+      <div class="container">
+        <div class="form-group">
+          <label for="category">สายต้นทาง</label>
+          <select class="form-control">
+            <option selected disabled>เลือกสายต้นทาง</option>
+            <option value="silom">สีลม</option>
+            <option value="sukhumwit">สุขุมวิท</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="subcategory">สถานีปลายทาง</label>
+          <select class="form-control">
+            <option selected disabled>เลือกสถานีต้นทาง</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- ปลายทาง -->
+    <div class="endTrip">
+      <div class="endTriptitle"><p>ปลายทาง</p></div>
+      <div class="container">
+        <div class="form-group">
+          <label for="category">สายปลายทาง</label>
+          <select class="form-control">
+            <option selected disabled>เลือกสายปลายทาง</option>
+            <option value="silom">สีลม</option>
+            <option value="sukhumwit">สุขุมวิท</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="subcategory">สถานีปลายทาง</label>
+          <select class="form-control">
+            <option selected disabled>เลือกสถานีปลายทาง</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-success">ดูการเดินทาง</button>
+    <button class="btn" nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+    <!-- modal -->
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <ng-container *nzModalContent>
+        <p>Content one</p>
+        <p>Content two</p>
+        <p>Content three</p>
+      </ng-container>
+    </nz-modal>
+  </div>
+  <div class="col-8">
+    <div class="img">
+      <img src="/assets/mapbts.jpg" />
+    </div>
+  </div>
+</div>
