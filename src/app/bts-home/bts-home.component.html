@@ -40,16 +40,55 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-success">ดูการเดินทาง</button>
-    <button class="btn" nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
     <!-- modal -->
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-      <ng-container *nzModalContent>
-        <p>Content one</p>
-        <p>Content two</p>
-        <p>Content three</p>
-      </ng-container>
-    </nz-modal>
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+          เส้นทางและอัตราค่าโดยสาร
+        </h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12" style="font-size: large">ข้อมูลการเดินทาง</div>
+          <!-- ต้นทาง -->
+          <div class="col-md-12">
+            <div class="box">
+              <label>สถานีต้นทาง</label>
+              <br>
+              <b>คูคต</b>
+            </div>
+          </div>
+          <!-- ปลายทาง -->
+          
+          <div class="col-md-12" >
+            <div class="box">
+              <label>สถานีปลายทาง</label>
+              <br>
+              <b>คูคต</b>
+            </div>
+          </div>
+          <!-- ข้อมูล -->
+          <div class="col-md-12" >
+            <div class="box">
+              <label>จำนวน 3 สถานี</label>
+              <br>
+              <p>ราคา :</p>
+              <b style="color: green;">47 บาท</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <button class="btn btn-lg btn-outline-primary" (click)="open(content)">
+      ดูการเดินทาง
+    </button>
   </div>
   <div class="col-8">
     <div class="img">

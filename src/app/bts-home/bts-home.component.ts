@@ -1,24 +1,33 @@
-import { Component } from '@angular/core';
-
+import { Component, TemplateRef, inject } from '@angular/core';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-bts-home',
   templateUrl: './bts-home.component.html',
-  styleUrl: './bts-home.component.css'
+  styleUrl: './bts-home.component.css',
 })
 export class BtsHomeComponent {
-  isVisible = false;
-  showModal(): void {
-    this.isVisible = true;
-  }
+  private modalService = inject(NgbModal);
+  closeResult = '';
 
-  handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
-  }
+	open(content: TemplateRef<any>) {
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+	}
 
-  handleCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
-  }
-
+	private getDismissReason(reason: any): string {
+		switch (reason) {
+			case ModalDismissReasons.ESC:
+				return 'by pressing ESC';
+			case ModalDismissReasons.BACKDROP_CLICK:
+				return 'by clicking on a backdrop';
+			default:
+				return `with: ${reason}`;
+		}
+	}
 }
