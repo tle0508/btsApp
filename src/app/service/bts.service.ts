@@ -6,15 +6,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BtsService {
-  private apiUrl = 'http://localhost:8080/api/bts/';
+  private apiUrl = 'http://localhost:8080/api/';
   constructor(private http: HttpClient) {}
 
   findByLimeGreenLineColor(): Observable<any[]> {
-    const url = `${this.apiUrl}findByLineColor/limegreen`;
+    const url = `${this.apiUrl}bts/findByLineColor/limegreen`;
     return this.http.get<any[]>(url);
   }
   findByBlueLineColor(): Observable<any[]> {
-    const url = `${this.apiUrl}findByLineColor/blue`;
+    const url = `${this.apiUrl}bts/findByLineColor/blue`;
     return this.http.get<any[]>(url);
+  }
+  calculateTripPrice(startStationId: number, endStationId: number): Observable<any> {
+    const url = `${this.apiUrl}trip/calculatePrice/${startStationId}/${endStationId}`;
+    return this.http.get<any>(url);
   }
 }

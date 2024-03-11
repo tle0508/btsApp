@@ -18,9 +18,9 @@ export class BtsHomeComponent implements OnInit {
 
   selected_End_LineColor: string = 'เลือกสายปลายทาง';
   selected_End_LineStations: any[] = [];
-  selected_End_Station: any ;
+  selected_End_Station: any;
 
-  price! :number ;
+  TripResult: any;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -45,9 +45,18 @@ export class BtsHomeComponent implements OnInit {
     } else {
       this.selected_End_LineStations = this.BlueLineBts;
     }
-    
   }
-
+  calculatePrice(startStationId: number, endStationId: number): void {
+    this.btsService.calculateTripPrice(startStationId, endStationId).subscribe(
+      (data) => {
+        this.TripResult = data;
+        console.log(this.TripResult);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
   getByLimeGreenLineColor(): void {
     this.btsService.findByLimeGreenLineColor().subscribe(
@@ -72,7 +81,11 @@ export class BtsHomeComponent implements OnInit {
     );
   }
   areStationsEqual(): boolean {
-    return this.selected_Start_Station && this.selected_End_Station 
-           && this.selected_Start_Station.idStation === this.selected_End_Station.idStation;
+    return (
+      this.selected_Start_Station &&
+      this.selected_End_Station &&
+      this.selected_Start_Station.idStation ===
+        this.selected_End_Station.idStation
+    );
   }
 }
