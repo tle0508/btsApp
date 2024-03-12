@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { ExtensionBtsComponent } from './extension-bts/extension-bts.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -27,7 +28,8 @@ registerLocaleData(en);
     NavbarComponent,
     HomeComponent,
     AdminComponent,
-    BtsHomeComponent
+    BtsHomeComponent,
+    ExtensionBtsComponent
   ],
   imports: [
     NzButtonModule,
