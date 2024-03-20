@@ -56,13 +56,15 @@
 }
 
 .box {
-	background-color: rgba(226, 226, 226, 0.329);
+	color: #ffffff;
+	background-color: rgba(202, 201, 201, 0.527);
 	border-radius: 8px;
 	padding: 10px;
 	margin-top: 10px;
+	margin-bottom: 10px;
 }
 .box p{
-	font-size: 10px;
+	font-size: 15px;
 }
 .box b {
 	font-size: 18px;

@@ -21,6 +21,7 @@ export class BtsHomeComponent implements OnInit {
   selected_End_Station: any;
 
   TripResult: any;
+  
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -46,16 +47,19 @@ export class BtsHomeComponent implements OnInit {
       this.selected_End_LineStations = this.BlueLineBts;
     }
   }
+
   calculatePrice(startStationId: number, endStationId: number): void {
-    this.btsService.calculateTripPrice(startStationId, endStationId).subscribe(
-      (data) => {
-        this.TripResult = data;
-        console.log(this.TripResult);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    this.btsService
+      .getTripsByStartAndEndStationNormalType(startStationId, endStationId)
+      .subscribe(
+        (data) => {
+          this.TripResult = data;       
+          console.log(this.TripResult);         
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 
   getByLimeGreenLineColor(): void {

@@ -16,8 +16,8 @@
     <tbody>
       <tr *ngFor="let price of prices">
         <td class="text-center">
-          <ng-container *ngIf="price.numOfDistance !== 0; else showText">
-            {{ price.numOfDistance }}
+          <ng-container *ngIf="price.id !== 9; else showText">
+            {{ price.id }}
           </ng-container>
           <ng-template #showText> ส่วนต่อขยาย </ng-template>
         </td>

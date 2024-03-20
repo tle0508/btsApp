@@ -17,8 +17,12 @@ export class BtsService {
     const url = `${this.apiUrl}bts/findByLineColor/blue`;
     return this.http.get<any[]>(url);
   }
-  calculateTripPrice(startStationId: number, endStationId: number): Observable<any> {
-    const url = `${this.apiUrl}trip/calculatePrice/${startStationId}/${endStationId}`;
-    return this.http.get<any>(url);
+  getTripsByStartAndEndStationNormalType(startStationId: number, endStationId: number): Observable<any[]> {
+    const url = `${this.apiUrl}trip/findByStartAndEndStationNormalType/{startStationId}/{endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`;
+    return this.http.get<any[]>(url);
+  }
+  getTripsByStartAndEndStationSpecialType(startStationId: number, endStationId: number): Observable<any[]> {
+    const url = `${this.apiUrl}trip/findTripsByStartAndEndStationSpecialType/{startStationId}/{endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`;
+    return this.http.get<any[]>(url);
   }
 }

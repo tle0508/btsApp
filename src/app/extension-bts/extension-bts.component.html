@@ -1,1 +1,196 @@
-<p>extension-bts works!</p>
+<div class="row" style="font-family: 'Mitr', sans-serif">
+	<div class="col-4" style="padding: 40px">
+	  <div class="col text-center">
+		<b style="font-size: 25px">คำนวณค่าโดยสารแบบพิเศษ</b>
+	  </div>
+  
+	  <!-- ต้นทาง -->
+	  <div class="startTrip">
+		<div class="starTriptitle"><p>ต้นทาง</p></div>
+		<div class="container">
+		  <div class="form-group">
+			<label for="category">สายต้นทาง</label>
+			<select
+			  class="form-control"
+			  id="linecolor"
+			  [(ngModel)]="selected_Start_LineColor"
+			  (change)="onStartLineColorChange()"
+			>
+			  <option selected disabled>เลือกสายต้นทาง</option>
+			  <option value="limegreen">สุขุมวิท</option>
+			  <option value="blue">สีลม</option>
+			</select>
+		  </div>
+		  <div class="form-group">
+			<label for="subcategory">สถานีต้นทาง</label>
+			<select
+			  class="form-control"
+			  id="station_name"
+			  [(ngModel)]="selected_Start_Station"
+			  [disabled]="selected_Start_LineColor === 'เลือกสายต้นทาง'"
+			>
+			  <option selected disabled>เลือกสถานีต้นทาง</option>
+			  <option
+				*ngFor="let startstation of selected_Start_LineStations"
+				[ngValue]="startstation"
+			  >
+				{{ startstation.idStation }} | {{ startstation.btsStationNameTH }}
+			  </option>
+			</select>
+		  </div>
+		</div>
+	  </div>
+	  <!-- ปลายทาง -->
+	  <div class="endTrip">
+		<div class="endTriptitle"><p>ปลายทาง</p></div>
+		<div class="container">
+		  <div class="form-group">
+			<label for="category">สายปลายทาง</label>
+			<select
+			  class="form-control"
+			  id="linecolor"
+			  [(ngModel)]="selected_End_LineColor"
+			  (change)="onEndLineColorChange()"
+			>
+			  <option selected disabled>เลือกสายปลายทาง</option>
+			  <option value="limegreen">สุขุมวิท</option>
+			  <option value="blue">สีลม</option>
+			</select>
+		  </div>
+		  <div class="form-group">
+			<label for="subcategory">สถานีปลายทาง</label>
+			<select
+			  class="form-control"
+			  id="station_name"
+			  [(ngModel)]="selected_End_Station"
+			  [disabled]="selected_End_LineColor === 'เลือกสายปลายทาง'"
+			>
+			  <option selected disabled>เลือกสถานีปลายทาง</option>
+			  <option
+				*ngFor="let endstation of selected_End_LineStations"
+				[ngValue]="endstation"
+			  >
+				{{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
+			  </option>
+			</select>
+		  </div>
+		</div>
+	  </div>
+	  <!-- modal -->
+	  <ng-template #content let-modal>
+		<div class="modal-header">
+		  <h4 class="modal-title" id="modal-basic-title">
+			เส้นทางและอัตราค่าโดยสาร
+		  </h4>
+		  <button
+			type="button"
+			class="btn-close"
+			aria-label="Close"
+			(click)="modal.dismiss('Cross click')"
+		  ></button>
+		</div>
+		<div class="modal-body">
+		  <div class="row">
+			<div class="col-md-12" style="font-size: large">ข้อมูลการเดินทาง</div>
+			<!-- ต้นทาง -->
+			<div
+			  class="col-md-12"
+			  [ngStyle]="{
+				'background-color':
+				  this.TripResult &&
+				  this.TripResult[0].startStationId.lineColor === 'limegreen'
+					? 'green'
+					: 'blue'
+			  }"
+			>
+			  <div class="box">
+				<label>สถานีต้นทาง</label>
+				<br />
+				<b
+				  >{{ this.TripResult[0].startStationId.idStation }}
+				  {{ this.TripResult[0].startStationId.btsStationNameTH }} ||
+				  {{ this.TripResult[0].startStationId.btsStationNameENG }}</b
+				>
+				<p>
+				  <ng-container
+					*ngIf="
+					  this.TripResult &&
+						this.TripResult[0].startStationId.lineColor ===
+						  'limegreen';
+					  else blueLine
+					"
+				  >
+					สายสุขุมวิท
+				  </ng-container>
+				  <ng-template #blueLine> สายสีลม </ng-template>
+				</p>
+			  </div>
+			</div>
+			<!-- ปลายทาง -->
+			<div
+			  class="col-md-12"
+			  [ngStyle]="{
+				'background-color':
+				  this.TripResult &&
+				  this.TripResult[0].endStationId.lineColor === 'limegreen'
+					? 'green'
+					: 'blue'
+			  }"
+			>
+			  <div class="box">
+				<label>สถานีปลายทาง</label>
+				<br />
+				<b
+				  >{{ this.TripResult[0].endStationId.idStation }}
+				  {{ this.TripResult[0].endStationId.btsStationNameTH }} ||
+				  {{ this.TripResult[0].endStationId.btsStationNameENG }}</b
+				>
+				<p>
+				  <ng-container
+					*ngIf="
+					  this.TripResult &&
+						this.TripResult[0].endStationId.lineColor === 'limegreen';
+					  else blueLine
+					"
+				  >
+					สายสุขุมวิท
+				  </ng-container>
+				  <ng-template #blueLine> สายสีลม </ng-template>
+				</p>
+			  </div>
+			</div>
+			<!-- ข้อมูล -->
+			<div class="col-md-12">
+			  <div class="box" style="color: black">
+				<p>ราคา :</p>
+				<b style="color: green">
+					{{ this.TripResult[0].priceModel.price === 0 ? 'ฟรี' : this.TripResult[0].priceModel.price + ' บาท' }}
+				  </b>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </ng-template>
+	  <b style="color: rgb(255, 0, 0)">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
+	  <button
+		class="btn btn-lg btn-outline-primary"
+		[disabled]="
+		  !selected_Start_Station || !selected_End_Station || areStationsEqual()
+		"
+		(click)="
+		  calculatePrice(selected_Start_Station.id, selected_End_Station.id);
+		  open(content)
+		"
+	  >
+		ดูการเดินทาง
+	  </button>
+	</div>
+  
+	<!-- map -->
+	<div class="col-8">
+	  <div class="img">
+		<img src="/assets/mapbts.jpg" />
+	  </div>
+	</div>
+  </div>
+  
