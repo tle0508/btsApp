@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService } from '../service/bts.service';
+import { AdminService } from '../service/admin.service';
 
 @Component({
   selector: 'app-bts-home',
@@ -8,7 +9,11 @@ import { BtsService } from '../service/bts.service';
   styleUrl: './bts-home.component.css',
 })
 export class BtsHomeComponent implements OnInit {
-  constructor(private modalService: NgbModal, private btsService: BtsService) {}
+  constructor(
+    private modalService: NgbModal,
+    private btsService: BtsService,
+    private adminService: AdminService
+  ) {}
 
   LimeGreenLineBts: any[] = [];
   BlueLineBts: any[] = [];
@@ -21,10 +26,12 @@ export class BtsHomeComponent implements OnInit {
   selected_End_Station: any;
   price!: number;
   TripResult: any;
+  extensionPrice!: number;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
+    this.getPriceExtension();
   }
 
   open(content: TemplateRef<any>) {
@@ -47,12 +54,27 @@ export class BtsHomeComponent implements OnInit {
     }
   }
 
+  getPriceExtension(): void {
+    const numOfDistance = 0; 
+    this.adminService
+    .getPriceByNumOfDistance(numOfDistance)
+    .subscribe(
+      (data) => {
+        this.extensionPrice=data.price;
+      },
+      (error) => {
+        console.error('Error', error);
+      }
+    );
+  }
+
   getData(startStationId: number, endStationId: number): void {
     this.btsService
       .getTripsByStartAndEndStation(startStationId, endStationId)
       .subscribe(
         (data) => {
           this.TripResult = data;
+
           this.calculatePrice(
             this.TripResult[0].startStationId,
             this.TripResult[0].endStationId,
@@ -75,29 +97,37 @@ export class BtsHomeComponent implements OnInit {
           (endStation.id < 34 || endStation.id > 58)) ||
         (startStation.id > 58 && endStation.id < 58)
       ) {
-        console.log(prices.priceIncludesExtension);
-        this.price = prices.priceIncludesExtension;
+         this.price += this.extensionPrice;
       }
     }
     if (startStation.extension && !endStation.extension) {
       if (!(endStation.id == 17) && !(endStation.id == 34)) {
-        this.price = prices.priceIncludesExtension;
+         this.price += this.extensionPrice;
       }
-    }else if (!startStation.extension && endStation.extension) {
-      if (!(startStation.id == 17) && !(startStation.id == 34) && !(startStation.id == 58)) {
-          if ((endStation.id > 0 && endStation.id < 17)
-                  || (endStation.id > 34 && endStation.id< 49)
-                  || (endStation.id > 58 && endStation.id < 63)) {
-                    this.price = prices.priceIncludesExtension;
-          }
+    } else if (!startStation.extension && endStation.extension) {
+      if (
+        !(startStation.id == 17) &&
+        !(startStation.id == 34) &&
+        !(startStation.id == 58)
+      ) {
+        if (
+          (endStation.id > 0 && endStation.id < 17) ||
+          (endStation.id > 34 && endStation.id < 49) ||
+          (endStation.id > 58 && endStation.id < 63)
+        ) {
+           this.price += this.extensionPrice;
+        }
       } else {
-          if (startStation.id == 17 && endStation.id > 17
-                  || (startStation.id == 34 && (endStation.id < 34 || endStation.id > 58))
-                  || (startStation.id == 58 && !(endStation.id > 58))) {
-                    this.price = prices.priceIncludesExtension;
-          }
+        if (
+          (startStation.id == 17 && endStation.id > 17) ||
+          (startStation.id == 34 &&
+            (endStation.id < 34 || endStation.id > 58)) ||
+          (startStation.id == 58 && !(endStation.id > 58))
+        ) {
+           this.price += this.extensionPrice;
+        }
       }
-  }
+    }
   }
 
   getByLimeGreenLineColor(): void {

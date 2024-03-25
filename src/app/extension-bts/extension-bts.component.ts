@@ -2,13 +2,17 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService } from '../service/bts.service';
 
+
 @Component({
   selector: 'app-extension-bts',
   templateUrl: './extension-bts.component.html',
   styleUrl: './extension-bts.component.css'
 })
 export class ExtensionBtsComponent implements OnInit {
-  constructor(private modalService: NgbModal, private btsService: BtsService) {}
+  constructor(
+    private modalService: NgbModal,
+    private btsService: BtsService,
+  ) {}
 
   LimeGreenLineBts: any[] = [];
   BlueLineBts: any[] = [];
@@ -22,6 +26,7 @@ export class ExtensionBtsComponent implements OnInit {
 
   TripResult: any;
   price!:number;
+  extensionPrice: number = 0;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -57,8 +62,7 @@ export class ExtensionBtsComponent implements OnInit {
           this.calculatePriceSpecial(
             this.TripResult[0].startStationId,
             this.TripResult[0].endStationId,
-            this.TripResult[0].priceModel,
-            0
+            this.TripResult[0].priceModel
           );
         },
         (error) => {
@@ -66,8 +70,10 @@ export class ExtensionBtsComponent implements OnInit {
         }
       );
   }
+  
 
-  calculatePriceSpecial(startStation: any, endStation: any, prices: any,extensionPrice:number): void {
+
+  calculatePriceSpecial(startStation: any, endStation: any, prices: any): void {
     this.price = prices.price;
     if (startStation.extension && endStation.extension) {
       if (!(
@@ -77,7 +83,7 @@ export class ExtensionBtsComponent implements OnInit {
           (endStation.id < 34 || endStation.id > 58)) ||
         (startStation.id > 58 && endStation.id < 58)
       ) ){
-        this.price = extensionPrice;
+        this.price = this.extensionPrice;
       }
     }
     }

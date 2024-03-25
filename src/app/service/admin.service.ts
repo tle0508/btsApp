@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AdminService {
+  getPriceExtension(numOfDistance: number) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8080/api/prices/';
 
   constructor(private http: HttpClient) {}
@@ -17,4 +20,9 @@ export class AdminService {
     const url = `${this.apiUrl}${numOfDistance}?price=${price}`;
     return this.http.put<any>(url, {});
   }
+  getPriceByNumOfDistance(numOfDistance: number): Observable<any> {
+    const url = `${this.apiUrl}distance/${numOfDistance}`;
+    return this.http.get<any>(url);
+  }
+
 }
