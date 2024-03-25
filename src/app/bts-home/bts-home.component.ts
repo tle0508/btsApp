@@ -19,9 +19,8 @@ export class BtsHomeComponent implements OnInit {
   selected_End_LineColor: string = 'เลือกสายปลายทาง';
   selected_End_LineStations: any[] = [];
   selected_End_Station: any;
-
+  price!: number;
   TripResult: any;
-  
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -48,18 +47,57 @@ export class BtsHomeComponent implements OnInit {
     }
   }
 
-  calculatePrice(startStationId: number, endStationId: number): void {
+  getData(startStationId: number, endStationId: number): void {
     this.btsService
-      .getTripsByStartAndEndStationNormalType(startStationId, endStationId)
+      .getTripsByStartAndEndStation(startStationId, endStationId)
       .subscribe(
         (data) => {
-          this.TripResult = data;       
-          console.log(this.TripResult);         
+          this.TripResult = data;
+          this.calculatePrice(
+            this.TripResult[0].startStationId,
+            this.TripResult[0].endStationId,
+            this.TripResult[0].priceModel
+          );
         },
         (error) => {
           console.error(error);
         }
       );
+  }
+
+  calculatePrice(startStation: any, endStation: any, prices: any): void {
+    this.price = prices.price;
+    if (startStation.extension && endStation.extension) {
+      if (
+        (startStation.id < 17 && endStation.id > 17) ||
+        (startStation.id > 34 &&
+          startStation.id < 49 &&
+          (endStation.id < 34 || endStation.id > 58)) ||
+        (startStation.id > 58 && endStation.id < 58)
+      ) {
+        console.log(prices.priceIncludesExtension);
+        this.price = prices.priceIncludesExtension;
+      }
+    }
+    if (startStation.extension && !endStation.extension) {
+      if (!(endStation.id == 17) && !(endStation.id == 34)) {
+        this.price = prices.priceIncludesExtension;
+      }
+    }else if (!startStation.extension && endStation.extension) {
+      if (!(startStation.id == 17) && !(startStation.id == 34) && !(startStation.id == 58)) {
+          if ((endStation.id > 0 && endStation.id < 17)
+                  || (endStation.id > 34 && endStation.id< 49)
+                  || (endStation.id > 58 && endStation.id < 63)) {
+                    this.price = prices.priceIncludesExtension;
+          }
+      } else {
+          if (startStation.id == 17 && endStation.id > 17
+                  || (startStation.id == 34 && (endStation.id < 34 || endStation.id > 58))
+                  || (startStation.id == 58 && !(endStation.id > 58))) {
+                    this.price = prices.priceIncludesExtension;
+          }
+      }
+  }
   }
 
   getByLimeGreenLineColor(): void {

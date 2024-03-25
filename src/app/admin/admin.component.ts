@@ -35,9 +35,9 @@ export class AdminComponent implements OnInit {
       }
     );
   }
-  updatePrice() {
+  updatePrice() { 
     this.adminService
-      .updatePrice(this.selectedPrice.id, this.updatedPrice)
+      .updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
       .subscribe(
         (data) => {
           console.log('Price updated successfully:', data);

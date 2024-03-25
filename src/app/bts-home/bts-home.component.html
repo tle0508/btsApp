@@ -95,6 +95,7 @@
           <!-- ต้นทาง -->
           <div
             class="col-md-12"
+            style="border-radius: 8px;"
             [ngStyle]="{
               'background-color':
                 this.TripResult &&
@@ -129,6 +130,7 @@
           <!-- ปลายทาง -->
           <div
             class="col-md-12"
+            style="border-radius: 8px; margin-top: 10px;"
             [ngStyle]="{
               'background-color':
                 this.TripResult &&
@@ -162,9 +164,10 @@
           <!-- ข้อมูล -->
           <div class="col-md-12">
             <div class="box" style="color: black">
-              <p>ราคา :</p>
+              <label > ราคา : </label>
+              <br>
               <b style="color: green"
-                >{{ this.TripResult[0].priceModel.price }} บาท</b
+                >{{price}} บาท</b
               >
             </div>
           </div>
@@ -178,7 +181,7 @@
         !selected_Start_Station || !selected_End_Station || areStationsEqual()
       "
       (click)="
-        calculatePrice(selected_Start_Station.id, selected_End_Station.id);
+        getData(selected_Start_Station.id, selected_End_Station.id);
         open(content)
       "
     >

@@ -21,7 +21,7 @@ export class ExtensionBtsComponent implements OnInit {
   selected_End_Station: any;
 
   TripResult: any;
-  
+  price!:number;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -48,19 +48,40 @@ export class ExtensionBtsComponent implements OnInit {
     }
   }
 
-  calculatePrice(startStationId: number, endStationId: number): void {
+  getData(startStationId: number, endStationId: number): void {
     this.btsService
-      .getTripsByStartAndEndStationSpecialType(startStationId, endStationId)
+      .getTripsByStartAndEndStation(startStationId, endStationId)
       .subscribe(
         (data) => {
-          this.TripResult = data;       
-          console.log(this.TripResult);         
+          this.TripResult = data;
+          this.calculatePriceSpecial(
+            this.TripResult[0].startStationId,
+            this.TripResult[0].endStationId,
+            this.TripResult[0].priceModel,
+            0
+          );
         },
         (error) => {
           console.error(error);
         }
       );
   }
+
+  calculatePriceSpecial(startStation: any, endStation: any, prices: any,extensionPrice:number): void {
+    this.price = prices.price;
+    if (startStation.extension && endStation.extension) {
+      if (!(
+        (startStation.id < 17 && endStation.id > 17) ||
+        (startStation.id > 34 &&
+          startStation.id < 49 &&
+          (endStation.id < 34 || endStation.id > 58)) ||
+        (startStation.id > 58 && endStation.id < 58)
+      ) ){
+        this.price = extensionPrice;
+      }
+    }
+    }
+  
 
   getByLimeGreenLineColor(): void {
     this.btsService.findByLimeGreenLineColor().subscribe(

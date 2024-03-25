@@ -13,8 +13,8 @@ export class AdminService {
     return this.http.get<any[]>(this.apiUrl + 'getAllPrices');
   }
 
-  updatePrice(id: number, price: number): Observable<any> {
-    const url = `${this.apiUrl}${id}?price=${price}`;
+  updatePrice(numOfDistance: number, price: number): Observable<any> {
+    const url = `${this.apiUrl}${numOfDistance}?price=${price}`;
     return this.http.put<any>(url, {});
   }
 }
