@@ -25,28 +25,30 @@ export class AdminComponent implements OnInit {
   }
 
   getAllPrices(): void {
-    this.adminService.getAllPrices().subscribe(
-      (data) => {
-        this.prices = data;
-        console.log(data);
-      },
-      (error) => {
-        console.error(error);
+    this.adminService.getAllPrices()
+      .subscribe({
+        next: (value) => {
+          this.prices = value;
+        },
+        error: (error) => {
+          console.error('Error', error);
+        },
       }
     );
   }
   updatePrice() { 
     this.adminService
       .updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
-      .subscribe(
-        (data) => {
-          console.log('Price updated successfully:', data);
+      .subscribe({
+        next: (value) => {
+          console.log('Price updated successfully:', value);
           this.modalService.dismissAll();
           this.getAllPrices();
         },
-        (error) => {
-          console.error('Error updating price:', error);
-        }
+        error: (error) => {
+          console.error('Error', error);
+        },
+      }
       );
   }
   formatDateTime(dateTimeString: string): string {
@@ -56,7 +58,7 @@ export class AdminComponent implements OnInit {
       day: '2-digit',
       hour: 'numeric',
       minute: 'numeric',
-      hour12: false, // 24-hour format
+      hour12: false, 
     };
 
     return new Date(dateTimeString).toLocaleString('th-TH', options);

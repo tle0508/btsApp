@@ -1,6 +1,9 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BtsService } from '../service/bts.service';
+import { BtsService  } from '../service/bts.service';
+import { Price } from '../Price';
+import { Station } from '../Station';
+import { Trip } from '../Trip';
 
 
 @Component({
@@ -14,19 +17,19 @@ export class ExtensionBtsComponent implements OnInit {
     private btsService: BtsService,
   ) {}
 
-  LimeGreenLineBts: any[] = [];
-  BlueLineBts: any[] = [];
-  selected_Start_LineColor: string = 'เลือกสายต้นทาง';
-  selected_Start_LineStations: any[] = [];
-  selected_Start_Station: any;
+  limeGreenLineBts: Station[] = [];
+  blueLineBts: Station[] = [];
+  selectedStartLineColor: string = 'เลือกสายต้นทาง';
+  selectedStartLineStations: Station[] = [];
+  selectedStartStation!: Station;
 
-  selected_End_LineColor: string = 'เลือกสายปลายทาง';
-  selected_End_LineStations: any[] = [];
-  selected_End_Station: any;
+  selectedEndLineColor: string = 'เลือกสายปลายทาง';
+  selectedEndLineStations: Station[] = [];
+  selectedEndStation!: Station;
+  price!: number;
+  tripResult!: Trip[];
+  extensionPrice!: number;
 
-  TripResult: any;
-  price!:number;
-  extensionPrice: number = 0;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -38,50 +41,47 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   onStartLineColorChange() {
-    if (this.selected_Start_LineColor === 'limegreen') {
-      this.selected_Start_LineStations = this.LimeGreenLineBts;
+    if (this.selectedStartLineColor === 'limegreen') {
+      this.selectedStartLineStations = this.limeGreenLineBts;
     } else {
-      this.selected_Start_LineStations = this.BlueLineBts;
+      this.selectedStartLineStations = this.blueLineBts;
     }
   }
 
   onEndLineColorChange() {
-    if (this.selected_End_LineColor === 'limegreen') {
-      this.selected_End_LineStations = this.LimeGreenLineBts;
+    if (this.selectedEndLineColor === 'limegreen') {
+      this.selectedEndLineStations = this.limeGreenLineBts;
     } else {
-      this.selected_End_LineStations = this.BlueLineBts;
+      this.selectedEndLineStations = this.blueLineBts;
     }
   }
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
       .getTripsByStartAndEndStation(startStationId, endStationId)
-      .subscribe(
-        (data) => {
-          this.TripResult = data;
+      .subscribe({
+        next: (value) => {
+          this.tripResult = value;
           this.calculatePriceSpecial(
-            this.TripResult[0].startStationId,
-            this.TripResult[0].endStationId,
-            this.TripResult[0].priceModel
-          );
+                this.tripResult[0].startStation,
+                this.tripResult[0].endStation,
+                this.tripResult[0].priceModel
+              );
         },
-        (error) => {
-          console.error(error);
-        }
+        error: (error) => {
+          console.error('Error', error);
+        },
+      }
       );
   }
-  
 
 
-  calculatePriceSpecial(startStation: any, endStation: any, prices: any): void {
+  calculatePriceSpecial(startStation: Station, endStation: Station, prices: Price): void {
     this.price = prices.price;
     if (startStation.extension && endStation.extension) {
-      if (!(
-        (startStation.id < 17 && endStation.id > 17) ||
-        (startStation.id > 34 &&
-          startStation.id < 49 &&
-          (endStation.id < 34 || endStation.id > 58)) ||
-        (startStation.id > 58 && endStation.id < 58)
+      if (!((startStation.id < 17 && endStation.id > 17) ||(startStation.id > 34 &&startStation.id < 49 
+           &&
+          (endStation.id < 34 || endStation.id > 58)) ||(startStation.id > 58 && endStation.id < 58)
       ) ){
         this.price = this.extensionPrice;
       }
@@ -90,10 +90,9 @@ export class ExtensionBtsComponent implements OnInit {
   
 
   getByLimeGreenLineColor(): void {
-    this.btsService.findByLimeGreenLineColor().subscribe(
+    this.btsService.getStatioByLimeGreenLineColor().subscribe(
       (data) => {
-        this.LimeGreenLineBts = data;
-        console.log(data);
+        this.limeGreenLineBts = data;
       },
       (error) => {
         console.error(error);
@@ -101,10 +100,9 @@ export class ExtensionBtsComponent implements OnInit {
     );
   }
   getByBlueLineColor(): void {
-    this.btsService.findByBlueLineColor().subscribe(
+    this.btsService.getStatioByBlueLineColor().subscribe(
       (data) => {
-        this.BlueLineBts = data;
-        console.log(data);
+        this.blueLineBts = data;
       },
       (error) => {
         console.error(error);
@@ -113,10 +111,10 @@ export class ExtensionBtsComponent implements OnInit {
   }
   areStationsEqual(): boolean {
     return (
-      this.selected_Start_Station &&
-      this.selected_End_Station &&
-      this.selected_Start_Station.idStation ===
-        this.selected_End_Station.idStation
+      this.selectedStartStation &&
+      this.selectedEndStation &&
+      this.selectedStartStation.idStation ===
+        this.selectedEndStation.idStation
     );
   }
 }

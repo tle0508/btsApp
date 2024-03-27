@@ -1,7 +1,7 @@
-<div class="row" style="font-family: 'Mitr', sans-serif">
-	<div class="col-4" style="padding: 40px">
+<div class="row" >
+	<div class="col-4">
 	  <div class="col text-center">
-		<b style="font-size: 25px">คำนวณค่าโดยสารแบบพิเศษ</b>
+		<b style="font-size: 25px">คำนวณค่าโดยสารแบบปกติ</b>
 	  </div>
   
 	  <!-- ต้นทาง -->
@@ -13,7 +13,7 @@
 			<select
 			  class="form-control"
 			  id="linecolor"
-			  [(ngModel)]="selected_Start_LineColor"
+			  [(ngModel)]="selectedStartLineColor"
 			  (change)="onStartLineColorChange()"
 			>
 			  <option selected disabled>เลือกสายต้นทาง</option>
@@ -26,12 +26,12 @@
 			<select
 			  class="form-control"
 			  id="station_name"
-			  [(ngModel)]="selected_Start_Station"
-			  [disabled]="selected_Start_LineColor === 'เลือกสายต้นทาง'"
+			  [(ngModel)]="selectedStartStation"
+			  [disabled]="selectedStartLineColor === 'เลือกสายต้นทาง'"
 			>
 			  <option selected disabled>เลือกสถานีต้นทาง</option>
 			  <option
-				*ngFor="let startstation of selected_Start_LineStations"
+				*ngFor="let startstation of selectedStartLineStations"
 				[ngValue]="startstation"
 			  >
 				{{ startstation.idStation }} | {{ startstation.btsStationNameTH }}
@@ -49,7 +49,7 @@
 			<select
 			  class="form-control"
 			  id="linecolor"
-			  [(ngModel)]="selected_End_LineColor"
+			  [(ngModel)]="selectedEndLineColor"
 			  (change)="onEndLineColorChange()"
 			>
 			  <option selected disabled>เลือกสายปลายทาง</option>
@@ -62,12 +62,12 @@
 			<select
 			  class="form-control"
 			  id="station_name"
-			  [(ngModel)]="selected_End_Station"
-			  [disabled]="selected_End_LineColor === 'เลือกสายปลายทาง'"
+			  [(ngModel)]="selectedEndStation"
+			  [disabled]="selectedEndLineColor === 'เลือกสายปลายทาง'"
 			>
 			  <option selected disabled>เลือกสถานีปลายทาง</option>
 			  <option
-				*ngFor="let endstation of selected_End_LineStations"
+				*ngFor="let endstation of selectedEndLineStations"
 				[ngValue]="endstation"
 			  >
 				{{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
@@ -91,32 +91,30 @@
 		</div>
 		<div class="modal-body">
 		  <div class="row">
-			<div class="col-md-12" style="font-size: large">ข้อมูลการเดินทาง</div>
+			<div class="col-md-12">ข้อมูลการเดินทาง</div>
 			<!-- ต้นทาง -->
 			<div
 			  class="col-md-12"
-			  style="border-radius: 8px;"
 			  [ngStyle]="{
 				'background-color':
-				  this.TripResult &&
-				  this.TripResult[0].startStationId.lineColor === 'limegreen'
+				  this.tripResult[0].startStation.lineColor === 'limegreen'
 					? 'green'
-					: 'blue'
+					: 'DarkCyan'
 			  }"
 			>
 			  <div class="box">
 				<label>สถานีต้นทาง</label>
 				<br />
 				<b
-				  >{{ this.TripResult[0].startStationId.idStation }}
-				  {{ this.TripResult[0].startStationId.btsStationNameTH }} ||
-				  {{ this.TripResult[0].startStationId.btsStationNameENG }}</b
+				  >{{ this.tripResult[0].startStation.idStation }}
+				  {{ this.tripResult[0].startStation.btsStationNameTH }} ||
+				  {{ this.tripResult[0].startStation.btsStationNameENG }}</b
 				>
 				<p>
 				  <ng-container
 					*ngIf="
-					  this.TripResult &&
-						this.TripResult[0].startStationId.lineColor ===
+					  this.tripResult &&
+						this.tripResult[0].startStation.lineColor ===
 						  'limegreen';
 					  else blueLine
 					"
@@ -130,28 +128,26 @@
 			<!-- ปลายทาง -->
 			<div
 			  class="col-md-12"
-			  style="border-radius: 8px; margin-top: 10px;"
 			  [ngStyle]="{
 				'background-color':
-				  this.TripResult &&
-				  this.TripResult[0].endStationId.lineColor === 'limegreen'
+				  this.tripResult[0].endStation.lineColor === 'limegreen'
 					? 'green'
-					: 'blue'
+					: 'DarkCyan'
 			  }"
 			>
 			  <div class="box">
 				<label>สถานีปลายทาง</label>
 				<br />
-				<b
-				  >{{ this.TripResult[0].endStationId.idStation }}
-				  {{ this.TripResult[0].endStationId.btsStationNameTH }} ||
-				  {{ this.TripResult[0].endStationId.btsStationNameENG }}</b
-				>
+				<b>
+				  {{ this.tripResult[0].endStation.idStation }}
+				  {{ this.tripResult[0].endStation.btsStationNameTH }} ||
+				  {{ this.tripResult[0].endStation.btsStationNameENG }}
+				  </b>
 				<p>
 				  <ng-container
 					*ngIf="
-					  this.TripResult &&
-						this.TripResult[0].endStationId.lineColor === 'limegreen';
+					  this.tripResult &&
+						this.tripResult[0].endStation.lineColor === 'limegreen';
 					  else blueLine
 					"
 				  >
@@ -163,24 +159,23 @@
 			</div>
 			<!-- ข้อมูล -->
 			<div class="col-md-12">
-			  <div class="box" style="color: black">
-				<p>ราคา :</p>
-				<b style="color: green">
-					{{ price === 0 ? 'ฟรี' : price + ' บาท' }}
-				  </b>
+			  <div class="box" >
+				<label > ราคา : </label>
+				<br>
+				<b>{{price}} บาท</b>
 			  </div>
 			</div>
 		  </div>
 		</div>
 	  </ng-template>
-	  <b style="color: rgb(255, 0, 0)">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
+	  <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
 	  <button
 		class="btn btn-lg btn-outline-primary"
 		[disabled]="
-		  !selected_Start_Station || !selected_End_Station || areStationsEqual()
+		  !selectedStartStation || !selectedEndStation || areStationsEqual()
 		"
 		(click)="
-		  getData(selected_Start_Station.id, selected_End_Station.id);
+		  getData(selectedStartStation.id, selectedEndStation.id);
 		  open(content)
 		"
 	  >

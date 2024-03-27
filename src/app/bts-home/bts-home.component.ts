@@ -2,6 +2,9 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService } from '../service/bts.service';
 import { AdminService } from '../service/admin.service';
+import { Station } from '../Station';
+import { Price } from '../Price';
+import { Trip } from '../Trip';
 
 @Component({
   selector: 'app-bts-home',
@@ -15,19 +18,21 @@ export class BtsHomeComponent implements OnInit {
     private adminService: AdminService
   ) {}
 
-  LimeGreenLineBts: any[] = [];
-  BlueLineBts: any[] = [];
-  selected_Start_LineColor: string = 'เลือกสายต้นทาง';
-  selected_Start_LineStations: any[] = [];
-  selected_Start_Station: any;
+  limeGreenLineBts: Station[] = [];
+  blueLineBts: Station[] = [];
+  selectedStartLineColor: string = 'เลือกสายต้นทาง';
+  selectedStartLineStations: Station[] = [];
+  selectedStartStation!: Station;
 
-  selected_End_LineColor: string = 'เลือกสายปลายทาง';
-  selected_End_LineStations: any[] = [];
-  selected_End_Station: any;
+  selectedEndLineColor: string = 'เลือกสายปลายทาง';
+  selectedEndLineStations: Station[] = [];
+  selectedEndStation!: Station;
   price!: number;
-  TripResult: any;
+  tripResult!: Trip[];
   extensionPrice!: number;
-
+  
+  lineColorSukhumvit:string ="limegreen";
+  
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
@@ -39,102 +44,75 @@ export class BtsHomeComponent implements OnInit {
   }
 
   onStartLineColorChange() {
-    if (this.selected_Start_LineColor === 'limegreen') {
-      this.selected_Start_LineStations = this.LimeGreenLineBts;
+    if (this.selectedStartLineColor === this.lineColorSukhumvit) {
+      this.selectedStartLineStations = this.limeGreenLineBts;
     } else {
-      this.selected_Start_LineStations = this.BlueLineBts;
+      this.selectedStartLineStations = this.blueLineBts;
     }
   }
 
   onEndLineColorChange() {
-    if (this.selected_End_LineColor === 'limegreen') {
-      this.selected_End_LineStations = this.LimeGreenLineBts;
+    if (this.selectedEndLineColor === this.lineColorSukhumvit) {
+      this.selectedEndLineStations = this.limeGreenLineBts;
     } else {
-      this.selected_End_LineStations = this.BlueLineBts;
+      this.selectedEndLineStations = this.blueLineBts;
     }
   }
 
   getPriceExtension(): void {
-    const numOfDistance = 0; 
-    this.adminService
-    .getPriceByNumOfDistance(numOfDistance)
-    .subscribe(
-      (data) => {
-        this.extensionPrice=data.price;
+    this.adminService.getPriceByNumOfDistance(0).subscribe({
+      next: (value) => {
+        this.extensionPrice = value.price;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error', error);
-      }
-    );
+      },
+    });
   }
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
       .getTripsByStartAndEndStation(startStationId, endStationId)
-      .subscribe(
-        (data) => {
-          this.TripResult = data;
-
+      .subscribe({
+        next: (value) => {
+          this.tripResult = value;
           this.calculatePrice(
-            this.TripResult[0].startStationId,
-            this.TripResult[0].endStationId,
-            this.TripResult[0].priceModel
-          );
+                this.tripResult[0].startStation,
+                this.tripResult[0].endStation,
+                this.tripResult[0].priceModel
+              );
         },
-        (error) => {
-          console.error(error);
-        }
+        error: (error) => {
+          console.error('Error', error);
+        },
+      }
       );
   }
 
-  calculatePrice(startStation: any, endStation: any, prices: any): void {
+  calculatePrice(startStation: Station,endStation: Station,prices: Price): void {
     this.price = prices.price;
     if (startStation.extension && endStation.extension) {
       if (
         (startStation.id < 17 && endStation.id > 17) ||
-        (startStation.id > 34 &&
-          startStation.id < 49 &&
-          (endStation.id < 34 || endStation.id > 58)) ||
+        (startStation.id > 34 && startStation.id < 49 && (endStation.id < 34 || endStation.id > 58)) ||
         (startStation.id > 58 && endStation.id < 58)
       ) {
-         this.price += this.extensionPrice;
+        this.price += this.extensionPrice;
       }
     }
-    if (startStation.extension && !endStation.extension) {
-      if (!(endStation.id == 17) && !(endStation.id == 34)) {
-         this.price += this.extensionPrice;
-      }
-    } else if (!startStation.extension && endStation.extension) {
-      if (
-        !(startStation.id == 17) &&
-        !(startStation.id == 34) &&
-        !(startStation.id == 58)
-      ) {
-        if (
-          (endStation.id > 0 && endStation.id < 17) ||
-          (endStation.id > 34 && endStation.id < 49) ||
-          (endStation.id > 58 && endStation.id < 63)
-        ) {
-           this.price += this.extensionPrice;
-        }
-      } else {
-        if (
-          (startStation.id == 17 && endStation.id > 17) ||
-          (startStation.id == 34 &&
-            (endStation.id < 34 || endStation.id > 58)) ||
-          (startStation.id == 58 && !(endStation.id > 58))
-        ) {
-           this.price += this.extensionPrice;
-        }
+    if(startStation.extension != endStation.extension){
+      if (endStation.id != 17 && endStation.id != 34 && endStation.id != 58) {
+        this.price += this.extensionPrice;
+      }else if(startStation.id != 17 &&startStation.id != 34 && startStation.id != 58){
+        this.price += this.extensionPrice;
       }
     }
   }
 
   getByLimeGreenLineColor(): void {
-    this.btsService.findByLimeGreenLineColor().subscribe(
+    this.btsService.getStatioByLimeGreenLineColor().subscribe(
       (data) => {
-        this.LimeGreenLineBts = data;
-        console.log(data);
+        this.limeGreenLineBts = data;     
       },
       (error) => {
         console.error(error);
@@ -142,22 +120,22 @@ export class BtsHomeComponent implements OnInit {
     );
   }
   getByBlueLineColor(): void {
-    this.btsService.findByBlueLineColor().subscribe(
+    this.btsService.getStatioByBlueLineColor().subscribe(
       (data) => {
-        this.BlueLineBts = data;
-        console.log(data);
+        this.blueLineBts = data;
       },
       (error) => {
         console.error(error);
       }
     );
   }
+
   areStationsEqual(): boolean {
     return (
-      this.selected_Start_Station &&
-      this.selected_End_Station &&
-      this.selected_Start_Station.idStation ===
-        this.selected_End_Station.idStation
+      this.selectedStartStation &&
+      this.selectedEndStation &&
+      this.selectedStartStation.idStation ===
+        this.selectedEndStation.idStation
     );
   }
 }

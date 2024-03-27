@@ -1,10 +1,21 @@
-
+.row{
+	font-family: 'Mitr', sans-serif
+}
+.col-4 {
+	padding: 40px;
+}
+.col-md-12{
+	border-radius: 8px; margin-top: 10px;
+}
 .img {
 	width: 100%;
 	height: 1200px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+.danger{
+	color: red;
 }
 
 .img img {
@@ -29,7 +40,7 @@
 	color: white;
 	width: 100%;
 	height: 100%;
-	background-color: rgb(8, 18, 114);
+	background-color: DarkCyan;
 	border-top-left-radius: 14px;
 	border-top-right-radius: 14px;
 	font-size: large;
@@ -51,10 +62,11 @@
 }
 
 .modal-body {
+	font-size: large;
 	border-radius: 8px;
 	background-color: rgba(225, 225, 225, 0.848);
 	padding: 20px;
-	font-family: 'Mitr', sans-serif;
+	
 }
 
 .box {
@@ -70,6 +82,7 @@
 }
 .box b {
 	font-size: 20px;
+	color: green;
 }
 
 .box label {
@@ -87,7 +100,7 @@ label {
 
 .endTrip {
 	margin-top: 20px;
-	border: 2px solid rgb(8, 18, 114);
+	border: 2px solid DarkCyan;
 	border-radius: 16px;
 }
 
