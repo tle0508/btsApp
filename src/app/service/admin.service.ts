@@ -6,22 +6,22 @@ import { BtsService } from './bts.service';
 
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class AdminService {
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  getAllPrices(): Observable<Price[]> {
-    return this.http.get<Price[]>(`${BtsService.API_URL}prices/getAllPrices`);
-  }
+	getAllPrices(): Observable<Price[]> {
+		return this.http.get<Price[]>(`${BtsService.API_URL}prices/getAllPrices`);
+	}
 
-  updatePrice(numOfDistance: number, price: number): Observable<Price> {
-    return this.http.put<Price>(`${BtsService.API_URL}prices/${numOfDistance}?price=${price}`, {});
-  }
+	updatePrice(numOfDistance: number, price: number): Observable<Price> {
+		return this.http.put<Price>(`${BtsService.API_URL}prices/${numOfDistance}?price=${price}`, {});
+	}
 
-  getPriceByNumOfDistance(numOfDistance: number): Observable<Price> {
-    return this.http.get<Price>(`${BtsService.API_URL}prices/getPriceByNumOfDistance/${numOfDistance}`);
-  }
+	getPriceByNumOfDistance(numOfDistance: number): Observable<Price> {
+		return this.http.get<Price>(`${BtsService.API_URL}prices/getPriceByNumOfDistance/${numOfDistance}`);
+	}
 
 }

@@ -1,3 +1,9 @@
 .container{
 	padding: 50px;
 }
+.money{
+	color: green;
+}
+.warning{
+	color: red;
+}

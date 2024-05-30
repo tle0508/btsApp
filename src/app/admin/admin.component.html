@@ -1,70 +1,70 @@
 <div class="container" style="font-family: 'Mitr', sans-serif">
-  <button type="button" class="btn btn-success" (click)="goback()">
-    ย้อนกลับ
-  </button>
-  <h2>ตารางราคา</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th class="text-center">จำนวนสถานีที่ผ่าน</th>
-        <th class="text-center">ราคา</th>
-        <th class="text-center">วันที่สร้าง</th>
-        <th class="text-center">อัปเดตครั้งล่าสุด</th>
-        <th class="text-center">แก้ไข</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let price of prices">
-        <td class="text-center">
-          <ng-container *ngIf="price.numOfDistance === 0; else showNumber">
-            ส่วนต่อขยาย
-          </ng-container>
-          <ng-template #showNumber>
-            <ng-container *ngIf="price.numOfDistance === 8">
-              8 สถานีขึ้นไป
-            </ng-container>
-            <ng-container *ngIf="price.numOfDistance !== 8">
-              {{ price.numOfDistance }}
-            </ng-container>
-          </ng-template>
-        </td>
-        <td class="text-center">
-          <b style="color: green">{{ price.price }} ฿</b>
-        </td>
-        <td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
-        <td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
-        <td class="text-center">
-          <button
-            type="button"
-            class="btn btn-warning"
-            (click)="open(content, price)"
-          >
-            แก้ไขราคา
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+	<button type="button" class="btn btn-success" (click)="goback()">
+		ย้อนกลับ
+	</button>
+	<h2>ตารางราคา</h2>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th class="text-center">จำนวนสถานีที่ผ่าน</th>
+				<th class="text-center">ราคา</th>
+				<th class="text-center">วันที่สร้าง</th>
+				<th class="text-center">อัปเดตครั้งล่าสุด</th>
+				<th class="text-center">แก้ไข</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let price of prices">
+				<td class="text-center">
+					<ng-container *ngIf="price.numOfDistance === 0; else showNumber">
+						ส่วนต่อขยาย
+					</ng-container>
+					<ng-template #showNumber>
+						<ng-container *ngIf="price.numOfDistance === 8">
+							8 สถานีขึ้นไป
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance !== 8">
+							{{ price.numOfDistance }}
+						</ng-container>
+					</ng-template>
+				</td>
+				<td class="text-center">
+					<b class="money">{{ price.price }} ฿</b>
+				</td>
+				<td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
+				<td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
+				<td class="text-center">
+					<button
+						type="button"
+						class="btn btn-warning"
+						(click)="open(content, price)"
+					>
+						แก้ไขราคา
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-  <!-- modal -->
-  <ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
-      <button
-        type="button"
-        class="btn-close"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      ></button>
-    </div>
-    <div class="modal-body">
-      <input type="number" class="form-control" [(ngModel)]="updatedPrice" />
-      <b style="color: red;">*ราคาห้ามต่ำกว่า 0 บาท*</b>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success" [disabled]="updatedPrice < 0" (click)="updatePrice()">
-        ยืนยันการแก้ไข
-      </button>
-    </div>
-  </ng-template>
+	<!-- modal -->
+	<ng-template #content let-modal>
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
+			<button
+				type="button"
+				class="btn-close"
+				aria-label="Close"
+				(click)="modal.dismiss('Cross click')"
+			></button>
+		</div>
+		<div class="modal-body">
+			<input type="number" class="form-control" [(ngModel)]="updatedPrice" />
+			<b class="warning">*ราคาห้ามต่ำกว่า 0 บาท*</b>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-success" [disabled]="updatedPrice < 0" (click)="updatePrice()">
+				ยืนยันการแก้ไข
+			</button>
+		</div>
+	</ng-template>
 </div>

@@ -6,25 +6,25 @@ import { Trip } from '../Trip';
 
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class BtsService {
 
-  public static API_URL = 'http://localhost:8080/api/';
+	public static API_URL = 'http://localhost:8080/api/';
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
 
-  getStatioByLimeGreenLineColor(): Observable<Station[]> {
-    return this.http.get<Station[]>(`${BtsService.API_URL}bts/getStationByLineColor/limegreen`);
-  }
+	getStatioByLimeGreenLineColor(): Observable<Station[]> {
+		return this.http.get<Station[]>(`${BtsService.API_URL}bts/getStationByLineColor/limegreen`);
+	}
 
-  getStatioByBlueLineColor(): Observable<Station[]> {
-    return this.http.get<Station[]>(`${BtsService.API_URL}bts/getStationByLineColor/blue`);
-  }
+	getStatioByBlueLineColor(): Observable<Station[]> {
+		return this.http.get<Station[]>(`${BtsService.API_URL}bts/getStationByLineColor/blue`);
+	}
 
-  getTripsByStartAndEndStation(startStationId: number, endStationId: number): Observable<Trip[]> {
-    return this.http.get<Trip[]>(`${BtsService.API_URL}trip/getTripsByStartAndEndStationId/${startStationId}/${endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`);
-  }
+	getTripsByStartAndEndStation(startStationId: number, endStationId: number): Observable<Trip[]> {
+		return this.http.get<Trip[]>(`${BtsService.API_URL}trip/getTripsByStartAndEndStationId/${startStationId}/${endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`);
+	}
 
 }

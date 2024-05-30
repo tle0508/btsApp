@@ -4,71 +4,73 @@ import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css',
+	selector: 'app-admin',
+	templateUrl: './admin.component.html',
+	styleUrl: './admin.component.css',
 })
 export class AdminComponent implements OnInit {
-  constructor(
-    private adminService: AdminService,
-    private modalService: NgbModal,
-    private location : Location
-  ) {}
+	constructor(
+		private adminService: AdminService,
+		private modalService: NgbModal,
+		private location : Location
+	) {}
 
-  prices: any[] = [];
-  showModal = false;
-  selectedPrice: any;
-  updatedPrice!: number;
+	prices: any[] = [];
+	showModal = false;
+	selectedPrice: any;
+	updatedPrice!: number;
 
-  ngOnInit(): void {
-    this.getAllPrices();
-  }
+	ngOnInit(): void {
+		this.getAllPrices();
+	}
 
-  getAllPrices(): void {
-    this.adminService.getAllPrices()
-      .subscribe({
-        next: (value) => {
-          this.prices = value;
-        },
-        error: (error) => {
-          console.error('Error', error);
-        },
-      }
-    );
-  }
-  updatePrice() { 
-    this.adminService
-      .updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
-      .subscribe({
-        next: (value) => {
-          console.log('Price updated successfully:', value);
-          this.modalService.dismissAll();
-          this.getAllPrices();
-        },
-        error: (error) => {
-          console.error('Error', error);
-        },
-      }
-      );
-  }
-  formatDateTime(dateTimeString: string): string {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: false, 
-    };
+	getAllPrices(): void {
+		this.adminService.getAllPrices()
+			.subscribe({
+				next: (value) => {
+					this.prices = value;
+				},
+				error: (error) => {
+					console.error('Error', error);
+				},
+			}
+		);
+	}
+	updatePrice() { 
+		this.adminService
+			.updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
+			.subscribe({
+				next: (value) => {
+					console.log('Price updated successfully:', value);
+					this.modalService.dismissAll();
+					this.getAllPrices();
+				},
+				error: (error) => {
+					console.error('Error', error);
+				},
+			}
+			);
+	}
 
-    return new Date(dateTimeString).toLocaleString('th-TH', options);
-  }
-  open(content: TemplateRef<any>, price: any): void {
-    this.selectedPrice = price;
-    this.updatedPrice = price.price;
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
-  }
-  goback(){
-    this.location.back()
-  }
+	formatDateTime(dateTimeString: string): string {
+		const options: Intl.DateTimeFormatOptions = {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: 'numeric',
+			minute: 'numeric',
+			hour12: false, 
+		};
+
+		return new Date(dateTimeString).toLocaleString('th-TH', options);
+	}
+	
+	open(content: TemplateRef<any>, price: any): void {
+		this.selectedPrice = price;
+		this.updatedPrice = price.price;
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+	}
+	goback(){
+		this.location.back()
+	}
 }
