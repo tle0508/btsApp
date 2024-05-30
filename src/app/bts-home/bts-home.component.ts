@@ -38,6 +38,7 @@ export class BtsHomeComponent implements OnInit {
 	lastIdStationOfExtension_2:number=49;
 	firstIdStationOfExtension_3:number=58;
 
+	formSubmitted: boolean = false;
 
 	ngOnInit(): void {
 		this.getByLimeGreenLineColor();
@@ -55,6 +56,7 @@ export class BtsHomeComponent implements OnInit {
 		} else {
 			this.selectedStartLineStations = this.blueLineBts;
 		}
+		
 	}
 
 	onEndLineColorChange() {
@@ -63,6 +65,7 @@ export class BtsHomeComponent implements OnInit {
 		} else {
 			this.selectedEndLineStations = this.blueLineBts;
 		}
+		
 	}
 
 	getPriceExtension(): void {
@@ -76,7 +79,7 @@ export class BtsHomeComponent implements OnInit {
 		});
 	}
 
-	getData(startStationId: number, endStationId: number): void {
+	getData(startStationId: number, endStationId: number): void {		
 		this.btsService
 			.getTripsByStartAndEndStation(startStationId, endStationId)
 			.subscribe({
@@ -95,7 +98,14 @@ export class BtsHomeComponent implements OnInit {
 			);
 	}
 
-	calculatePrice(startStation: Station,endStation: Station,prices: Price): void {
+	submitForm()  {
+		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
+		this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+		
+	}
+	
+
+	calculatePrice(startStation: Station, endStation: Station, prices: Price): void {
 		this.price = prices.price;
 		if (startStation.extension && endStation.extension) {
 			if (
@@ -106,7 +116,6 @@ export class BtsHomeComponent implements OnInit {
 				this.price += this.extensionPrice;
 			}
 		}
-		//
 		if(startStation.extension != endStation.extension){
 			if (endStation.id != this.lastIdStationOfExtension_1 && 
 				endStation.id != this.firstIdStationOfExtension_2 && 
@@ -122,29 +131,6 @@ export class BtsHomeComponent implements OnInit {
 			}
 		}
 	}
-
-	// calculatePrice(startStation: Station,endStation: Station,prices: Price): void {
-	// 	this.price = prices.price;
-	// 	if (startStation.extension && endStation.extension) {
-	// 		if (
-	// 			(startStation.id < 17 && endStation.id > 17) ||
-	// 			(startStation.id > 34 && startStation.id < 49 && (endStation.id < 34 || endStation.id > 58)) ||
-	// 			(startStation.id > 58 && endStation.id < 58)
-	// 		) {
-	// 			this.price += this.extensionPrice;
-	// 		}
-	// 	}
-	// 	if(startStation.extension && !endStation.extension){
-	// 		if (endStation.id != 17 && endStation.id != 34 && endStation.id != 58) {
-	// 			this.price += this.extensionPrice;
-	// 		}
-	// 	}
-	// 	if(!startStation.extension && endStation.extension){
-	// 		 if(startStation.id != 17 &&startStation.id != 34 && startStation.id != 58){
-	// 			this.price += this.extensionPrice;
-	// 		}
-	// 	}
-	// }
 
 	getByLimeGreenLineColor(): void {
 		this.btsService.getStatioByLimeGreenLineColor().subscribe({
@@ -175,4 +161,5 @@ export class BtsHomeComponent implements OnInit {
 				this.selectedEndStation.idStation
 		);
 	}
+
 }

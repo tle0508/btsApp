@@ -4,22 +4,23 @@
 		<b style="font-size: 25px">คำนวณค่าโดยสารแบบปกติ</b>
 	  </div>
   
-	  <!-- ต้นทาง -->
-	  <div class="startTrip">
+	<!-- ต้นทาง -->
+    <div class="startTrip">
 		<div class="starTriptitle"><p>ต้นทาง</p></div>
 		<div class="container">
 		  <div class="form-group">
 			<label for="category">สายต้นทาง</label>
 			<select
-			  class="form-control"
-			  id="linecolor"
-			  [(ngModel)]="selectedStartLineColor"
-			  (change)="onStartLineColorChange()"
-			>
-			  <option selected disabled>เลือกสายต้นทาง</option>
-			  <option value="limegreen">สุขุมวิท</option>
-			  <option value="blue">สีลม</option>
-			</select>
+			class="form-control"
+			id="linecolor"
+			[(ngModel)]="selectedStartLineColor"		  
+			(change)="onStartLineColorChange()"
+			[class.is-invalid]=" selectedStartLineColor == 'เลือกสายต้นทาง' && formSubmitted "
+		>
+			<option selected disabled>เลือกสายต้นทาง</option>
+			<option value="limegreen">สุขุมวิท</option>
+			<option value="blue">สีลม</option>
+		</select>
 		  </div>
 		  <div class="form-group">
 			<label for="subcategory">สถานีต้นทาง</label>
@@ -28,6 +29,7 @@
 			  id="station_name"
 			  [(ngModel)]="selectedStartStation"
 			  [disabled]="selectedStartLineColor === 'เลือกสายต้นทาง'"
+			  [class.is-invalid]=" !selectedStartStation && formSubmitted "
 			>
 			  <option selected disabled>เลือกสถานีต้นทาง</option>
 			  <option
@@ -51,6 +53,7 @@
 			  id="linecolor"
 			  [(ngModel)]="selectedEndLineColor"
 			  (change)="onEndLineColorChange()"
+			  [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && formSubmitted"
 			>
 			  <option selected disabled>เลือกสายปลายทาง</option>
 			  <option value="limegreen">สุขุมวิท</option>
@@ -64,6 +67,7 @@
 			  id="station_name"
 			  [(ngModel)]="selectedEndStation"
 			  [disabled]="selectedEndLineColor === 'เลือกสายปลายทาง'"
+			  [class.is-invalid]=" !selectedEndStation && formSubmitted "
 			>
 			  <option selected disabled>เลือกสถานีปลายทาง</option>
 			  <option
@@ -172,12 +176,9 @@
 	  <button
 		class="btn btn-lg btn-outline-primary"
 		[disabled]="
-		  !selectedStartStation || !selectedEndStation || areStationsEqual()
+		  areStationsEqual()
 		"
-		(click)="
-		  getData(selectedStartStation.id, selectedEndStation.id);
-		  open(content)
-		"
+		(click)="submitForm(); open(content)"
 	  >
 		ดูการเดินทาง
 	  </button>

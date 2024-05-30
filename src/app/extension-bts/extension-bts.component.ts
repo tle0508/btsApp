@@ -35,6 +35,8 @@ export class ExtensionBtsComponent implements OnInit {
 	lastIdStationOfExtension_2:number=49;
 	firstIdStationOfExtension_3:number=58;
 
+  formSubmitted: boolean = false;
+
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
@@ -83,6 +85,11 @@ export class ExtensionBtsComponent implements OnInit {
       );
   }
 
+  submitForm()  {
+		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
+		this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+		
+	}
 
   calculatePriceSpecial(startStation: Station, endStation: Station, prices: Price): void {
     this.price = prices.price;
