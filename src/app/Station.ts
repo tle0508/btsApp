@@ -4,7 +4,7 @@ export type Station = {
   updatedDay: string;
   btsStationNameTH: string;
   btsStationNameENG: string;
-  idStation: string;
+  idStation: number;
   lineColor: string;
   extension: boolean;
   activate: boolean;

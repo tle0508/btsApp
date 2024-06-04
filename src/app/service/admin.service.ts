@@ -20,8 +20,15 @@ export class AdminService {
 		return this.http.put<Price>(`${BtsService.API_URL}prices/${numOfDistance}?price=${price}`, {});
 	}
 
-	getPriceByNumOfDistance(numOfDistance: number): Observable<Price> {
-		return this.http.get<Price>(`${BtsService.API_URL}prices/getPriceByNumOfDistance/${numOfDistance}`);
+	
+
+	getAllPricesExtension(): Observable<Price[]> {
+		return this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/getAllPrices`);
 	}
 
+	updatePriceExtension(numOfDistance: number, price: number): Observable<Price> {
+		return this.http.put<Price>(`${BtsService.API_URL}pricesExtension/${numOfDistance}?price=${price}`, {});
+	}
+
+	
 }

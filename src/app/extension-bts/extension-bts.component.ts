@@ -4,6 +4,7 @@ import { BtsService  } from '../service/bts.service';
 import { Price } from '../Price';
 import { Station } from '../Station';
 import { Trip } from '../Trip';
+import { TripExtension } from '../TripExtension';
 
 
 @Component({
@@ -26,14 +27,10 @@ export class ExtensionBtsComponent implements OnInit {
   selectedEndLineColor: string = 'เลือกสายปลายทาง';
   selectedEndLineStations: Station[] = [];
   selectedEndStation!: Station;
-  price: number | undefined;
-  tripResult!: Trip[];
+  price!: number ;
+  tripResult!: TripExtension[];
   extensionPrice!: number;
 
-	lastIdStationOfExtension_1:number =17;
-	firstIdStationOfExtension_2:number =34;
-	lastIdStationOfExtension_2:number=49;
-	firstIdStationOfExtension_3:number=58;
 
   formSubmitted: boolean = false;
 
@@ -68,15 +65,14 @@ export class ExtensionBtsComponent implements OnInit {
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
-      .getTripsByStartAndEndStation(startStationId, endStationId)
+      .getTripsExtensionByStartAndEndStation(startStationId, endStationId)
       .subscribe({
         next: (value) => {
           this.tripResult = value;
-          this.calculatePriceSpecial(
-                this.tripResult[0].startStation,
-                this.tripResult[0].endStation,
-                this.tripResult[0].priceModel
-              );
+          console.log(this.tripResult);
+          this.price = this.tripResult[0].priceExtensionModel.price;
+          console.log(this.price);
+          
         },
         error: (error) => {
           console.error('Error', error);
@@ -91,18 +87,6 @@ export class ExtensionBtsComponent implements OnInit {
 		
 	}
 
-  calculatePriceSpecial(startStation: Station, endStation: Station, prices: Price): void {
-    this.price = prices.price;
-    if (startStation.extension && endStation.extension) {
-      if (!((startStation.id < this.lastIdStationOfExtension_1 && endStation.id > this.lastIdStationOfExtension_1) ||
-          (startStation.id > this.firstIdStationOfExtension_2 &&startStation.id < this.lastIdStationOfExtension_2 &&(endStation.id < this.firstIdStationOfExtension_2 || endStation.id > this.firstIdStationOfExtension_3)) ||
-          (startStation.id > this.firstIdStationOfExtension_3 && endStation.id < this.firstIdStationOfExtension_3)
-      ) ){
-        this.price = this.extensionPrice;
-      }
-    }
-    }
-  
     getByLimeGreenLineColor(): void {
       this.btsService.getStatioByLimeGreenLineColor().subscribe({
         next: (value) => {

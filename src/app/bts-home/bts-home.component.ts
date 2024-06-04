@@ -29,7 +29,7 @@ export class BtsHomeComponent implements OnInit {
 	selectedEndStation!: Station;
 	price!: number;
 	tripResult!: Trip[];
-	extensionPrice!: number;
+	
 	
 	lineColorSukhumvit:string ="limegreen";
 
@@ -43,7 +43,7 @@ export class BtsHomeComponent implements OnInit {
 	ngOnInit(): void {
 		this.getByLimeGreenLineColor();
 		this.getByBlueLineColor();
-		this.getPriceExtension();
+		
 	}
 
 	open(content: TemplateRef<any>) {
@@ -68,16 +68,7 @@ export class BtsHomeComponent implements OnInit {
 		
 	}
 
-	getPriceExtension(): void {
-		this.adminService.getPriceByNumOfDistance(0).subscribe({
-			next: (value) => {
-				this.extensionPrice = value.price;
-			},
-			error: (error) => {
-				console.error('Error', error);
-			},
-		});
-	}
+	
 
 	getData(startStationId: number, endStationId: number): void {		
 		this.btsService
@@ -85,11 +76,13 @@ export class BtsHomeComponent implements OnInit {
 			.subscribe({
 				next: (value) => {
 					this.tripResult = value;
-					this.calculatePrice(
-								this.tripResult[0].startStation,
-								this.tripResult[0].endStation,
-								this.tripResult[0].priceModel
-							);
+					console.log(this.tripResult);
+					this.price = this.tripResult[0].priceModel.price;
+					// this.calculatePrice(
+					// 			this.tripResult[0].startStation,
+					// 			this.tripResult[0].endStation,
+					// 			this.tripResult[0].priceModel
+					// 		);
 				},
 				error: (error) => {
 					console.error('Error', error);
@@ -105,32 +98,32 @@ export class BtsHomeComponent implements OnInit {
 	}
 	
 
-	calculatePrice(startStation: Station, endStation: Station, prices: Price): void {
-		this.price = prices.price;
-		if (startStation.extension && endStation.extension) {
-			if (
-				(startStation.id < this.lastIdStationOfExtension_1 && endStation.id > this.lastIdStationOfExtension_1) ||
-				(startStation.id > this.firstIdStationOfExtension_2 && startStation.id < this.lastIdStationOfExtension_2 && (endStation.id <  this.firstIdStationOfExtension_2 || endStation.id > this.firstIdStationOfExtension_3)) ||
-				(startStation.id >  this.firstIdStationOfExtension_3 && endStation.id <  this.firstIdStationOfExtension_3)
-			) {
-				this.price += this.extensionPrice;
-			}
-		}
-		if(startStation.extension != endStation.extension){
-			if (endStation.id != this.lastIdStationOfExtension_1 && 
-				endStation.id != this.firstIdStationOfExtension_2 && 
-				endStation.id !=  this.firstIdStationOfExtension_3) 
-				{
-				this.price += this.extensionPrice;
-			}else if(
-				startStation.id != this.lastIdStationOfExtension_1 &&
-				startStation.id != this.firstIdStationOfExtension_2 && 
-				startStation.id !=  this.firstIdStationOfExtension_3)
-				{
-				this.price += this.extensionPrice;
-			}
-		}
-	}
+	// calculatePrice(startStation: Station, endStation: Station, prices: Price): void {
+	// 	this.price = prices.price;
+	// 	if (startStation.extension && endStation.extension) {
+	// 		if (
+	// 			(startStation.id < this.lastIdStationOfExtension_1 && endStation.id > this.lastIdStationOfExtension_1) ||
+	// 			(startStation.id > this.firstIdStationOfExtension_2 && startStation.id < this.lastIdStationOfExtension_2 && (endStation.id <  this.firstIdStationOfExtension_2 || endStation.id > this.firstIdStationOfExtension_3)) ||
+	// 			(startStation.id >  this.firstIdStationOfExtension_3 && endStation.id <  this.firstIdStationOfExtension_3)
+	// 		) {
+	// 			this.price += this.extensionPrice;
+	// 		}
+	// 	}
+	// 	if(startStation.extension != endStation.extension){
+	// 		if (endStation.id != this.lastIdStationOfExtension_1 && 
+	// 			endStation.id != this.firstIdStationOfExtension_2 && 
+	// 			endStation.id !=  this.firstIdStationOfExtension_3) 
+	// 			{
+	// 			this.price += this.extensionPrice;
+	// 		}else if(
+	// 			startStation.id != this.lastIdStationOfExtension_1 &&
+	// 			startStation.id != this.firstIdStationOfExtension_2 && 
+	// 			startStation.id !=  this.firstIdStationOfExtension_3)
+	// 			{
+	// 			this.price += this.extensionPrice;
+	// 		}
+	// 	}
+	// }
 
 	getByLimeGreenLineColor(): void {
 		this.btsService.getStatioByLimeGreenLineColor().subscribe({

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Station } from '../Station';
 import { Trip } from '../Trip';
+import { TripExtension } from '../TripExtension';
 
 
 @Injectable({
@@ -26,5 +27,7 @@ export class BtsService {
 	getTripsByStartAndEndStation(startStationId: number, endStationId: number): Observable<Trip[]> {
 		return this.http.get<Trip[]>(`${BtsService.API_URL}trip/getTripsByStartAndEndStationId/${startStationId}/${endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`);
 	}
-
+	getTripsExtensionByStartAndEndStation(startStationId: number, endStationId: number): Observable<TripExtension[]> {
+		return this.http.get<TripExtension[]>(`${BtsService.API_URL}tripExtension/getTripsByStartAndEndStationId/${startStationId}/${endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`);
+	}
 }

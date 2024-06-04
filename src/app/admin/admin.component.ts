@@ -16,12 +16,14 @@ export class AdminComponent implements OnInit {
 	) {}
 
 	prices: any[] = [];
+	priceExtension :any[]= [];
 	showModal = false;
 	selectedPrice: any;
 	updatedPrice!: number;
 
 	ngOnInit(): void {
 		this.getAllPrices();
+		this.getAllPricesExtension();
 	}
 
 	getAllPrices(): void {
@@ -29,6 +31,18 @@ export class AdminComponent implements OnInit {
 			.subscribe({
 				next: (value) => {
 					this.prices = value;
+				},
+				error: (error) => {
+					console.error('Error', error);
+				},
+			}
+		);
+	}
+	getAllPricesExtension(): void {
+		this.adminService.getAllPricesExtension()
+			.subscribe({
+				next: (value) => {
+					this.priceExtension = value;
 				},
 				error: (error) => {
 					console.error('Error', error);
@@ -44,6 +58,21 @@ export class AdminComponent implements OnInit {
 					console.log('Price updated successfully:', value);
 					this.modalService.dismissAll();
 					this.getAllPrices();
+				},
+				error: (error) => {
+					console.error('Error', error);
+				},
+			}
+			);
+	}
+	updatePriceExtension() { 
+		this.adminService
+			.updatePriceExtension(this.selectedPrice.numOfDistance, this.updatedPrice)
+			.subscribe({
+				next: (value) => {
+					console.log('Price updated successfully:', value);
+					this.modalService.dismissAll();
+					this.getAllPricesExtension();
 				},
 				error: (error) => {
 					console.error('Error', error);
