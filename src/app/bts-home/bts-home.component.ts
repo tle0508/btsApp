@@ -47,7 +47,10 @@ export class BtsHomeComponent implements OnInit {
 	}
 
 	open(content: TemplateRef<any>) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+		if(!this.areStationsEqual()){
+			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+		}
+		
 	}
 
 	onStartLineColorChange() {
@@ -78,11 +81,7 @@ export class BtsHomeComponent implements OnInit {
 					this.tripResult = value;
 					console.log(this.tripResult);
 					this.price = this.tripResult[0].priceModel.price;
-					// this.calculatePrice(
-					// 			this.tripResult[0].startStation,
-					// 			this.tripResult[0].endStation,
-					// 			this.tripResult[0].priceModel
-					// 		);
+					
 				},
 				error: (error) => {
 					console.error('Error', error);
@@ -93,37 +92,14 @@ export class BtsHomeComponent implements OnInit {
 
 	submitForm()  {
 		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
-		this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+		if(!this.areStationsEqual()){
+			this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+		}
 		
 	}
 	
 
-	// calculatePrice(startStation: Station, endStation: Station, prices: Price): void {
-	// 	this.price = prices.price;
-	// 	if (startStation.extension && endStation.extension) {
-	// 		if (
-	// 			(startStation.id < this.lastIdStationOfExtension_1 && endStation.id > this.lastIdStationOfExtension_1) ||
-	// 			(startStation.id > this.firstIdStationOfExtension_2 && startStation.id < this.lastIdStationOfExtension_2 && (endStation.id <  this.firstIdStationOfExtension_2 || endStation.id > this.firstIdStationOfExtension_3)) ||
-	// 			(startStation.id >  this.firstIdStationOfExtension_3 && endStation.id <  this.firstIdStationOfExtension_3)
-	// 		) {
-	// 			this.price += this.extensionPrice;
-	// 		}
-	// 	}
-	// 	if(startStation.extension != endStation.extension){
-	// 		if (endStation.id != this.lastIdStationOfExtension_1 && 
-	// 			endStation.id != this.firstIdStationOfExtension_2 && 
-	// 			endStation.id !=  this.firstIdStationOfExtension_3) 
-	// 			{
-	// 			this.price += this.extensionPrice;
-	// 		}else if(
-	// 			startStation.id != this.lastIdStationOfExtension_1 &&
-	// 			startStation.id != this.firstIdStationOfExtension_2 && 
-	// 			startStation.id !=  this.firstIdStationOfExtension_3)
-	// 			{
-	// 			this.price += this.extensionPrice;
-	// 		}
-	// 	}
-	// }
+
 
 	getByLimeGreenLineColor(): void {
 		this.btsService.getStatioByLimeGreenLineColor().subscribe({

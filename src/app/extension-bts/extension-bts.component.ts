@@ -40,12 +40,15 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   getPriceLabel(): string {
-    return this.price === undefined ? 'ฟรี' : `${this.price} บาท`;
+    return this.price === 0 ? 'ฟรี' : `${this.price} บาท`;
   }
 
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
-  }
+		if(!this.areStationsEqual()){
+			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+		}
+		
+	}
 
   onStartLineColorChange() {
     if (this.selectedStartLineColor === 'limegreen') {
@@ -83,7 +86,9 @@ export class ExtensionBtsComponent implements OnInit {
 
   submitForm()  {
 		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
-		this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+		if(!this.areStationsEqual()){
+			this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+		}
 		
 	}
 

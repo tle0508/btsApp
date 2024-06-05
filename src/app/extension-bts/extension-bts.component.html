@@ -29,7 +29,7 @@
 			  id="station_name"
 			  [(ngModel)]="selectedStartStation"
 			  [disabled]="selectedStartLineColor === 'เลือกสายต้นทาง'"
-			  [class.is-invalid]=" !selectedStartStation && formSubmitted "
+			  [class.is-invalid]=" !selectedStartStation && formSubmitted || areStationsEqual() && formSubmitted "
 			>
 			  <option selected disabled>เลือกสถานีต้นทาง</option>
 			  <option
@@ -67,7 +67,7 @@
 			  id="station_name"
 			  [(ngModel)]="selectedEndStation"
 			  [disabled]="selectedEndLineColor === 'เลือกสายปลายทาง'"
-			  [class.is-invalid]=" !selectedEndStation && formSubmitted "
+			  [class.is-invalid]=" !selectedEndStation && formSubmitted || areStationsEqual() && formSubmitted "
 			>
 			  <option selected disabled>เลือกสถานีปลายทาง</option>
 			  <option
@@ -175,9 +175,7 @@
 	  <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
 	  <button
 		class="btn btn-lg btn-outline-primary"
-		[disabled]="
-		  areStationsEqual()
-		"
+		
 		(click)="submitForm(); open(content)"
 	  >
 		ดูการเดินทาง
