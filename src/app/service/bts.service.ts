@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 import { Station } from '../Station';
 import { Trip } from '../Trip';
 import { TripExtension } from '../TripExtension';
-
+import { environment } from '../../environments/environment.dev';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class BtsService {
 
-	public static API_URL = 'http://localhost:8080/api/';
+	// public static API_URL = 'http://localhost:8080/api/';
+
+	public static API_URL = environment.apiUrl;
 
 	constructor(private http: HttpClient) {}
 
