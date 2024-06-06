@@ -3,14 +3,14 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { BtsHomeComponent } from './bts-home/bts-home.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RedZoomModule } from 'ngx-red-zoom';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ExtensionBtsComponent } from './extension-bts/extension-bts.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 registerLocaleData(en);
 
 @NgModule({
@@ -42,6 +43,11 @@ registerLocaleData(en);
     FontAwesomeModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    BrowserModule,
+    FormsModule,
+    NgSelectModule,
+    NgbDropdownModule
   ],
   providers: [
     provideClientHydration(),

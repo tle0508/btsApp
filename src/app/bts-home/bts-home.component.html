@@ -5,7 +5,7 @@
     </div>
 
     <!-- ต้นทาง -->
-    <div class="startTrip">
+    <!-- <div class="startTrip">
       <div class="starTriptitle"><p>ต้นทาง</p></div>
       <div class="container">
         <div class="form-group">
@@ -41,9 +41,9 @@
           </select>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- ปลายทาง -->
-    <div class="endTrip">
+    <!-- <div class="endTrip">
       <div class="endTriptitle"><p>ปลายทาง</p></div>
       <div class="container">
         <div class="form-group">
@@ -79,7 +79,97 @@
           </select>
         </div>
       </div>
+    </div> -->
+    <form [formGroup]="tripForm" #ngtripForm = "ngForm" (ngSubmit)="submitForm(); open(content)">
+    <!-- ต้นทาง -->
+     <div class="startTrip">
+      <div class="starTriptitle"><p>ต้นทาง</p></div>
+      <div class="container">
+        <label for="category">สายต้นทาง</label>
+        <select 
+        formControlName="StartLineStation"
+        class="form-control"
+        id="linecolor" 
+		    (change)="onStartLineColorChange()"
+        [(ngModel)]="selectedStartLineColor"	
+        placeholder="เลือกสายต้นทาง"
+        >
+          <option selected disabled>เลือกสายต้นทาง</option>
+            <option value="limegreen">สุขุมวิท</option>
+            <option value="blue">สีลม</option>
+      </select>
+
+      
+      <label for="subcategory">สถานีต้นทาง</label>
+          <select
+            formControlName="StartStation"
+            class="form-control"
+            id="station_name"
+            [(ngModel)]="selectedStartStation"
+            [disabled]= "tripForm.get('StartLineStation')?.value =='เลือกสายต้นทาง'"
+		      	[class.is-invalid]=" !selectedStartStation && formSubmitted && ngtripForm.submitted || areStationsEqual() && formSubmitted && ngtripForm.submitted"
+          >
+            <option selected disabled>เลือกสถานีต้นทาง</option>
+            <option
+              *ngFor="let startstation of selectedStartLineStations"
+              value="startstation.id"
+            >
+              {{ startstation.idStation }} | {{ startstation.btsStationNameTH }}
+            </option>
+          </select>
+      </div>
     </div>
+    
+
+      <!-- ปลายทาง -->
+      <div class="endTrip">
+        <div class="endTriptitle"><p>ปลายทาง</p></div>
+        <div class="container">
+          <div class="form-group">
+            <label for="category">สายปลายทาง</label>
+            <select
+              formControlName="EndLineStation"
+              class="form-control"
+              id="linecolor"
+              [(ngModel)]="selectedEndLineColor"
+              (change)="onEndLineColorChange()"
+        [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && formSubmitted"
+            >
+              <option selected disabled>เลือกสายปลายทาง</option>
+              <option value="limegreen">สุขุมวิท</option>
+              <option value="blue">สีลม</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="subcategory">สถานีปลายทาง</label>
+            <select
+            formControlName="EndStation"
+              class="form-control"
+              id="station_name"
+              [(ngModel)]="selectedEndStation"
+              [disabled]="selectedEndLineColor === 'เลือกสายปลายทาง'"
+        [class.is-invalid]=" !selectedEndStation && formSubmitted || areStationsEqual() && formSubmitted "
+            >
+              <option selected disabled>เลือกสถานีปลายทาง</option>
+              <option
+                *ngFor="let endstation of selectedEndLineStations"
+                [ngValue]="endstation"
+              >
+                {{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button
+      type="submit"
+      class="btn btn-lg btn-outline-primary"
+      >
+        ดูการเดินทาง
+      </button>
+      </form>
+
+
     <!-- modal -->
     <ng-template #content let-modal>
       <div class="modal-header">
@@ -172,12 +262,7 @@
       </div>
     </ng-template>
     <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
-    <button
-      class="btn btn-lg btn-outline-primary"
-	  (click)="submitForm(); open(content)"
-    >
-      ดูการเดินทาง
-    </button>
+
   </div>
 
   <!-- map -->

@@ -54,6 +54,7 @@ export class ExtensionBtsComponent implements OnInit {
     } else {
       this.selectedStartLineStations = this.blueLineBts;
     }
+    this.selectedStartStation =<Station>{}
   }
 
   onEndLineColorChange() {
@@ -62,6 +63,7 @@ export class ExtensionBtsComponent implements OnInit {
     } else {
       this.selectedEndLineStations = this.blueLineBts;
     }
+    this.selectedEndStation =<Station>{}
   }
 
   getData(startStationId: number, endStationId: number): void {

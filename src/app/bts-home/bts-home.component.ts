@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService } from '../service/bts.service';
 import { Station } from '../Station';
 import { Trip } from '../Trip';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-bts-home',
@@ -10,19 +11,45 @@ import { Trip } from '../Trip';
 	styleUrl: './bts-home.component.css',
 })
 export class BtsHomeComponent implements OnInit {
+
+onSubmit() {
+throw new Error('Method not implemented.');
+}
+
 	constructor(
 		private modalService: NgbModal,
-		private btsService: BtsService	) {}
+		private btsService: BtsService	
+	) {}
+
+	public colorLineStation :Array<string> = ['green', 'limegreen'];
+
+	tripForm = new FormGroup({	
+		  StartLineStation: new FormControl("", [
+			Validators.required,
+		  ]),
+		  StartStation: new FormControl("", [
+			Validators.required,
+		  ]),
+		  EndLineStation: new FormControl("", [
+			Validators.required,
+		  ]),
+			EndStation: new FormControl("", [
+			Validators.required,
+		  ]),	  
+		  
+	  });	
+	  
+
 
 	limeGreenLineBts: Station[] = [];
 	blueLineBts: Station[] = [];
 	selectedStartLineColor: string = 'เลือกสายต้นทาง';
 	selectedStartLineStations: Station[] = [];
-	selectedStartStation: Station =<Station>{};
+	selectedStartStation!: number;
 
 	selectedEndLineColor: string = 'เลือกสายปลายทาง';
 	selectedEndLineStations: Station[] = [];
-	selectedEndStation: Station =<Station>{};
+	selectedEndStation!: number;
 	price: number = <number>{};
 	tripResult: Trip[]= [];
 	
@@ -30,10 +57,11 @@ export class BtsHomeComponent implements OnInit {
 	lineColorSukhumvit:string ="limegreen";
 
 	formSubmitted: boolean = false;
-
+	
 	ngOnInit(): void {
 		this.getByLimeGreenLineColor();
 		this.getByBlueLineColor();
+		console.log(this.tripForm);
 		
 	}
 
@@ -43,15 +71,21 @@ export class BtsHomeComponent implements OnInit {
 		}
 		
 	}
+	
 
 	onStartLineColorChange() {
-		if (this.selectedStartLineColor === this.lineColorSukhumvit) {
+		if (this.tripForm.get('StartLineStation')?.value == this.lineColorSukhumvit) {
 			this.selectedStartLineStations = this.limeGreenLineBts;
 		} else {
 			this.selectedStartLineStations = this.blueLineBts;
 		}
-		this.selectedStartStation =<Station>{}
-		this.formSubmitted = false; 
+		// this.selectedStartStation =0;
+		// this.tripForm.get('StartStation')?.reset();
+		// this.tripForm.get('StartStation')?.enable();
+		// this.formSubmitted = false; 
+		
+		console.log(this.tripForm);
+		console.log(this.selectedStartStation);
 	}
 
 	
@@ -61,7 +95,7 @@ export class BtsHomeComponent implements OnInit {
 		} else {
 			this.selectedEndLineStations = this.blueLineBts;
 		}
-		this.selectedEndStation =<Station>{}
+		this.selectedEndStation =0;
 		this.formSubmitted = false; 
 	}
 
@@ -88,7 +122,7 @@ export class BtsHomeComponent implements OnInit {
 		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
 		if(!this.areStationsEqual()){
 			if (this.selectedStartStation !== null && this.selectedEndStation !== null) {
-				this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+				this.getData(this.selectedStartStation, this.selectedEndStation); 
 			}
 		}
 		
@@ -122,8 +156,8 @@ export class BtsHomeComponent implements OnInit {
 		return !!(
 			this.selectedStartStation &&
 			this.selectedEndStation &&
-			this.selectedStartStation.idStation ===
-				this.selectedEndStation.idStation
+			this.selectedStartStation ===
+				this.selectedEndStation
 		);
 	}
 
