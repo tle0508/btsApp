@@ -21,7 +21,31 @@
 						<ng-container *ngIf="price.numOfDistance === 8">
 							8 สถานีขึ้นไป
 						</ng-container>
-						<ng-container *ngIf="price.numOfDistance !== 8">
+						<ng-container *ngIf="price.numOfDistance === 9">
+							1 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 10">
+							2 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 11">
+							3 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 12">
+							4 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 13">
+							5 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 14">
+							6 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 15">
+							7 สถานี + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance === 16">
+							8 สถานีขึ้นไป + ส่วนต่อขยาย
+						</ng-container>
+						<ng-container *ngIf="price.numOfDistance < 8">
 							{{ price.numOfDistance }}
 						</ng-container>
 					</ng-template>
@@ -64,6 +88,7 @@
 						<ng-container *ngIf="price.numOfDistance === 8">
 							8 สถานีขึ้นไป
 						</ng-container>
+						
 						<ng-container *ngIf="price.numOfDistance !== 8">
 							{{ price.numOfDistance }}
 						</ng-container>
@@ -99,11 +124,11 @@
 			></button>
 		</div>
 		<div class="modal-body">
-			<input type="number" class="form-control" [(ngModel)]="updatedPrice" />
+			<input type="number" class="form-control" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0"/>
 			<b class="warning">*ราคาห้ามต่ำกว่า 0 บาท*</b>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-success" [disabled]="updatedPrice < 0" (click)="updatePrice()">
+			<button type="button" class="btn btn-success"  (click)="updatePrice()">
 				ยืนยันการแก้ไข
 			</button>
 		</div>

@@ -51,7 +51,8 @@ export class AdminComponent implements OnInit {
 		);
 	}
 	updatePrice() { 
-		this.adminService
+		if(!(this.updatedPrice < 0)){
+			this.adminService
 			.updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
 			.subscribe({
 				next: (value) => {
@@ -64,6 +65,8 @@ export class AdminComponent implements OnInit {
 				},
 			}
 			);
+		}
+	
 	}
 	updatePriceExtension() { 
 		this.adminService

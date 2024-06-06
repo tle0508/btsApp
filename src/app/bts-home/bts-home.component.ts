@@ -1,9 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService } from '../service/bts.service';
-import { AdminService } from '../service/admin.service';
 import { Station } from '../Station';
-import { Price } from '../Price';
 import { Trip } from '../Trip';
 
 @Component({
@@ -14,29 +12,22 @@ import { Trip } from '../Trip';
 export class BtsHomeComponent implements OnInit {
 	constructor(
 		private modalService: NgbModal,
-		private btsService: BtsService,
-		private adminService: AdminService
-	) {}
+		private btsService: BtsService	) {}
 
 	limeGreenLineBts: Station[] = [];
 	blueLineBts: Station[] = [];
 	selectedStartLineColor: string = 'เลือกสายต้นทาง';
 	selectedStartLineStations: Station[] = [];
-	selectedStartStation!: Station;
+	selectedStartStation: Station =<Station>{};
 
 	selectedEndLineColor: string = 'เลือกสายปลายทาง';
 	selectedEndLineStations: Station[] = [];
-	selectedEndStation!: Station;
-	price!: number;
-	tripResult!: Trip[];
+	selectedEndStation: Station =<Station>{};
+	price: number = <number>{};
+	tripResult: Trip[]= [];
 	
 	
 	lineColorSukhumvit:string ="limegreen";
-
-	lastIdStationOfExtension_1:number =17;
-	firstIdStationOfExtension_2:number =34;
-	lastIdStationOfExtension_2:number=49;
-	firstIdStationOfExtension_3:number=58;
 
 	formSubmitted: boolean = false;
 
@@ -59,16 +50,19 @@ export class BtsHomeComponent implements OnInit {
 		} else {
 			this.selectedStartLineStations = this.blueLineBts;
 		}
-		
+		this.selectedStartStation =<Station>{}
+		this.formSubmitted = false; 
 	}
 
+	
 	onEndLineColorChange() {
 		if (this.selectedEndLineColor === this.lineColorSukhumvit) {
 			this.selectedEndLineStations = this.limeGreenLineBts;
 		} else {
 			this.selectedEndLineStations = this.blueLineBts;
 		}
-		
+		this.selectedEndStation =<Station>{}
+		this.formSubmitted = false; 
 	}
 
 	
@@ -93,7 +87,9 @@ export class BtsHomeComponent implements OnInit {
 	submitForm()  {
 		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
 		if(!this.areStationsEqual()){
-			this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+			if (this.selectedStartStation !== null && this.selectedEndStation !== null) {
+				this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+			}
 		}
 		
 	}
@@ -123,7 +119,7 @@ export class BtsHomeComponent implements OnInit {
 	}
 
 	areStationsEqual(): boolean {
-		return (
+		return !!(
 			this.selectedStartStation &&
 			this.selectedEndStation &&
 			this.selectedStartStation.idStation ===

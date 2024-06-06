@@ -11,8 +11,6 @@ import { environment } from '../../environments/environment.dev';
 })
 export class BtsService {
 
-	// public static API_URL = 'http://localhost:8080/api/';
-
 	public static API_URL = environment.apiUrl;
 
 	constructor(private http: HttpClient) {}

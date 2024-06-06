@@ -1,9 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService  } from '../service/bts.service';
-import { Price } from '../Price';
 import { Station } from '../Station';
-import { Trip } from '../Trip';
 import { TripExtension } from '../TripExtension';
 
 
@@ -26,9 +24,9 @@ export class ExtensionBtsComponent implements OnInit {
 
   selectedEndLineColor: string = 'เลือกสายปลายทาง';
   selectedEndLineStations: Station[] = [];
-  selectedEndStation!: Station;
-  price!: number ;
-  tripResult!: TripExtension[];
+  selectedEndStation: Station =<Station>{};
+	price: number = <number>{};
+	tripResult: TripExtension[]= [];
   extensionPrice!: number;
 
 
