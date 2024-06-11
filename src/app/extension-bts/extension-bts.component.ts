@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BtsService  } from '../service/bts.service';
 import { Station } from '../Station';
 import { TripExtension } from '../TripExtension';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -15,26 +16,43 @@ export class ExtensionBtsComponent implements OnInit {
     private modalService: NgbModal,
     private btsService: BtsService,
   ) {}
-
+  
+  tripForm = new FormGroup({	
+    StartLineStation: new FormControl("", [
+    Validators.required,
+    ]),
+    StartStation: new FormControl("", [
+    Validators.required,
+    ]),
+    EndLineStation: new FormControl("", [
+    Validators.required,
+    ]),
+    EndStation: new FormControl("", [
+    Validators.required,
+    ]),	  
+    
+  });	
   limeGreenLineBts: Station[] = [];
   blueLineBts: Station[] = [];
   selectedStartLineColor: string = 'เลือกสายต้นทาง';
   selectedStartLineStations: Station[] = [];
-  selectedStartStation!: Station;
+  selectedStartStation!: number | null;
 
   selectedEndLineColor: string = 'เลือกสายปลายทาง';
   selectedEndLineStations: Station[] = [];
-  selectedEndStation: Station =<Station>{};
+  selectedEndStation!: number | null;
 	price: number = <number>{};
 	tripResult: TripExtension[]= [];
-  extensionPrice!: number;
-
+  
+  lineColorSukhumvit:string ="limegreen";
 
   formSubmitted: boolean = false;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
+    this.tripForm.get('StartStation')?.disable()
+		this.tripForm.get('EndStation')?.disable()
   }
 
   getPriceLabel(): string {
@@ -42,29 +60,36 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   open(content: TemplateRef<any>) {
-		if(!this.areStationsEqual()){
-			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+		if(!this.areStationsEqual()){	
+			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
+			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });		
+			}
 		}
-		
 	}
 
   onStartLineColorChange() {
-    if (this.selectedStartLineColor === 'limegreen') {
-      this.selectedStartLineStations = this.limeGreenLineBts;
-    } else {
-      this.selectedStartLineStations = this.blueLineBts;
-    }
-    this.selectedStartStation =<Station>{}
-  }
+		if (this.tripForm.get('StartLineStation')?.value == this.lineColorSukhumvit) {
+			this.selectedStartLineStations = this.limeGreenLineBts;
+		} else {
+			this.selectedStartLineStations = this.blueLineBts;
+		}
+		this.tripForm.get('StartStation')?.reset();
+		this.tripForm.updateValueAndValidity();
+		this.formSubmitted = false; 
+    this.tripForm.get('StartStation')?.enable()
+	}
 
   onEndLineColorChange() {
-    if (this.selectedEndLineColor === 'limegreen') {
-      this.selectedEndLineStations = this.limeGreenLineBts;
-    } else {
-      this.selectedEndLineStations = this.blueLineBts;
-    }
-    this.selectedEndStation =<Station>{}
-  }
+		if (this.selectedEndLineColor === this.lineColorSukhumvit) {
+			this.selectedEndLineStations = this.limeGreenLineBts;
+		} else {
+			this.selectedEndLineStations = this.blueLineBts;
+		}
+		this.tripForm.get('EndStation')?.reset();
+		this.tripForm.updateValueAndValidity();
+		this.formSubmitted = false; 
+    this.tripForm.get('EndStation')?.enable()
+	}
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
@@ -85,9 +110,13 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   submitForm()  {
+		console.log(this.selectedStartStation);
+		
 		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
 		if(!this.areStationsEqual()){
-			this.getData(this.selectedStartStation.id, this.selectedEndStation.id); 
+			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
+				this.getData(this.selectedStartStation, this.selectedEndStation); 
+			}			
 		}
 		
 	}
@@ -113,12 +142,7 @@ export class ExtensionBtsComponent implements OnInit {
       });
     }
 
-  areStationsEqual(): boolean {
-    return (
-      this.selectedStartStation &&
-      this.selectedEndStation &&
-      this.selectedStartStation.idStation ===
-        this.selectedEndStation.idStation
-    );
-  }
+    areStationsEqual(): boolean {
+      return  this.selectedStartStation ===this.selectedEndStation
+    }
 }

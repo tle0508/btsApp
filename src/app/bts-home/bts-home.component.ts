@@ -21,7 +21,7 @@ throw new Error('Method not implemented.');
 		private btsService: BtsService	
 	) {}
 
-	public colorLineStation :Array<string> = ['green', 'limegreen'];
+	
 
 	tripForm = new FormGroup({	
 		  StartLineStation: new FormControl("", [
@@ -45,11 +45,11 @@ throw new Error('Method not implemented.');
 	blueLineBts: Station[] = [];
 	selectedStartLineColor: string = 'เลือกสายต้นทาง';
 	selectedStartLineStations: Station[] = [];
-	selectedStartStation!: number;
+	selectedStartStation!: number | null;
 
 	selectedEndLineColor: string = 'เลือกสายปลายทาง';
 	selectedEndLineStations: Station[] = [];
-	selectedEndStation!: number;
+	selectedEndStation!: number | null;
 	price: number = <number>{};
 	tripResult: Trip[]= [];
 	
@@ -63,13 +63,16 @@ throw new Error('Method not implemented.');
 		this.getByBlueLineColor();
 		console.log(this.tripForm);
 		
+		this.tripForm.get('StartStation')?.disable()
+		this.tripForm.get('EndStation')?.disable()
 	}
 
 	open(content: TemplateRef<any>) {
-		if(!this.areStationsEqual()){
-			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+		if(!this.areStationsEqual()){	
+			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
+			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });		
+			}
 		}
-		
 	}
 	
 
@@ -79,15 +82,11 @@ throw new Error('Method not implemented.');
 		} else {
 			this.selectedStartLineStations = this.blueLineBts;
 		}
-		// this.selectedStartStation =0;
-		// this.tripForm.get('StartStation')?.reset();
-		// this.tripForm.get('StartStation')?.enable();
-		// this.formSubmitted = false; 
-		
-		console.log(this.tripForm);
-		console.log(this.selectedStartStation);
+		this.tripForm.get('StartStation')?.reset();
+		this.tripForm.updateValueAndValidity();
+		this.formSubmitted = false; 
+		this.tripForm.get('StartStation')?.enable()
 	}
-
 	
 	onEndLineColorChange() {
 		if (this.selectedEndLineColor === this.lineColorSukhumvit) {
@@ -95,13 +94,17 @@ throw new Error('Method not implemented.');
 		} else {
 			this.selectedEndLineStations = this.blueLineBts;
 		}
-		this.selectedEndStation =0;
+		this.tripForm.get('EndStation')?.reset();
+		this.tripForm.updateValueAndValidity();
 		this.formSubmitted = false; 
+		this.tripForm.get('EndStation')?.enable()
 	}
 
 	
 
 	getData(startStationId: number, endStationId: number): void {		
+		console.log(startStationId,endStationId);
+		
 		this.btsService
 			.getTripsByStartAndEndStation(startStationId, endStationId)
 			.subscribe({
@@ -119,11 +122,13 @@ throw new Error('Method not implemented.');
 	}
 
 	submitForm()  {
+		console.log(this.selectedStartStation);
+		
 		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
 		if(!this.areStationsEqual()){
-			if (this.selectedStartStation !== null && this.selectedEndStation !== null) {
+			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
 				this.getData(this.selectedStartStation, this.selectedEndStation); 
-			}
+			}			
 		}
 		
 	}
@@ -153,12 +158,7 @@ throw new Error('Method not implemented.');
 	}
 
 	areStationsEqual(): boolean {
-		return !!(
-			this.selectedStartStation &&
-			this.selectedEndStation &&
-			this.selectedStartStation ===
-				this.selectedEndStation
-		);
+		return  this.selectedStartStation ===this.selectedEndStation
 	}
 
 }
