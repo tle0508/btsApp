@@ -4,7 +4,7 @@
 		<b style="font-size: 25px">คำนวณค่าโดยสารแบบส่วนต่อขยายที่ได้รับ</b>
 	  </div>
   
-	  <form [formGroup]="tripForm" #ngtripForm = "ngForm" (ngSubmit)="submitForm(); open(content)">
+	  <form [formGroup]="tripForm" #ngtripForm = "ngForm" (ngSubmit)=" open(content)">
 		<!-- ต้นทาง -->
 		 <div class="startTrip">
 		  <div class="starTriptitle"><p>ต้นทาง</p></div>
@@ -14,8 +14,8 @@
 			formControlName="StartLineStation"
 			class="form-control"
 			id="linecolor" 
-				(change)="onStartLineColorChange()"
-			[class.is-invalid]=" selectedStartLineColor == 'เลือกสายต้นทาง' && formSubmitted"
+			(change)="onStartLineColorChange()"
+			[class.is-invalid]=" selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted "
 			[(ngModel)]="selectedStartLineColor"	
 			placeholder="เลือกสายต้นทาง"
 			>
@@ -31,7 +31,7 @@
 				class="form-control"
 				id="station_name"
 				[(ngModel)]="selectedStartStation"
-				[class.is-invalid]=" !selectedStartStation && formSubmitted && ngtripForm.submitted || areStationsEqual() && formSubmitted && ngtripForm.submitted"
+				[class.is-invalid]=" !selectedStartStation && ngtripForm.submitted || areStationsEqual() &&  ngtripForm.submitted"
 			  >
 				<option selected disabled [value]=null>เลือกสถานีต้นทาง</option>
 				<option
@@ -57,7 +57,7 @@
 				  id="linecolor"
 				  [(ngModel)]="selectedEndLineColor"
 				  (change)="onEndLineColorChange()"
-				  [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && formSubmitted"
+				  [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง'&& ngtripForm.submitted "
 				>
 				  <option selected disabled>เลือกสายปลายทาง</option>
 				  <option value="limegreen">สุขุมวิท</option>
@@ -71,7 +71,7 @@
 				  class="form-control"
 				  id="station_name"
 				  [(ngModel)]="selectedEndStation"
-				  [class.is-invalid]=" !selectedEndStation && formSubmitted && ngtripForm.submitted || areStationsEqual() && formSubmitted && ngtripForm.submitted "
+				  [class.is-invalid]=" !selectedEndStation && ngtripForm.submitted || areStationsEqual()  && ngtripForm.submitted "
 				>
 				  <option selected disabled [value]=null >เลือกสถานีปลายทาง</option>
 				  <option
@@ -84,6 +84,7 @@
 			  </div>
 			</div>
 		  </div>
+		  <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
 		  <button
 		  type="submit"
 		  class="btn btn-lg btn-outline-primary"
@@ -183,7 +184,7 @@
 		  </div>
 		</div>
 	  </ng-template>
-	  <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
+	  
 	  
 	</div>
   

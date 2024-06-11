@@ -113,7 +113,9 @@
 	</table>
 
 	<!-- modal -->
+	
 	<ng-template #content let-modal>
+		<form [formGroup]="priceForm" #ngpriceForm ="ngForm" (ngSubmit)="updatePrice();">
 		<div class="modal-header">
 			<h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
 			<button
@@ -124,17 +126,21 @@
 			></button>
 		</div>
 		<div class="modal-body">
-			<input type="number" class="form-control" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0"/>
+			<input type="number" class="form-control"  formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0 && ngpriceForm.submitted || updatedPrice >100 && ngpriceForm.submitted"/>
 			<b class="warning">*ราคาห้ามต่ำกว่า 0 บาท*</b>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-success"  (click)="updatePrice()">
+			<button type="submit" class="btn btn-success" >
 				ยืนยันการแก้ไข
 			</button>
 		</div>
+	</form>
 	</ng-template>
+	
 
+	<!-- modal extension -->
 	<ng-template #contentExtension let-modal>
+		<form [formGroup]="priceForm" #ngpriceForm ="ngForm" (ngSubmit)="updatePriceExtension();">
 		<div class="modal-header">
 			<h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
 			<button
@@ -145,13 +151,14 @@
 			></button>
 		</div>
 		<div class="modal-body">
-			<input type="number" class="form-control" [(ngModel)]="updatedPrice" />
+			<input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0 && ngpriceForm.submitted || updatedPrice >100 && ngpriceForm.submitted" />
 			<b class="warning">*ราคาห้ามต่ำกว่า 0 บาท*</b>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-success" [disabled]="updatedPrice < 0" (click)="updatePriceExtension()">
+			<button type="submit" class="btn btn-success">
 				ยืนยันการแก้ไข
 			</button>
 		</div>
+	</form>
 	</ng-template>
 </div>

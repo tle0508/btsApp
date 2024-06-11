@@ -63,6 +63,7 @@ export class ExtensionBtsComponent implements OnInit {
 		if(!this.areStationsEqual()){	
 			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
 			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });		
+      this.getData(this.selectedStartStation, this.selectedEndStation); 
 			}
 		}
 	}
@@ -109,17 +110,8 @@ export class ExtensionBtsComponent implements OnInit {
       );
   }
 
-  submitForm()  {
-		console.log(this.selectedStartStation);
+ 
 		
-		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
-		if(!this.areStationsEqual()){
-			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
-				this.getData(this.selectedStartStation, this.selectedEndStation); 
-			}			
-		}
-		
-	}
 
     getByLimeGreenLineColor(): void {
       this.btsService.getStatioByLimeGreenLineColor().subscribe({

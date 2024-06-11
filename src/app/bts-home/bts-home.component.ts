@@ -70,7 +70,8 @@ throw new Error('Method not implemented.');
 	open(content: TemplateRef<any>) {
 		if(!this.areStationsEqual()){	
 			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
-			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });		
+			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });	
+			this.getData(this.selectedStartStation, this.selectedEndStation); 	
 			}
 		}
 	}
@@ -120,21 +121,6 @@ throw new Error('Method not implemented.');
 			}
 			);
 	}
-
-	submitForm()  {
-		console.log(this.selectedStartStation);
-		
-		this.formSubmitted = true; // ตั้งค่าเป็น true เมื่อฟอร์มถูกส่ง
-		if(!this.areStationsEqual()){
-			if (this.selectedStartStation != null &&this.selectedEndStation != null) {
-				this.getData(this.selectedStartStation, this.selectedEndStation); 
-			}			
-		}
-		
-	}
-	
-
-
 
 	getByLimeGreenLineColor(): void {
 		this.btsService.getStatioByLimeGreenLineColor().subscribe({

@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, inject } from '@angular/core';
 import { AdminService } from '../service/admin.service';
 import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {Location} from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-admin',
@@ -9,6 +10,13 @@ import {Location} from '@angular/common';
 	styleUrl: './admin.component.css',
 })
 export class AdminComponent implements OnInit {
+
+	priceForm = new FormGroup({	
+		price: new FormControl("", [
+		  Validators.required,
+		]),
+	});
+	
 	constructor(
 		private adminService: AdminService,
 		private modalService: NgbModal,
@@ -51,7 +59,7 @@ export class AdminComponent implements OnInit {
 		);
 	}
 	updatePrice() { 
-		if(!(this.updatedPrice < 0)){
+		if(!(this.updatedPrice < 0) && !(this.updatedPrice >100 ) ){
 			this.adminService
 			.updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
 			.subscribe({
@@ -69,6 +77,7 @@ export class AdminComponent implements OnInit {
 	
 	}
 	updatePriceExtension() { 
+		if(!(this.updatedPrice < 0) && !(this.updatedPrice >100 ) ){
 		this.adminService
 			.updatePriceExtension(this.selectedPrice.numOfDistance, this.updatedPrice)
 			.subscribe({
@@ -82,6 +91,7 @@ export class AdminComponent implements OnInit {
 				},
 			}
 			);
+		}
 	}
 
 	formatDateTime(dateTimeString: string): string {
