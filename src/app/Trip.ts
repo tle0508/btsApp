@@ -6,4 +6,5 @@ export type Trip = {
 	startStation: Station;
 	endStation: Station;
 	priceModel: Price;
+	time:String;
   };

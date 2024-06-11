@@ -110,7 +110,7 @@
 			<div class="col-md-12">ข้อมูลการเดินทาง</div>
 			<!-- ต้นทาง -->
 			<div
-			  class="col-md-12"
+			  class="outline-box"
 			  [ngStyle]="{
 				'background-color':
 				  this.tripResult[0].startStation.lineColor === 'limegreen'
@@ -143,7 +143,7 @@
 			</div>
 			<!-- ปลายทาง -->
 			<div
-			  class="col-md-12"
+			  class="outline-box"
 			  [ngStyle]="{
 				'background-color':
 				  this.tripResult[0].endStation.lineColor === 'limegreen'
@@ -174,13 +174,22 @@
 			  </div>
 			</div>
 			<!-- ข้อมูล -->
-			<div class="col-md-12">
-				<div class="box">
-				  <label> ราคา : </label>
-				  <br>
-				  <b>{{ getPriceLabel() }}</b>
+			<div class="row">           
+				<div class="col-md-4">
+				  <div class="box">
+					<label> ราคา : </label>
+					<br />
+					<b class="price">{{ price }} บาท</b>
+				  </div>
 				</div>
-			  </div>
+				<div class="col-md-4">
+				  <div class="box">
+					<label> เวลา : </label>
+					<br />
+					<b class="time">{{ this.tripResult[0].time  }} นาที</b>
+				  </div>
+				</div>           
+			 </div>
 		  </div>
 		</div>
 	  </ng-template>
