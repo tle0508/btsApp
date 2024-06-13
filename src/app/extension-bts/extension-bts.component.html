@@ -118,20 +118,22 @@
 					: 'DarkCyan'
 			  }"
 			>
-			  <div class="box">
-				<label>สถานีต้นทาง</label>
+			<div class="row">
+			  <div class="col-md-10 ">
+				<div class="box">
+				<label>สถานีต้นทาง</label>  
 				<br />
 				<b
 				  >{{ this.tripResult[0].startStation.idStation }}
 				  {{ this.tripResult[0].startStation.btsStationNameTH }} ||
-				  {{ this.tripResult[0].startStation.btsStationNameENG }}</b
+				  {{ this.tripResult[0].startStation.btsStationNameENG }}
+				  </b
 				>
 				<p>
 				  <ng-container
 					*ngIf="
 					  this.tripResult &&
-						this.tripResult[0].startStation.lineColor ===
-						  'limegreen';
+						this.tripResult[0].startStation.lineColor === 'limegreen';
 					  else blueLine
 					"
 				  >
@@ -140,6 +142,15 @@
 				  <ng-template #blueLine> สายสีลม </ng-template>
 				</p>
 			  </div>
+			</div>
+			  <div class="col-md-2 ">
+				<div class="container-center">
+				  <div class="center">
+					<a href="{{this.tripResult[0].startStation.url}}" target="_blank"><div class="pin"></div></a>
+				  </div>
+				</div>
+			  </div>
+			</div>
 			</div>
 			<!-- ปลายทาง -->
 			<div
@@ -151,30 +162,43 @@
 					: 'DarkCyan'
 			  }"
 			>
-			  <div class="box">
-				<label>สถานีปลายทาง</label>
-				<br />
-				<b>
-				  {{ this.tripResult[0].endStation.idStation }}
-				  {{ this.tripResult[0].endStation.btsStationNameTH }} ||
-				  {{ this.tripResult[0].endStation.btsStationNameENG }}
+			<div class="row">
+			  <div class="col-md-10">
+				<div class="box">
+				  <label>สถานีปลายทาง</label>
+				  <br />
+				  <b>
+					{{ this.tripResult[0].endStation.idStation }}
+					{{ this.tripResult[0].endStation.btsStationNameTH }} ||
+					{{ this.tripResult[0].endStation.btsStationNameENG }}
 				  </b>
-				<p>
-				  <ng-container
-					*ngIf="
-					  this.tripResult &&
-						this.tripResult[0].endStation.lineColor === 'limegreen';
-					  else blueLine
-					"
-				  >
-					สายสุขุมวิท
-				  </ng-container>
-				  <ng-template #blueLine> สายสีลม </ng-template>
-				</p>
+				  <p>
+					<ng-container
+					  *ngIf="
+						this.tripResult &&
+						  this.tripResult[0].endStation.lineColor === 'limegreen';
+						else blueLine
+					  "
+					>
+					  สายสุขุมวิท
+					</ng-container>
+					<ng-template #blueLine> สายสีลม </ng-template>
+				  </p>
+				</div>
+			  </div>
+			  <div class="col-md-2 ">
+				<div class="container-center">
+				  <div class="center">
+					<a href="{{this.tripResult[0].endStation.url}}" target="_blank"><div class="pin"></div></a>
+				  </div>
+				</div>
 			  </div>
 			</div>
+			 
+			</div>
 			<!-- ข้อมูล -->
-			<div class="row">           
+			 <div class="outline-box">
+			  <div class="row">           
 				<div class="col-md-4">
 				  <div class="box">
 					<label> ราคา : </label>
@@ -190,6 +214,7 @@
 				  </div>
 				</div>           
 			 </div>
+			 </div>  
 		  </div>
 		</div>
 	  </ng-template>

@@ -5,7 +5,9 @@
 	padding: 40px;
 }
 .outline-box{
-	border-radius: 14px; margin-top: 10px;
+	border-radius: 14px; 
+	margin-top: 10px; 
+	background-color: rgb(174, 174, 174);
 }
 .img {
 	width: 100%;
@@ -85,7 +87,7 @@
 	color: green;
 }
 .time{
-	font-size: 16px;
+	font-size: 20px;
 	color: rgb(0, 0, 0);
 }
 
@@ -115,3 +117,38 @@ label {
 	margin-top: 10px;
 	width: 100%;
 }
+.pin {
+	cursor: pointer;
+	width: 40px ;
+	height: 40px ;
+	background-color: #a10000 ;
+	border-radius: 60px 60px 0px 60px ;
+	position:relative ;
+	transform: rotate(45deg);
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  }
+  .pin::after {
+	content: "" ;
+	width: 20px ;
+	height: 20px ;
+	background: #ffffff ;
+	position: absolute ;
+	left: 26% ;
+	top: 26% ;
+	border-radius: 60px ;
+  }
+  .container-center {
+	height: 100%;
+	position: relative;
+	
+  }
+  
+  .center {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	
+  }

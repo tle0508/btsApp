@@ -8,4 +8,5 @@ export type Station = {
   lineColor: string;
   extension: boolean;
   activate: boolean;
+  url:string;
 };
