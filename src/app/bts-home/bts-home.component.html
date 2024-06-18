@@ -1,233 +1,246 @@
 <div class="row">
-  <div class="col-4">
-    <div class="col text-center">
-      <b style="font-size: 25px">คำนวณค่าโดยสารแบบปกติ</b>
-    </div>
+  <div class="col-md-4">
+	<div class="col text-center">
+	  <b style="font-size: 25px">คำนวณค่าโดยสารแบบปกติ</b>
+	</div>
 
-    <form [formGroup]="tripForm" #ngtripForm = "ngForm" (ngSubmit)="open(content)">
-    <!-- ต้นทาง -->
-     <div class="startTrip">
-      <div class="starTriptitle"><p>ต้นทาง</p></div>
-      <div class="container">
-        <label for="category">สายต้นทาง</label>
-        <select 
-        formControlName="StartLineStation"
-        class="form-control"
-        id="linecolor" 
-		    (change)="onStartLineColorChange()"
-        [class.is-invalid]=" selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted "
-        [(ngModel)]="selectedStartLineColor"	
-        placeholder="เลือกสายต้นทาง"
-        >
-          <option selected disabled>เลือกสายต้นทาง</option>
-            <option value="limegreen">สุขุมวิท</option>
-            <option value="blue">สีลม</option>
-      </select>
+	<form [formGroup]="tripForm" #ngtripForm = "ngForm" (ngSubmit)="open(content)">
+	<!-- ต้นทาง -->
+	  <div class="startTrip">
+		<div class="starTriptitle"><p>ต้นทาง</p></div>
+	  	<div class="container">
+			<div class="form-group">
+			<label for="category">สายต้นทาง</label>
+			<select 
+			formControlName="StartLineStation"
+			class="form-control"
+			id="linecolor" 
+			(change)="onStartLineColorChange()"
+			[class.is-invalid]=" selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted "
+			[(ngModel)]="selectedStartLineColor"	
+			placeholder="เลือกสายต้นทาง"
+			>
+		  <option selected disabled>เลือกสายต้นทาง</option>
+			<option value="limegreen">>> สุขุมวิท</option>
+			<option value="blue">>> สีลม</option>
+	  </select>
+	  <span *ngIf="selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted " class="danger">เลือกสายต้นทาง</span>
+	</div>
+	<div class="form-group">
+	  <label for="subcategory">สถานีต้นทาง</label>
+		  <select
+			formControlName="StartStation"
+			class="form-control"
+			id="station_name"
+			[(ngModel)]="selectedStartStation"
+			  	[class.is-invalid]=" !selectedStartStation && ngtripForm.submitted || areStationsEqual() && ngtripForm.submitted"
+		  >
+			<option selected disabled [value]=null>เลือกสถานีต้นทาง</option>
+			<option
+			  *ngFor="let startstation of selectedStartLineStations"
+			  [ngValue]="startstation.id"
+			>
+			  >> {{ startstation.idStation }} | {{ startstation.btsStationNameTH }}
+			</option>
+		  </select>
+		  <span *ngIf="!selectedStartStation && ngtripForm.submitted " class="danger">เลือกสถานีต้นทาง</span>
+		  <span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
+	  </div>
+	</div>
+	</div>
+	
 
-      
-      <label for="subcategory">สถานีต้นทาง</label>
-          <select
-            formControlName="StartStation"
-            class="form-control"
-            id="station_name"
-            [(ngModel)]="selectedStartStation"
-		      	[class.is-invalid]=" !selectedStartStation && ngtripForm.submitted || areStationsEqual() && ngtripForm.submitted"
-          >
-            <option selected disabled [value]=null>เลือกสถานีต้นทาง</option>
-            <option
-              *ngFor="let startstation of selectedStartLineStations"
-              [ngValue]="startstation.id"
-            >
-              {{ startstation.idStation }} | {{ startstation.btsStationNameTH }}
-            </option>
-          </select>
-      </div>
-    </div>
-    
-
-      <!-- ปลายทาง -->
-      <div class="endTrip">
-        <div class="endTriptitle"><p>ปลายทาง</p></div>
-        <div class="container">
-          <div class="form-group">
-            <label for="category">สายปลายทาง</label>
-            <select
-              formControlName="EndLineStation"
-              class="form-control"
-              id="linecolor"
-              [(ngModel)]="selectedEndLineColor"
-              (change)="onEndLineColorChange()"
-              [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted "
-            >
-              <option selected disabled>เลือกสายปลายทาง</option>
-              <option value="limegreen">สุขุมวิท</option>
-              <option value="blue">สีลม</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="subcategory">สถานีปลายทาง</label>
-            <select
-            formControlName="EndStation"
-              class="form-control"
-              id="station_name"
-              [(ngModel)]="selectedEndStation"
-              [class.is-invalid]=" !selectedEndStation  && ngtripForm.submitted || areStationsEqual()  && ngtripForm.submitted "
-            >
-              <option selected disabled [value]=null >เลือกสถานีปลายทาง</option>
-              <option
-                *ngFor="let endstation of selectedEndLineStations"
-                [ngValue]="endstation.id"
-              >
-                {{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
-      <button
-      type="submit"
-      class="btn btn-lg btn-outline-primary"
-      >
-        ดูการเดินทาง
-      </button>
-      </form>
-    <!-- modal -->
-    <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">
-          เส้นทางและอัตราค่าโดยสาร
-        </h4>
-        <button
-          type="button"
-          class="btn-close"
-          aria-label="Close"
-          (click)="modal.dismiss('Cross click')"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-12">ข้อมูลการเดินทาง</div>
-          <!-- ต้นทาง -->
-          <div
-            class="outline-box"
-            [ngStyle]="{
-              'background-color':
-                this.tripResult[0].startStation.lineColor === 'limegreen'
-                  ? 'green'
-                  : 'DarkCyan'
-            }"
-          >
-          <div class="row">
-            <div class="col-md-10 ">
-              <div class="box">
-              <label>สถานีต้นทาง</label>  
-              <br />
-              <b
-                >{{ this.tripResult[0].startStation.idStation }}
-                {{ this.tripResult[0].startStation.btsStationNameTH }} ||
-                {{ this.tripResult[0].startStation.btsStationNameENG }}
-                </b
-              >
-              <p>
-                <ng-container
-                  *ngIf="
-                    this.tripResult &&
-                      this.tripResult[0].startStation.lineColor === 'limegreen';
-                    else blueLine
-                  "
-                >
-                  สายสุขุมวิท
-                </ng-container>
-                <ng-template #blueLine> สายสีลม </ng-template>
-              </p>
-            </div>
-          </div>
-            <div class="col-md-2 ">
-              <div class="container-center">
-                <div class="center">
-                  <a href="{{this.tripResult[0].startStation.url}}" target="_blank">
-                    <div class="pin"></div>
-                </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          </div>
-          <!-- ปลายทาง -->
-          <div
-            class="outline-box"
-            [ngStyle]="{
-              'background-color':
-                this.tripResult[0].endStation.lineColor === 'limegreen'
-                  ? 'green'
-                  : 'DarkCyan'
-            }"
-          >
-          <div class="row">
-            <div class="col-md-10">
-              <div class="box">
-                <label>สถานีปลายทาง</label>
-                <br />
-                <b>
-                  {{ this.tripResult[0].endStation.idStation }}
-                  {{ this.tripResult[0].endStation.btsStationNameTH }} ||
-                  {{ this.tripResult[0].endStation.btsStationNameENG }}
-                </b>
-                <p>
-                  <ng-container
-                    *ngIf="
-                      this.tripResult &&
-                        this.tripResult[0].endStation.lineColor === 'limegreen';
-                      else blueLine
-                    "
-                  >
-                    สายสุขุมวิท
-                  </ng-container>
-                  <ng-template #blueLine> สายสีลม </ng-template>
-                </p>
-              </div>
-            </div>
-            <div class="col-md-2 ">
-              <div class="container-center">
-                <div class="center">
-                  <a href="{{this.tripResult[0].endStation.url}}" target="_blank"><div class="pin"></div></a>
-                </div>
-              </div>
-            </div>
-          </div>
-           
-          </div>
-          <!-- ข้อมูล -->
-           <div class="outline-box">
-            <div class="row">           
-              <div class="col-md-4">
-                <div class="box">
-                  <label> ราคา : </label>
-                  <br />
-                  <b class="price">{{ price }} บาท</b>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="box">
-                  <label> เวลา : </label>
-                  <br />
-                  <b class="time">{{ this.tripResult[0].time  }} นาที</b>
-                </div>
-              </div>           
-           </div>
-           </div>  
-        </div>
-      </div>
-    </ng-template>
-    
+	  <!-- ปลายทาง -->
+	  <div class="endTrip">
+		<div class="endTriptitle"><p>ปลายทาง</p></div>
+		<div class="container">
+		  <div class="form-group">
+			<label for="category">สายปลายทาง</label>
+			<select
+			  formControlName="EndLineStation"
+			  class="form-control"
+			  id="linecolor"
+			  [(ngModel)]="selectedEndLineColor"
+			  (change)="onEndLineColorChange()"
+			  [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted "
+			>
+			  <option selected disabled>เลือกสายปลายทาง</option>
+			  <option value="limegreen">>> สุขุมวิท</option>
+			  <option value="blue">>> สีลม</option>
+			</select>
+			<span *ngIf=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted " class="danger">เลือกสายปลายทาง</span>
+		  </div>
+		  <div class="form-group">
+			<label for="subcategory">สถานีปลายทาง</label>
+			<select
+			formControlName="EndStation"
+			  class="form-control"
+			  id="station_name"
+			  [(ngModel)]="selectedEndStation"
+			  [class.is-invalid]=" !selectedEndStation  && ngtripForm.submitted || areStationsEqual()  && ngtripForm.submitted "
+			>
+			  <option selected disabled [value]=null >เลือกสถานีปลายทาง</option>
+			  <option
+				*ngFor="let endstation of selectedEndLineStations"
+				[ngValue]="endstation.id"
+			  >
+			   >> {{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
+			  </option>
+			</select>
+			<span *ngIf=" !selectedEndStation  && ngtripForm.submitted  " class="danger">เลือกสถานีปลายทาง</span>
+			<span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
+		  </div>
+		</div>
+	  </div>
+	  <b class="danger">*สถานีต้นทาง และ ปลายทาง ห้ามซ้ำกัน*</b>
+	  <button
+	  type="submit"
+	  class="btn btn-lg "
+	  >
+		ดูการเดินทาง
+	  </button>
+	  </form>
+	<!-- modal -->
+	<ng-template #content let-modal>
+	  <div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">
+		  เส้นทางและอัตราค่าโดยสาร
+		</h4>
+		<button
+		  type="button"
+		  class="btn-close"
+		  aria-label="Close"
+		  (click)="modal.dismiss('Cross click')"
+		></button>
+	  </div>
+	  <div class="modal-body">
+		<div class="row">
+		  <div class="col-md-12">ข้อมูลการเดินทาง</div>
+		  <!-- ต้นทาง -->
+		  <div
+			class="outline-box"
+			[ngStyle]="{
+			  'background-color':
+				this.tripResult[0].startStation.lineColor === 'limegreen'
+				  ? 'green'
+				  : 'DarkCyan'
+			}"
+		  >
+		  <div class="row">
+			<div class="col-md-10 ">
+			  <div class="box">
+			  <label>สถานีต้นทาง</label>  
+			  <br />
+			  <b
+				>{{ this.tripResult[0].startStation.idStation }}
+				{{ this.tripResult[0].startStation.btsStationNameTH }} ||
+				{{ this.tripResult[0].startStation.btsStationNameENG }}
+				</b
+			  >
+			  <p>
+				<ng-container
+				  *ngIf="
+					this.tripResult &&
+					  this.tripResult[0].startStation.lineColor === 'limegreen';
+					else blueLine
+				  "
+				>
+				  สายสุขุมวิท
+				</ng-container>
+				<ng-template #blueLine> สายสีลม </ng-template>
+			  </p>
+			</div>
+		  </div>
+			<div class="col-md-2 ">
+			  <div class="container-center">
+				<div class="center">
+				  <a href="{{this.tripResult[0].startStation.url}}" target="_blank">
+					<div class='pin'></div>
+					  <div class='pulse'></div>
+				</a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  </div>
+		  <!-- ปลายทาง -->
+		  <div
+			class="outline-box"
+			[ngStyle]="{
+			  'background-color':
+				this.tripResult[0].endStation.lineColor === 'limegreen'
+				  ? 'green'
+				  : 'DarkCyan'
+			}"
+		  >
+		  <div class="row">
+			<div class="col-md-10">
+			  <div class="box">
+				<label>สถานีปลายทาง</label>
+				<br />
+				<b>
+				  {{ this.tripResult[0].endStation.idStation }}
+				  {{ this.tripResult[0].endStation.btsStationNameTH }} ||
+				  {{ this.tripResult[0].endStation.btsStationNameENG }}
+				</b>
+				<p>
+				  <ng-container
+					*ngIf="
+					  this.tripResult &&
+						this.tripResult[0].endStation.lineColor === 'limegreen';
+					  else blueLine
+					"
+				  >
+					สายสุขุมวิท
+				  </ng-container>
+				  <ng-template #blueLine> สายสีลม </ng-template>
+				</p>
+			  </div>
+			</div>
+			<div class="col-md-2 ">
+			  <div class="container-center">
+				<div class="center">
+				  <a href="{{this.tripResult[0].endStation.url}}" target="_blank">                    
+					  <div class='pin'></div>
+					  <div class='pulse'></div>
+				  </a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		   
+		  </div>
+		  <!-- ข้อมูล -->
+		   <div class="outline-box">
+			<div class="row">           
+			  <div class="col-4">
+				<div class="box">
+				  <label> ราคา : </label>
+				  <br />
+				  <b class="price">{{ price }} บาท</b>
+				</div>
+			  </div>
+			  <div class="col-4">
+				<div class="box">
+				  <label> เวลา : </label>
+				  <br />
+				  <b class="time">{{ this.tripResult[0].time  }} นาที</b>
+				</div>
+			  </div>         
+		   </div>
+		   </div>  
+		</div>
+	  </div>
+	</ng-template>
+	
 
   </div>
 
   <!-- map -->
-  <div class="col-8">
-    <div class="img">
-      <img src="/assets/mapbts.jpg" />
-    </div>
+  <div class="col-md-8">
+	<div class="img">
+	  <img src="/assets/mapbts.jpg" />
+	</div>
   </div>
+ 
 </div>

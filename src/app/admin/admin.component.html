@@ -127,7 +127,7 @@
 		</div>
 		<div class="modal-body">
 			<input type="number" class="form-control"  formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0 && ngpriceForm.submitted || updatedPrice >100 && ngpriceForm.submitted"/>
-			<b class="warning">*ราคาห้ามต่ำกว่า 0 บาท*</b>
+			<b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
 		</div>
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-success" >

@@ -23,6 +23,8 @@ import { ExtensionBtsComponent } from './extension-bts/extension-bts.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 registerLocaleData(en);
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +49,8 @@ registerLocaleData(en);
     BrowserModule,
     FormsModule,
     NgSelectModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    
   ],
   providers: [
     provideClientHydration(),

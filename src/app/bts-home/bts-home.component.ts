@@ -45,18 +45,17 @@ throw new Error('Method not implemented.');
 	blueLineBts: Station[] = [];
 	selectedStartLineColor: string = 'เลือกสายต้นทาง';
 	selectedStartLineStations: Station[] = [];
-	selectedStartStation!: number | null;
+	selectedStartStation: number = 0;
 
 	selectedEndLineColor: string = 'เลือกสายปลายทาง';
 	selectedEndLineStations: Station[] = [];
-	selectedEndStation!: number | null;
+	selectedEndStation!: number ;
 	price: number = <number>{};
 	tripResult: Trip[]= [];
 	
 	
 	lineColorSukhumvit:string ="limegreen";
 
-	formSubmitted: boolean = false;
 	
 	ngOnInit(): void {
 		this.getByLimeGreenLineColor();
@@ -85,8 +84,8 @@ throw new Error('Method not implemented.');
 		}
 		this.tripForm.get('StartStation')?.reset();
 		this.tripForm.updateValueAndValidity();
-		this.formSubmitted = false; 
 		this.tripForm.get('StartStation')?.enable()
+	
 	}
 	
 	onEndLineColorChange() {
@@ -97,8 +96,8 @@ throw new Error('Method not implemented.');
 		}
 		this.tripForm.get('EndStation')?.reset();
 		this.tripForm.updateValueAndValidity();
-		this.formSubmitted = false; 
 		this.tripForm.get('EndStation')?.enable()
+		
 	}
 
 	
@@ -144,7 +143,7 @@ throw new Error('Method not implemented.');
 	}
 
 	areStationsEqual(): boolean {
-		return  this.selectedStartStation ===this.selectedEndStation
+		return  this.selectedStartStation == this.selectedEndStation
 	}
 
 }

@@ -33,20 +33,18 @@ export class ExtensionBtsComponent implements OnInit {
     
   });	
   limeGreenLineBts: Station[] = [];
-  blueLineBts: Station[] = [];
-  selectedStartLineColor: string = 'เลือกสายต้นทาง';
-  selectedStartLineStations: Station[] = [];
-  selectedStartStation!: number | null;
+	blueLineBts: Station[] = [];
+	selectedStartLineColor: string = 'เลือกสายต้นทาง';
+	selectedStartLineStations: Station[] = [];
+	selectedStartStation: number = 0;
 
-  selectedEndLineColor: string = 'เลือกสายปลายทาง';
-  selectedEndLineStations: Station[] = [];
-  selectedEndStation!: number | null;
+	selectedEndLineColor: string = 'เลือกสายปลายทาง';
+	selectedEndLineStations: Station[] = [];
+	selectedEndStation!: number ;
 	price: number = <number>{};
 	tripResult: TripExtension[]= [];
   
   lineColorSukhumvit:string ="limegreen";
-
-  formSubmitted: boolean = false;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
@@ -75,9 +73,9 @@ export class ExtensionBtsComponent implements OnInit {
 			this.selectedStartLineStations = this.blueLineBts;
 		}
 		this.tripForm.get('StartStation')?.reset();
-		this.tripForm.updateValueAndValidity();
-		this.formSubmitted = false; 
+		this.tripForm.updateValueAndValidity(); 
     this.tripForm.get('StartStation')?.enable()
+    this.tripForm.enable();
 	}
 
   onEndLineColorChange() {
@@ -88,7 +86,6 @@ export class ExtensionBtsComponent implements OnInit {
 		}
 		this.tripForm.get('EndStation')?.reset();
 		this.tripForm.updateValueAndValidity();
-		this.formSubmitted = false; 
     this.tripForm.get('EndStation')?.enable()
 	}
 
@@ -135,6 +132,6 @@ export class ExtensionBtsComponent implements OnInit {
     }
 
     areStationsEqual(): boolean {
-      return  this.selectedStartStation ===this.selectedEndStation
+      return  this.selectedStartStation ==this.selectedEndStation
     }
 }
