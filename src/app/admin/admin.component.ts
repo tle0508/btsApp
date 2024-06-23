@@ -77,7 +77,7 @@ export class AdminComponent implements OnInit {
 	
 	}
 	updatePriceExtension() { 
-		if(!(this.updatedPrice < 0) && !(this.updatedPrice >100 ) ){
+		if(!this.checkPriceValidity(this.updatedPrice) ){
 		this.adminService
 			.updatePriceExtension(this.selectedPrice.numOfDistance, this.updatedPrice)
 			.subscribe({
@@ -92,6 +92,10 @@ export class AdminComponent implements OnInit {
 			}
 			);
 		}
+	}
+	
+	checkPriceValidity(updatePrice: number): boolean {
+		return (updatePrice >= 0) && (updatePrice < 100);
 	}
 
 	formatDateTime(dateTimeString: string): string {
@@ -112,7 +116,5 @@ export class AdminComponent implements OnInit {
 		this.updatedPrice = price.price;
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
 	}
-	goback(){
-		this.location.back()
-	}
+
 }

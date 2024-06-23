@@ -13,7 +13,7 @@ export class AdminService {
 	constructor(private http: HttpClient) {}
 
 	getAllPrices(): Observable<Price[]> {
-		return this.http.get<Price[]>(`${BtsService.API_URL}prices/getAllPrices`);
+		return this.http.get<Price[]>(`${BtsService.API_URL}prices/AllPrices`);
 	}
 
 	updatePrice(numOfDistance: number, price: number): Observable<Price> {
@@ -23,7 +23,7 @@ export class AdminService {
 	
 
 	getAllPricesExtension(): Observable<Price[]> {
-		return this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/getAllPrices`);
+		return this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/AllPrices`);
 	}
 
 	updatePriceExtension(numOfDistance: number, price: number): Observable<Price> {

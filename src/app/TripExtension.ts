@@ -5,7 +5,7 @@ export type TripExtension = {
 	id: number;
 	startStation: Station;
 	endStation: Station;
-	priceExtensionModel: Price;
+	priceModel: Price;
 	time:String;
   };
   

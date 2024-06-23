@@ -21,8 +21,9 @@
 				placeholder="เลือกสายต้นทาง"
 				>
 			  <option selected disabled>เลือกสายต้นทาง</option>
-				<option value="limegreen">>> สุขุมวิท</option>
-				<option value="blue">>> สีลม</option>
+			  <option *ngFor="let line of lineStation" [ngValue]="line.color">
+				>>{{line.lineStationNameTH}}
+			  </option>
 		  </select>
 		  <span *ngIf="selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted " class="danger">เลือกสายต้นทาง</span>
 		</div>
@@ -65,8 +66,9 @@
 				  [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted "
 				>
 				  <option selected disabled>เลือกสายปลายทาง</option>
-				  <option value="limegreen">>> สุขุมวิท</option>
-				  <option value="blue">>> สีลม</option>
+				  <option *ngFor="let line of lineStation" [ngValue]="line.color">
+					>>{{line.lineStationNameTH}}
+				  </option>
 				</select>
 				<span *ngIf=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted " class="danger">เลือกสายปลายทาง</span>
 			  </div>
@@ -121,7 +123,7 @@
 			  class="outline-box"
 			  [ngStyle]="{
 				'background-color':
-				  this.tripResult[0].startStation.lineColor === 'limegreen'
+				  this.tripResult.startStation.lineStaionModel.color === lineStation[0].color
 					? 'green'
 					: 'DarkCyan'
 			  }"
@@ -132,29 +134,29 @@
 				<label>สถานีต้นทาง</label>  
 				<br />
 				<b
-				  >{{ this.tripResult[0].startStation.idStation }}
-				  {{ this.tripResult[0].startStation.btsStationNameTH }} ||
-				  {{ this.tripResult[0].startStation.btsStationNameENG }}
+				  >{{ this.tripResult.startStation.idStation }}
+				  {{ this.tripResult.startStation.btsStationNameTH }} ||
+				  {{ this.tripResult.startStation.btsStationNameENG }}
 				  </b
 				>
 				<p>
 				  <ng-container
 					*ngIf="
 					  this.tripResult &&
-						this.tripResult[0].startStation.lineColor === 'limegreen';
+						this.tripResult.startStation.lineStaionModel.color === lineStation[0].color;
 					  else blueLine
 					"
 				  >
-					สายสุขุมวิท
+					สาย{{lineStation[0].lineStationNameTH}}
 				  </ng-container>
-				  <ng-template #blueLine> สายสีลม </ng-template>
+				  <ng-template #blueLine> สาย{{lineStation[1].lineStationNameTH}} </ng-template>
 				</p>
 			  </div>
 			</div>
 			  <div class="col-md-2 ">
 				<div class="container-center">
 				  <div class="center">
-					<a href="{{this.tripResult[0].startStation.url}}" target="_blank">
+					<a href="{{this.tripResult.startStation.url}}" target="_blank">
 						<div class='pin'></div>
 						<div class='pulse'></div>
 					</a>
@@ -168,7 +170,7 @@
 			  class="outline-box"
 			  [ngStyle]="{
 				'background-color':
-				  this.tripResult[0].endStation.lineColor === 'limegreen'
+				  this.tripResult.endStation.lineStaionModel.color === lineStation[0].color
 					? 'green'
 					: 'DarkCyan'
 			  }"
@@ -179,28 +181,28 @@
 				  <label>สถานีปลายทาง</label>
 				  <br />
 				  <b>
-					{{ this.tripResult[0].endStation.idStation }}
-					{{ this.tripResult[0].endStation.btsStationNameTH }} ||
-					{{ this.tripResult[0].endStation.btsStationNameENG }}
+					{{ this.tripResult.endStation.idStation }}
+					{{ this.tripResult.endStation.btsStationNameTH }} ||
+					{{ this.tripResult.endStation.btsStationNameENG }}
 				  </b>
 				  <p>
 					<ng-container
 					  *ngIf="
 						this.tripResult &&
-						  this.tripResult[0].endStation.lineColor === 'limegreen';
+						  this.tripResult.endStation.lineStaionModel.color === lineStation[0].color;
 						else blueLine
 					  "
 					>
-					  สายสุขุมวิท
+					  สาย{{lineStation[0].lineStationNameTH}}
 					</ng-container>
-					<ng-template #blueLine> สายสีลม </ng-template>
+					<ng-template #blueLine> สาย{{lineStation[1].lineStationNameTH}} </ng-template>
 				  </p>
 				</div>
 			  </div>
 			  <div class="col-md-2 ">
 				<div class="container-center">
 				  <div class="center">
-					<a href="{{this.tripResult[0].endStation.url}}" target="_blank">
+					<a href="{{this.tripResult.endStation.url}}" target="_blank">
 						<div class='pin'></div>
 						<div class='pulse'></div>
 					</a>
@@ -224,7 +226,7 @@
 				  <div class="box">
 					<label> เวลา : </label>
 					<br />
-					<b class="time">{{ this.tripResult[0].time  }} นาที</b>
+					<b class="time">{{ this.tripResult.time  }} นาที</b>
 				  </div>
 				</div>           
 			 </div>

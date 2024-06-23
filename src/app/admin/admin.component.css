@@ -1,9 +1,15 @@
 .container{
-	padding: 50px;
+	padding: 30px;
 }
 .money{
 	color: green;
 }
 .warning{
 	color: red;
+}
+.price-table th, .price-table td {
+    width: 20%;
+}
+.col-md-6{
+	padding: 20px;
 }

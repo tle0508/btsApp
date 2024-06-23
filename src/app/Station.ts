@@ -1,3 +1,5 @@
+import { LineStation } from "./LineStation";
+
 export type Station = {
   id: number ;
   createdDay: string;
@@ -5,7 +7,7 @@ export type Station = {
   btsStationNameTH: string;
   btsStationNameENG: string;
   idStation: number;
-  lineColor: string;
+  lineStaionModel: LineStation;
   extension: boolean;
   activate: boolean;
   url:string;

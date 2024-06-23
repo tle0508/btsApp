@@ -1,164 +1,143 @@
 <div class="container" style="font-family: 'Mitr', sans-serif">
+	<div class="row">
+		<div class="col-md-6" >
+			<h2>ตารางราคาปกติ</h2>
+    <table class="table table-bordered price-table">
+        <thead>
+            <tr>
+                <th class="text-center">จำนวนสถานีที่ผ่าน</th>
+                <th class="text-center">ราคา</th>
+                <th class="text-center">วันที่สร้าง</th>
+                <th class="text-center">อัปเดตครั้งล่าสุด</th>
+                <th class="text-center">แก้ไข</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let price of prices">
+                <td class="text-center">
+                    <ng-container *ngIf="price.numOfDistance === 0; else showNumber">
+                        ส่วนต่อขยาย
+                    </ng-container>
+                    <ng-template #showNumber>
+                        <ng-container *ngIf="price.numOfDistance === 8">
+                            8 สถานีขึ้นไป
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 9">
+                            1 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 10">
+                            2 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 11">
+                            3 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 12">
+                            4 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 13">
+                            5 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 14">
+                            6 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 15">
+                            7 สถานี + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance === 16">
+                            8 สถานีขึ้นไป + ส่วนต่อขยาย
+                        </ng-container>
+                        <ng-container *ngIf="price.numOfDistance < 8">
+                            {{ price.numOfDistance }}
+                        </ng-container>
+                    </ng-template>
+                </td>
+                <td class="text-center">
+                    <b class="money">{{ price.price }} ฿</b>
+                </td>
+                <td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
+                <td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-warning" (click)="open(content, price)">แก้ไขราคา</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+		</div>
+		<div class="col-md-6">
+			<h2>ตารางราคาส่วนต่อขยายที่ได้รับ</h2>
+			<table class="table table-bordered price-table">
+				<thead>
+					<tr>
+						<th class="text-center">จำนวนสถานีที่ผ่าน</th>
+						<th class="text-center">ราคา</th>
+						<th class="text-center">วันที่สร้าง</th>
+						<th class="text-center">อัปเดตครั้งล่าสุด</th>
+						<th class="text-center">แก้ไข</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let price of priceExtension">
+						<td class="text-center">
+							<ng-container *ngIf="price.numOfDistance === 0; else showNumber">
+								ส่วนต่อขยาย
+							</ng-container>
+							<ng-template #showNumber>
+								<ng-container *ngIf="price.numOfDistance === 8">
+									8 สถานีขึ้นไป
+								</ng-container>
+								<ng-container *ngIf="price.numOfDistance !== 8">
+									{{ price.numOfDistance }}
+								</ng-container>
+							</ng-template>
+						</td>
+						<td class="text-center">
+							<b class="money">{{ price.price }} ฿</b>
+						</td>
+						<td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
+						<td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
+						<td class="text-center">
+							<button type="button" class="btn btn-warning" (click)="open(contentExtension, price)">แก้ไขราคา</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+    
 
-	<h2>ตารางราคาปกติ</h2>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th class="text-center">จำนวนสถานีที่ผ่าน</th>
-				<th class="text-center">ราคา</th>
-				<th class="text-center">วันที่สร้าง</th>
-				<th class="text-center">อัปเดตครั้งล่าสุด</th>
-				<th class="text-center">แก้ไข</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let price of prices">
-				<td class="text-center">
-					<ng-container *ngIf="price.numOfDistance === 0; else showNumber">
-						ส่วนต่อขยาย
-					</ng-container>
-					<ng-template #showNumber>
-						<ng-container *ngIf="price.numOfDistance === 8">
-							8 สถานีขึ้นไป
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 9">
-							1 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 10">
-							2 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 11">
-							3 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 12">
-							4 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 13">
-							5 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 14">
-							6 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 15">
-							7 สถานี + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance === 16">
-							8 สถานีขึ้นไป + ส่วนต่อขยาย
-						</ng-container>
-						<ng-container *ngIf="price.numOfDistance < 8">
-							{{ price.numOfDistance }}
-						</ng-container>
-					</ng-template>
-				</td>
-				<td class="text-center">
-					<b class="money">{{ price.price }} ฿</b>
-				</td>
-				<td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
-				<td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
-				<td class="text-center">
-					<button
-						type="button"
-						class="btn btn-warning"
-						(click)="open(content, price)"
-					>
-						แก้ไขราคา
-					</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<h2>ตารางราคาส่วนต่อขยายที่ได้รับ</h2>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th class="text-center">จำนวนสถานีที่ผ่าน</th>
-				<th class="text-center">ราคา</th>
-				<th class="text-center">วันที่สร้าง</th>
-				<th class="text-center">อัปเดตครั้งล่าสุด</th>
-				<th class="text-center">แก้ไข</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let price of priceExtension">
-				<td class="text-center">
-					<ng-container *ngIf="price.numOfDistance === 0; else showNumber">
-						ส่วนต่อขยาย
-					</ng-container>
-					<ng-template #showNumber>
-						<ng-container *ngIf="price.numOfDistance === 8">
-							8 สถานีขึ้นไป
-						</ng-container>
-						
-						<ng-container *ngIf="price.numOfDistance !== 8">
-							{{ price.numOfDistance }}
-						</ng-container>
-					</ng-template>
-				</td>
-				<td class="text-center">
-					<b class="money">{{ price.price }} ฿</b>
-				</td>
-				<td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
-				<td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
-				<td class="text-center">
-					<button
-						type="button"
-						class="btn btn-warning"
-						(click)="open(contentExtension, price)"
-					>
-						แก้ไขราคา
-					</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+  
 
-	<!-- modal -->
-	
-	<ng-template #content let-modal>
-		<form [formGroup]="priceForm" #ngpriceForm ="ngForm" (ngSubmit)="updatePrice();">
-		<div class="modal-header">
-			<h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
-			<button
-				type="button"
-				class="btn-close"
-				aria-label="Close"
-				(click)="modal.dismiss('Cross click')"
-			></button>
-		</div>
-		<div class="modal-body">
-			<input type="number" class="form-control"  formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0 && ngpriceForm.submitted || updatedPrice >100 && ngpriceForm.submitted"/>
-			<b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
-		</div>
-		<div class="modal-footer">
-			<button type="submit" class="btn btn-success" >
-				ยืนยันการแก้ไข
-			</button>
-		</div>
-	</form>
-	</ng-template>
-	
+    <!-- modal -->
+    <ng-template #content let-modal>
+        <form [formGroup]="priceForm" #ngpriceForm="ngForm" (ngSubmit)="updatePrice();">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
+                <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div class="modal-body">
+                <input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]=" !checkPriceValidity(this.updatedPrice) && ngpriceForm.submitted " />
+                <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">ยืนยันการแก้ไข</button>
+            </div>
+        </form>
+    </ng-template>
 
-	<!-- modal extension -->
-	<ng-template #contentExtension let-modal>
-		<form [formGroup]="priceForm" #ngpriceForm ="ngForm" (ngSubmit)="updatePriceExtension();">
-		<div class="modal-header">
-			<h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
-			<button
-				type="button"
-				class="btn-close"
-				aria-label="Close"
-				(click)="modal.dismiss('Cross click')"
-			></button>
-		</div>
-		<div class="modal-body">
-			<input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="updatedPrice < 0 && ngpriceForm.submitted || updatedPrice >100 && ngpriceForm.submitted" />
-			<b class="warning">*ราคาห้ามต่ำกว่า 0 บาท*</b>
-		</div>
-		<div class="modal-footer">
-			<button type="submit" class="btn btn-success">
-				ยืนยันการแก้ไข
-			</button>
-		</div>
-	</form>
-	</ng-template>
+    <!-- modal extension -->
+    <ng-template #contentExtension let-modal>
+        <form [formGroup]="priceForm" #ngpriceForm="ngForm" (ngSubmit)="updatePriceExtension();">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
+                <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div class="modal-body">
+                <input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="!checkPriceValidity(this.updatedPrice)  && ngpriceForm.submitted" />
+                <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">ยืนยันการแก้ไข</button>
+            </div>
+        </form>
+    </ng-template>
 </div>
