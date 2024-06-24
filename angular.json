@@ -79,8 +79,8 @@
               "sourceMap": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.dev.ts",
-                  "with": "src/environments/environment.dev.ts"
+                  "replace": "src/app/API_URL/environments/environment.dev.ts",
+                  "with": "src/app/API_URL/environments/environment.dev.ts"
                 }
               ]
             },
@@ -90,8 +90,8 @@
               "sourceMap": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.dev.ts",
-                  "with": "src/environments/environment.sit.ts"
+                  "replace": "src/app/API_URL/environments/environment.dev.ts",
+                  "with": "src/app/API_URL/environments/environment.sit.ts"
                 }
               ]
             },
@@ -101,8 +101,8 @@
               "sourceMap": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.dev.ts",
-                  "with": "src/environments/environment.uat.ts"
+                  "replace": "src/app/API_URL/environments/environment.dev.ts",
+                  "with": "src/app/API_URL/environments/environment.uat.ts"
                 }
               ]
             }

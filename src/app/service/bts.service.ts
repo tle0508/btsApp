@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Station } from '../Station';
 import { Trip } from '../Trip';
 import { TripExtension } from '../TripExtension';
-import { environment } from '../../environments/environment.dev';
+import { environment } from '../API_URL/environments/environment.dev';
 import { LineStation } from '../LineStation';
 
 @Injectable({
