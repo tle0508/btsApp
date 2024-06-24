@@ -59,7 +59,7 @@ export class AdminComponent implements OnInit {
 		);
 	}
 	updatePrice() { 
-		if(!(this.updatedPrice < 0) && !(this.updatedPrice >100 ) ){
+		if(this.checkPriceValidity(this.updatedPrice)){
 			this.adminService
 			.updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
 			.subscribe({
@@ -77,7 +77,7 @@ export class AdminComponent implements OnInit {
 	
 	}
 	updatePriceExtension() { 
-		if(!this.checkPriceValidity(this.updatedPrice) ){
+		if(this.checkPriceValidity(this.updatedPrice) ){
 		this.adminService
 			.updatePriceExtension(this.selectedPrice.numOfDistance, this.updatedPrice)
 			.subscribe({
@@ -116,5 +116,9 @@ export class AdminComponent implements OnInit {
 		this.updatedPrice = price.price;
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
 	}
+
+	closeModal() {
+		this.modalService.dismissAll();
+	  }
 
 }

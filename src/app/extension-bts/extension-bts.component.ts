@@ -60,6 +60,9 @@ export class ExtensionBtsComponent implements OnInit {
       }
     }
   }
+  closeModal() {
+		this.modalService.dismissAll();
+	  }
 
   onStartLineColorChange() {
     if (

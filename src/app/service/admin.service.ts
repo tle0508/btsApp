@@ -17,7 +17,8 @@ export class AdminService {
 	}
 
 	updatePrice(numOfDistance: number, price: number): Observable<Price> {
-		return this.http.put<Price>(`${BtsService.API_URL}prices/${numOfDistance}/${price}`, {});
+		return this.http.put<Price>(`${BtsService.API_URL}prices/update/${numOfDistance}?price=${price}`, {});
+		
 	}
 
 	
@@ -27,7 +28,7 @@ export class AdminService {
 	}
 
 	updatePriceExtension(numOfDistance: number, price: number): Observable<Price> {
-		return this.http.put<Price>(`${BtsService.API_URL}pricesExtension/${numOfDistance}/${price}`, {});
+		return this.http.put<Price>(`${BtsService.API_URL}pricesExtension/update/${numOfDistance}?price=${price}`, {});
 	}
 
 	

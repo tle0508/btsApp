@@ -112,7 +112,7 @@
         <form [formGroup]="priceForm" #ngpriceForm="ngForm" (ngSubmit)="updatePrice();">
             <div class="modal-header">
                 <h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
-                <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+                <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
                 <input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]=" !checkPriceValidity(this.updatedPrice) && ngpriceForm.submitted " />
@@ -129,7 +129,7 @@
         <form [formGroup]="priceForm" #ngpriceForm="ngForm" (ngSubmit)="updatePriceExtension();">
             <div class="modal-header">
                 <h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
-                <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+                <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
                 <input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="!checkPriceValidity(this.updatedPrice)  && ngpriceForm.submitted" />

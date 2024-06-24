@@ -49,8 +49,7 @@ export class BtsHomeComponent implements OnInit {
   open(content: TemplateRef<any>) {
     if (!this.areStationsEqual()) {
       if (
-        this.selectedStartStation != null &&
-        this.selectedEndStation != null
+        this.selectedStartStation != null &&this.selectedEndStation != null
       ) {
         this.modalService.open(content, {
           ariaLabelledBy: 'modal-basic-title',
@@ -59,6 +58,9 @@ export class BtsHomeComponent implements OnInit {
       }
     }
   }
+  closeModal() {
+		this.modalService.dismissAll();
+	  }
 
   onStartLineColorChange() {
     if (
@@ -85,7 +87,6 @@ export class BtsHomeComponent implements OnInit {
   }
 
   getData(startStationId: number, endStationId: number): void {
-    console.log(startStationId, endStationId);
     this.btsService
       .getTripsByStartAndEndStation(startStationId, endStationId)
       .subscribe({
