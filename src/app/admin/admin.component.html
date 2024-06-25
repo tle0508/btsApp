@@ -57,8 +57,9 @@
                 <td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
                 <td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-warning" (click)="open(content, price)">แก้ไขราคา</button>
+                    <button type="button" class="yellow" mat-mini-fab aria-label="Example icon button with a edit icon" (click)="open(content, price)"><mat-icon>edit</mat-icon></button>
                 </td>
+               
             </tr>
         </tbody>
     </table>
@@ -96,7 +97,7 @@
 						<td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
 						<td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
 						<td class="text-center">
-							<button type="button" class="btn btn-warning" (click)="open(contentExtension, price)">แก้ไขราคา</button>
+                            <button type="submit" (click)="open(contentExtension, price)"  class="yellow" mat-mini-fab aria-label="Example icon button with a edit icon"><mat-icon>edit</mat-icon></button>
 						</td>
 					</tr>
 				</tbody>
@@ -115,11 +116,12 @@
                 <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
-                <input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]=" !checkPriceValidity(this.updatedPrice) && ngpriceForm.submitted " />
+                <input type="number" class="form-control" formControlName="price" min="0" max="100" [(ngModel)]="updatedPrice" [class.is-invalid]=" !checkPriceValidity(this.updatedPrice) && ngpriceForm.submitted " />
                 <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success">ยืนยันการแก้ไข</button>
+                <button (click)="closeModal()" class="red" mat-mini-fab aria-label="Example icon button with a close icon"><mat-icon>close</mat-icon></button>
+                <button type="submit"  class="green" mat-mini-fab aria-label="Example icon button with a edit icon"><mat-icon>check</mat-icon></button>
             </div>
         </form>
     </ng-template>
@@ -132,11 +134,12 @@
                 <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
-                <input type="number" class="form-control" formControlName="price" [(ngModel)]="updatedPrice" [class.is-invalid]="!checkPriceValidity(this.updatedPrice)  && ngpriceForm.submitted" />
+                <input type="number" class="form-control" formControlName="price"  min="0" max="100" [(ngModel)]="updatedPrice" [class.is-invalid]="!checkPriceValidity(this.updatedPrice)  && ngpriceForm.submitted" />
                 <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success">ยืนยันการแก้ไข</button>
+                <button (click)="closeModal()" class="red" mat-mini-fab aria-label="Example icon button with a close icon"><mat-icon>close</mat-icon></button>
+                <button type="submit"  class="green" mat-mini-fab aria-label="Example icon button with a edit icon"><mat-icon>check</mat-icon></button>
             </div>
         </form>
     </ng-template>

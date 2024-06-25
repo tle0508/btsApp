@@ -153,23 +153,14 @@
 			  </b
 			>
 			<p>
-			  <ng-container
-				*ngIf="
-				  this.tripResult &&
-					this.tripResult.startStation.lineStaionModel.color === lineStation[0].color;
-				  else blueLine
-				"
-			  >
-				สาย{{lineStation[0].lineStationNameTH}}
-			  </ng-container>
-			  <ng-template #blueLine> สาย{{lineStation[1].lineStationNameTH}} </ng-template>
+				สาย{{this.tripResult.startStation.lineStaionModel.lineStationNameTH}}
 			</p>
 		  </div>
 		</div>
 		  <div class="col-md-2 ">
 			<div class="container-center">
 			  <div class="center">
-				<a href="{{this.tripResult.startStation.url}}" target="_blank">
+				<a href="https://maps.app.goo.gl/{{this.tripResult.startStation.url}}" target="_blank">
 					<div class='pin'></div>
 					<div class='pulse'></div>
 				</a>
@@ -178,6 +169,7 @@
 		  </div>
 		</div>
 		</div>
+		<div class="col-md-12 icon-south" ><mat-icon aria-hidden="false" aria-label="Example south icon" fontIcon="south"></mat-icon></div>
 		<!-- ปลายทาง -->
 		<div
 		  class="outline-box"
@@ -199,23 +191,14 @@
 				{{ this.tripResult.endStation.btsStationNameENG }}
 			  </b>
 			  <p>
-				<ng-container
-				  *ngIf="
-					this.tripResult &&
-					  this.tripResult.endStation.lineStaionModel.color === lineStation[0].color;
-					else blueLine
-				  "
-				>
-				  สาย{{lineStation[0].lineStationNameTH}}
-				</ng-container>
-				<ng-template #blueLine> สาย{{lineStation[1].lineStationNameTH}} </ng-template>
-			  </p>
+				สาย{{this.tripResult.endStation.lineStaionModel.lineStationNameTH}}
+			</p>
 			</div>
 		  </div>
 		  <div class="col-md-2 ">
 			<div class="container-center">
 			  <div class="center">
-				<a href="{{this.tripResult.endStation.url}}" target="_blank">
+				<a href="https://maps.app.goo.gl/{{this.tripResult.endStation.url}}" target="_blank">
 					<div class='pin'></div>
 					<div class='pulse'></div>
 				</a>

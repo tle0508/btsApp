@@ -1,8 +1,9 @@
 import { Component, OnInit, TemplateRef, inject } from '@angular/core';
 import { AdminService } from '../service/admin.service';
 import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {Location} from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Price } from '../Price';
+
 
 @Component({
 	selector: 'app-admin',
@@ -20,13 +21,13 @@ export class AdminComponent implements OnInit {
 	constructor(
 		private adminService: AdminService,
 		private modalService: NgbModal,
-		private location : Location
 	) {}
 
-	prices: any[] = [];
-	priceExtension :any[]= [];
+	///
+	prices: Price[] = [];
+	priceExtension :Price[]= [];
 	showModal = false;
-	selectedPrice: any;
+	selectedPrice: Price =<Price>{} ;
 	updatedPrice!: number;
 
 	ngOnInit(): void {
@@ -35,62 +36,42 @@ export class AdminComponent implements OnInit {
 	}
 
 	getAllPrices(): void {
-		this.adminService.getAllPrices()
-			.subscribe({
-				next: (value) => {
-					this.prices = value;
-				},
-				error: (error) => {
-					console.error('Error', error);
-				},
-			}
-		);
+		this.adminService.getAllPrices().then((value)=>{
+			this.prices=value;
+		}).catch((error)=>{
+			console.warn(error);
+		})
 	}
 	getAllPricesExtension(): void {
-		this.adminService.getAllPricesExtension()
-			.subscribe({
-				next: (value) => {
-					this.priceExtension = value;
-				},
-				error: (error) => {
-					console.error('Error', error);
-				},
-			}
-		);
+		this.adminService.getAllPricesExtension().then((value)=>{
+			this.priceExtension=value;
+		}).catch((error)=>{
+			console.warn(error);	
+		})
 	}
 	updatePrice() { 
 		if(this.checkPriceValidity(this.updatedPrice)){
 			this.adminService
-			.updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice)
-			.subscribe({
-				next: (value) => {
-					console.log('Price updated successfully:', value);
-					this.modalService.dismissAll();
-					this.getAllPrices();
-				},
-				error: (error) => {
-					console.error('Error', error);
-				},
-			}
-			);
+			.updatePrice(this.selectedPrice.numOfDistance, this.updatedPrice).then((value)=>{
+				console.log('Price updated successfully:', value);
+				this.modalService.dismissAll();
+				this.getAllPrices();
+			}).catch((error)=>{
+				console.warn(error);	
+			})
 		}
 	
 	}
 	updatePriceExtension() { 
 		if(this.checkPriceValidity(this.updatedPrice) ){
 		this.adminService
-			.updatePriceExtension(this.selectedPrice.numOfDistance, this.updatedPrice)
-			.subscribe({
-				next: (value) => {
-					console.log('Price updated successfully:', value);
-					this.modalService.dismissAll();
-					this.getAllPricesExtension();
-				},
-				error: (error) => {
-					console.error('Error', error);
-				},
-			}
-			);
+			.updatePriceExtension(this.selectedPrice.numOfDistance, this.updatedPrice).then((value)=>{
+				console.log('Price updated successfully:', value);
+				this.modalService.dismissAll();
+			 	this.getAllPricesExtension();
+			}).catch((error)=>{
+				console.warn(error);	
+			})
 		}
 	}
 	

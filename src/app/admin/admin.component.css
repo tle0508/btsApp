@@ -13,3 +13,15 @@
 .col-md-6{
 	padding: 20px;
 }
+.yellow{
+	background-color: #ead200;
+	color: #000;
+}
+.red{
+	background-color: #d70000dd;
+	color: #ffffff;
+}
+.green{
+	background-color: green;
+	color: #ffffff;
+}

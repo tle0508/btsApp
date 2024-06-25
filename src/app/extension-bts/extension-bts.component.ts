@@ -29,7 +29,7 @@ export class ExtensionBtsComponent implements OnInit {
 
   selectedEndLineColor: string = 'เลือกสายปลายทาง';
   selectedEndLineStations: Station[] = [];
-  selectedEndStation!: number;
+  selectedEndStation: number=0;
   price: number = <number>{};
   tripResult: TripExtension = <TripExtension>{};
 
@@ -47,22 +47,23 @@ export class ExtensionBtsComponent implements OnInit {
     return this.price === 0 ? 'ฟรี' : `${this.price} บาท`;
   }
 
+
   open(content: TemplateRef<any>) {
     if (!this.areStationsEqual()) {
-      if (
-        this.selectedStartStation != null &&
-        this.selectedEndStation != null
-      ) {
+      if (this.selectedStartStation != 0 && this.selectedStartStation != null 
+        &&  this.selectedEndStation != 0 && this.selectedEndStation != null) {
         this.modalService.open(content, {
-          ariaLabelledBy: 'modal-basic-title',
+        ariaLabelledBy: 'modal-basic-title',
         });
         this.getData(this.selectedStartStation, this.selectedEndStation);
       }
+      console.log("ข้อมูลไม่ครบ");
     }
   }
+
   closeModal() {
 		this.modalService.dismissAll();
-	  }
+	}
 
   onStartLineColorChange() {
     if (
@@ -91,51 +92,32 @@ export class ExtensionBtsComponent implements OnInit {
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
-      .getTripsExtensionByStartAndEndStation(startStationId, endStationId)
-      .subscribe({
-        next: (value) => {
-          this.tripResult = value;
-          console.log(this.tripResult);
-          this.price = this.tripResult.priceModel.price;
-          console.log(this.price);
-        },
-        error: (error) => {
-          console.error('Error', error);
-        },
-      });
+      .getTripsByStartAndEndStation(startStationId, endStationId)
+      .then((value)=>{
+        this.tripResult = value;
+        this.price = this.tripResult.priceModel.price;
+      })
   }
 
   getByLimeGreenLineColor(): void {
-    this.btsService.getStatioByLimeGreenLineColor().subscribe({
-      next: (value) => {
-        this.limeGreenLineBts = value;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.btsService.getStationByLimeGreenLineColor().then((value)=>{
+      this.limeGreenLineBts=value
+    })
   }
-
   getAllLineStations(): void {
-    this.btsService.getAllLineStations().subscribe({
-      next: (value) => {
-        this.lineStation = value;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.btsService.getAllLineStations().then((value)=>{
+      this.lineStation=value;
+    }).catch((error)=>{
+      console.warn(error);
+  })
   }
 
   getByBlueLineColor(): void {
-    this.btsService.getStatioByBlueLineColor().subscribe({
-      next: (value) => {
-        this.blueLineBts = value;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    this.btsService.getStationByBlueLineColor().then((value=>{
+      this.blueLineBts=value;
+    })).catch((error)=>{
+      console.warn(error);
+  })
   }
 
   areStationsEqual(): boolean {

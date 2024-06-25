@@ -22,7 +22,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ExtensionBtsComponent } from './extension-bts/extension-bts.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 registerLocaleData(en);
-
+import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -50,7 +52,9 @@ registerLocaleData(en);
     FormsModule,
     NgSelectModule,
     NgbDropdownModule,
-    
+    MatButtonModule,
+     MatDividerModule, 
+     MatIconModule
   ],
   providers: [
     provideClientHydration(),

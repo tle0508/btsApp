@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { Price } from '../Price';
 import { BtsService } from './bts.service';
 
@@ -12,24 +12,17 @@ export class AdminService {
 
 	constructor(private http: HttpClient) {}
 
-	getAllPrices(): Observable<Price[]> {
-		return this.http.get<Price[]>(`${BtsService.API_URL}prices/AllPrices`);
+	getAllPrices(): Promise<Price[]> {
+		return lastValueFrom(this.http.get<Price[]>(`${BtsService.API_URL}prices/AllPrices`));
 	}
-
-	updatePrice(numOfDistance: number, price: number): Observable<Price> {
-		return this.http.put<Price>(`${BtsService.API_URL}prices/update/${numOfDistance}?price=${price}`, {});
+	updatePrice(numOfDistance: number, price: number): Promise<Price> {
+		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}prices/${numOfDistance}?price=${price}`, {}));
 		
 	}
-
-	
-
-	getAllPricesExtension(): Observable<Price[]> {
-		return this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/AllPrices`);
+	getAllPricesExtension(): Promise<Price[]> {
+		return lastValueFrom(this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/AllPrices`));
 	}
-
-	updatePriceExtension(numOfDistance: number, price: number): Observable<Price> {
-		return this.http.put<Price>(`${BtsService.API_URL}pricesExtension/update/${numOfDistance}?price=${price}`, {});
+	updatePriceExtension(numOfDistance: number, price: number): Promise<Price> {
+		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}pricesExtension/${numOfDistance}?price=${price}`, {}));
 	}
-
-	
 }
