@@ -15,41 +15,7 @@
         <tbody>
             <tr *ngFor="let price of prices">
                 <td class="text-center">
-                    <ng-container *ngIf="price.numOfDistance === 0; else showNumber">
-                        ส่วนต่อขยาย
-                    </ng-container>
-                    <ng-template #showNumber>
-                        <ng-container *ngIf="price.numOfDistance === 8">
-                            8 สถานีขึ้นไป
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 9">
-                            1 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 10">
-                            2 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 11">
-                            3 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 12">
-                            4 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 13">
-                            5 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 14">
-                            6 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 15">
-                            7 สถานี + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance === 16">
-                            8 สถานีขึ้นไป + ส่วนต่อขยาย
-                        </ng-container>
-                        <ng-container *ngIf="price.numOfDistance < 8">
-                            {{ price.numOfDistance }}
-                        </ng-container>
-                    </ng-template>
+                  {{price.stationDistance}}
                 </td>
                 <td class="text-center">
                     <b class="money">{{ price.price }} ฿</b>
@@ -79,17 +45,7 @@
 				<tbody>
 					<tr *ngFor="let price of priceExtension">
 						<td class="text-center">
-							<ng-container *ngIf="price.numOfDistance === 0; else showNumber">
-								ส่วนต่อขยาย
-							</ng-container>
-							<ng-template #showNumber>
-								<ng-container *ngIf="price.numOfDistance === 8">
-									8 สถานีขึ้นไป
-								</ng-container>
-								<ng-container *ngIf="price.numOfDistance !== 8">
-									{{ price.numOfDistance }}
-								</ng-container>
-							</ng-template>
+                            {{price.stationDistance}}
 						</td>
 						<td class="text-center">
 							<b class="money">{{ price.price }} ฿</b>

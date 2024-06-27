@@ -62,7 +62,7 @@
 			  (change)="onEndLineColorChange()"
 			  [class.is-invalid]=" this.tripForm.get('EndLineStation')?.value == 'เลือกสายปลายทาง' && ngtripForm.submitted "
 			>
-			  <option selected disabled>เลือกสายปลายทาง</option>
+			  <option selected disabled >เลือกสายปลายทาง</option>
 			  <option *ngFor="let line of lineStation" [ngValue]="line.color">
 				>>{{line.lineStationNameTH}}
 			  </option>
@@ -75,7 +75,6 @@
 			formControlName="EndStation"
 			  class="form-control"
 			  id="station_name"
-			  
 			  [class.is-invalid]=" (!this.tripForm.get('EndStation')?.value  || areStationsEqual()) && ngtripForm.submitted"
 			>
 			  <option selected disabled [value]=null >เลือกสถานีปลายทาง</option>
@@ -212,7 +211,7 @@
 				<label> ราคา : </label>
 				<br />
 				
-				<b class="price">{{price  }} </b>
+				<b class="price">{{this.tripResult.priceModel.price  | currency:'฿':true:'1.0-0' }}</b>
 			  </div>
 			</div>
 			<div class="col-4">

@@ -25,7 +25,6 @@ export class ExtensionBtsComponent implements OnInit {
   blueLineBts: Station[] = [];
   selectedStartLineStations: Station[] = [];
   selectedEndLineStations: Station[] = [];
-  price: number = <number>{};
   tripResult: TripExtension = <TripExtension>{};
   lineStation: LineStation[] = [];
   
@@ -40,7 +39,7 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   getPriceLabel(): string {
-    return this.price === 0 ? 'ฟรี' : `${this.price} บาท`;
+    return this.tripResult.priceModel.price === 0 ? 'ฟรี' : `${this.tripResult.priceModel.price} บาท`;
   }
 
 
@@ -71,9 +70,7 @@ export class ExtensionBtsComponent implements OnInit {
       this.selectedStartLineStations = this.blueLineBts;
     }
     this.tripForm.get('StartStation')?.reset();
-    this.tripForm.updateValueAndValidity();
     this.tripForm.get('StartStation')?.enable();
-    this.tripForm.enable();
   }
 
   onEndLineColorChange() {
@@ -83,16 +80,15 @@ export class ExtensionBtsComponent implements OnInit {
       this.selectedEndLineStations = this.blueLineBts;
     }
     this.tripForm.get('EndStation')?.reset();
-    this.tripForm.updateValueAndValidity();
     this.tripForm.get('EndStation')?.enable();
   }
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
-      .getTripsByStartAndEndStation(startStationId, endStationId)
+      .getTripsExtensionByStartAndEndStation(startStationId, endStationId)
       .then((value)=>{
         this.tripResult = value;
-        this.price = this.tripResult.priceModel.price;
+       
       })
   }
 
@@ -118,6 +114,6 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   areStationsEqual(): boolean {
-    return  this.tripForm.get('StartStation')?.value ==this.tripForm.get('EndLineStation')?.value;
+    return  this.tripForm.get('StartStation')?.value ==this.tripForm.get('EndStation')?.value;
   }
 }

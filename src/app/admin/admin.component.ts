@@ -44,7 +44,7 @@ export class AdminComponent implements OnInit {
   updatePrice(): void {
     const updatedPrice = this.priceForm.get('price')?.value;
     if (this.checkPriceValidity(updatedPrice)) {
-      this.adminService.updatePrice(this.selectedPrice.numOfDistance, updatedPrice!).then((value) => {
+      this.adminService.updatePrice(this.selectedPrice.id, updatedPrice!).then((value) => {
         console.log('Price updated successfully:', value);
         this.modalService.dismissAll();
         this.getAllPrices();
@@ -57,7 +57,7 @@ export class AdminComponent implements OnInit {
   updatePriceExtension(): void {
     const updatedPrice = this.priceForm.get('price')?.value;
     if (this.checkPriceValidity(updatedPrice)) {
-      this.adminService.updatePriceExtension(this.selectedPrice.numOfDistance, updatedPrice!).then((value) => {
+      this.adminService.updatePriceExtension(this.selectedPrice.id, updatedPrice!).then((value) => {
         console.log('Price updated successfully:', value);
         this.modalService.dismissAll();
         this.getAllPricesExtension();
@@ -89,7 +89,7 @@ export class AdminComponent implements OnInit {
 
   open(content: TemplateRef<any>, price: Price): void {
     this.selectedPrice = price;
-    this.priceForm.get('price')?.setValue(price.price); // Correctly set the value
+    this.priceForm.get('price')?.setValue(price.price);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 

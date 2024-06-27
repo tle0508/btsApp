@@ -6,7 +6,6 @@ import { Trip } from '../Trip';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LineStation } from '../LineStation';
 
-
 @Component({
   selector: 'app-bts-home',
   templateUrl: './bts-home.component.html',
@@ -26,7 +25,6 @@ export class BtsHomeComponent implements OnInit {
   blueLineBts: Station[] = [];
   selectedStartLineStations: Station[] = [];
   selectedEndLineStations: Station[] = [];
-  price: number = <number>{};
   tripResult: Trip = <Trip>{};
   lineStation: LineStation[] = [];
 
@@ -91,7 +89,7 @@ export class BtsHomeComponent implements OnInit {
       .getTripsByStartAndEndStation(startStationId, endStationId)
       .then((value)=>{
         this.tripResult = value;
-        this.price = this.tripResult.priceModel.price;
+        
       }).catch((error)=>{
         console.warn(error);
     })

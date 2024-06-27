@@ -76,7 +76,7 @@
 				formControlName="EndStation"
 				  class="form-control"
 				  id="station_name"
-				  [class.is-invalid]=" (!this.tripForm.get('EndLineStation')?.value    || areStationsEqual()) && ngtripForm.submitted "
+				  [class.is-invalid]=" ( !this.tripForm.get('EndStation')?.value  || areStationsEqual()) && ngtripForm.submitted "
 				>
 				  <option selected disabled [value]=null >เลือกสถานีปลายทาง</option>
 				  <option
@@ -86,7 +86,7 @@
 				   >> {{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
 				  </option>
 				</select>
-				<span *ngIf=" !this.tripForm.get('EndLineStation')?.value   && ngtripForm.submitted  " class="danger">เลือกสถานีปลายทาง</span>
+				<span *ngIf=" !this.tripForm.get('EndStation')?.value   && ngtripForm.submitted  " class="danger">เลือกสถานีปลายทาง</span>
 				<span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
 			  </div>
 			</div>
@@ -212,7 +212,7 @@
 			  <div class="box">
 				<label> ราคา : </label>
 				<br />
-				<b class="price">{{ getPriceLabel() }} </b>
+				<b class="price">{{ getPriceLabel() }}</b>
 			  </div>
 			</div>
 			<div class="col-4">

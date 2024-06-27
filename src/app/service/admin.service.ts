@@ -15,14 +15,14 @@ export class AdminService {
 	getAllPrices(): Promise<Price[]> {
 		return lastValueFrom(this.http.get<Price[]>(`${BtsService.API_URL}prices/AllPrices`));
 	}
-	updatePrice(numOfDistance: number, price: number): Promise<Price> {
-		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}prices/${numOfDistance}?price=${price}`, {}));
+	updatePrice(id: number, price: number): Promise<Price> {
+		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}prices/${id}?price=${price}`, {}));
 		
 	}
 	getAllPricesExtension(): Promise<Price[]> {
 		return lastValueFrom(this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/AllPrices`));
 	}
-	updatePriceExtension(numOfDistance: number, price: number): Promise<Price> {
-		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}pricesExtension/${numOfDistance}?price=${price}`, {}));
+	updatePriceExtension(id: number, price: number): Promise<Price> {
+		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}pricesExtension/${id}?price=${price}`, {}));
 	}
 }
