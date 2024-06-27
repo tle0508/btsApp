@@ -26,7 +26,7 @@ export class BtsService {
 	}
 	
 	getAllLineStations(): Promise<LineStation[]> {
-		return lastValueFrom(this.http.get<LineStation[]>(`${BtsService.API_URL}lineStations/allLineStation`));
+		return lastValueFrom(this.http.get<LineStation[]>(`${BtsService.API_URL}LineStations/AllLineStation`));
 	  }
 
 	getTripsByStartAndEndStation(startStationId: number, endStationId: number): Promise<Trip> {

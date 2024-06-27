@@ -116,7 +116,7 @@
                 <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
-                <input type="number" class="form-control" formControlName="price" min="0" max="100" [(ngModel)]="updatedPrice" [class.is-invalid]=" !checkPriceValidity(this.updatedPrice) && ngpriceForm.submitted " />
+                <input type="number" class="form-control" formControlName="price" min="0" max="100" [class.is-invalid]=" !checkPriceValidity(this.priceForm.get('price')?.value) && ngpriceForm.submitted " />
                 <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
             </div>
             <div class="modal-footer">
@@ -134,7 +134,7 @@
                 <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
-                <input type="number" class="form-control" formControlName="price"  min="0" max="100" [(ngModel)]="updatedPrice" [class.is-invalid]="!checkPriceValidity(this.updatedPrice)  && ngpriceForm.submitted" />
+                <input type="number" class="form-control" formControlName="price"  min="0" max="100"  [class.is-invalid]="!checkPriceValidity(this.priceForm.get('price')?.value)  && ngpriceForm.submitted" />
                 <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
             </div>
             <div class="modal-footer">

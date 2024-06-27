@@ -16,29 +16,25 @@ export class ExtensionBtsComponent implements OnInit {
 
   tripForm = new FormGroup({
     StartLineStation: new FormControl('', [Validators.required]),
-    StartStation: new FormControl('', [Validators.required]),
+    StartStation: new FormControl(null, [Validators.required]),
     EndLineStation: new FormControl('', [Validators.required]),
-    EndStation: new FormControl('', [Validators.required]),
+    EndStation: new FormControl(null, [Validators.required]),
   });
 
   limeGreenLineBts: Station[] = [];
   blueLineBts: Station[] = [];
-  selectedStartLineColor: string = 'เลือกสายต้นทาง';
   selectedStartLineStations: Station[] = [];
-  selectedStartStation: number = 0;
-
-  selectedEndLineColor: string = 'เลือกสายปลายทาง';
   selectedEndLineStations: Station[] = [];
-  selectedEndStation: number=0;
   price: number = <number>{};
   tripResult: TripExtension = <TripExtension>{};
-
   lineStation: LineStation[] = [];
   
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
     this.getAllLineStations();
+    this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
+    this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
     this.tripForm.get('EndStation')?.disable();
   }
@@ -49,13 +45,14 @@ export class ExtensionBtsComponent implements OnInit {
 
 
   open(content: TemplateRef<any>) {
+    const startStation = this.tripForm.get('StartStation')?.value;
+    const endStation = this.tripForm.get('EndStation')?.value; 
     if (!this.areStationsEqual()) {
-      if (this.selectedStartStation != 0 && this.selectedStartStation != null 
-        &&  this.selectedEndStation != 0 && this.selectedEndStation != null) {
+      if ( startStation != null && endStation != null) {
         this.modalService.open(content, {
         ariaLabelledBy: 'modal-basic-title',
         });
-        this.getData(this.selectedStartStation, this.selectedEndStation);
+        this.getData(startStation, endStation);
       }
       console.log("ข้อมูลไม่ครบ");
     }
@@ -80,7 +77,7 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   onEndLineColorChange() {
-    if (this.selectedEndLineColor ===  this.lineStation[0].color) {
+    if (this.tripForm.get('EndLineStation')?.value ===  this.lineStation[0].color) {
       this.selectedEndLineStations = this.limeGreenLineBts;
     } else {
       this.selectedEndLineStations = this.blueLineBts;
@@ -121,6 +118,6 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   areStationsEqual(): boolean {
-    return this.selectedStartStation == this.selectedEndStation;
+    return  this.tripForm.get('StartStation')?.value ==this.tripForm.get('EndLineStation')?.value;
   }
 }

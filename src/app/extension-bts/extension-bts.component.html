@@ -16,8 +16,8 @@
 				class="form-control"
 				id="linecolor" 
 				(change)="onStartLineColorChange()"
-				[class.is-invalid]=" selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted "
-				[(ngModel)]="selectedStartLineColor"	
+				[class.is-invalid]=" this.tripForm.get('StartLineStation')?.value == 'เลือกสายต้นทาง' && ngtripForm.submitted "
+	
 				placeholder="เลือกสายต้นทาง"
 				>
 			  <option selected disabled>เลือกสายต้นทาง</option>
@@ -25,7 +25,7 @@
 				>>{{line.lineStationNameTH}}
 			  </option>
 		  </select>
-		  <span *ngIf="selectedStartLineColor == 'เลือกสายต้นทาง' && ngtripForm.submitted " class="danger">เลือกสายต้นทาง</span>
+		  <span *ngIf="this.tripForm.get('StartLineStation')?.value == 'เลือกสายต้นทาง' && ngtripForm.submitted " class="danger">เลือกสายต้นทาง</span>
 		</div>
 		<div class="form-group">
 		  <label for="subcategory">สถานีต้นทาง</label>
@@ -33,8 +33,7 @@
 				formControlName="StartStation"
 				class="form-control"
 				id="station_name"
-				[(ngModel)]="selectedStartStation"
-					  [class.is-invalid]=" (!selectedStartStation|| areStationsEqual()) && ngtripForm.submitted"
+				[class.is-invalid]=" (!this.tripForm.get('StartStation')?.value|| areStationsEqual()) && ngtripForm.submitted"
 			  >
 				<option selected disabled [value]=null>เลือกสถานีต้นทาง</option>
 				<option
@@ -44,7 +43,7 @@
 				  >> {{ startstation.idStation }} | {{ startstation.btsStationNameTH }}
 				</option>
 			  </select>
-			  <span *ngIf="!selectedStartStation && ngtripForm.submitted " class="danger">เลือกสถานีต้นทาง</span>
+			  <span *ngIf="!this.tripForm.get('StartStation')?.value && ngtripForm.submitted " class="danger">เลือกสถานีต้นทาง</span>
 			  <span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
 		  </div>
 		</div>
@@ -61,16 +60,15 @@
 				  formControlName="EndLineStation"
 				  class="form-control"
 				  id="linecolor"
-				  [(ngModel)]="selectedEndLineColor"
 				  (change)="onEndLineColorChange()"
-				  [class.is-invalid]=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted "
+				  [class.is-invalid]=" this.tripForm.get('EndLineStation')?.value == 'เลือกสายปลายทาง' && ngtripForm.submitted "
 				>
 				  <option selected disabled>เลือกสายปลายทาง</option>
 				  <option *ngFor="let line of lineStation" [ngValue]="line.color">
 					>>{{line.lineStationNameTH}}
 				  </option>
 				</select>
-				<span *ngIf=" selectedEndLineColor == 'เลือกสายปลายทาง' && ngtripForm.submitted " class="danger">เลือกสายปลายทาง</span>
+				<span *ngIf=" this.tripForm.get('EndLineStation')?.value == 'เลือกสายปลายทาง' && ngtripForm.submitted " class="danger">เลือกสายปลายทาง</span>
 			  </div>
 			  <div class="form-group">
 				<label for="subcategory">สถานีปลายทาง</label>
@@ -78,8 +76,7 @@
 				formControlName="EndStation"
 				  class="form-control"
 				  id="station_name"
-				  [(ngModel)]="selectedEndStation"
-				  [class.is-invalid]=" (!selectedEndStation   || areStationsEqual()) && ngtripForm.submitted "
+				  [class.is-invalid]=" (!this.tripForm.get('EndLineStation')?.value    || areStationsEqual()) && ngtripForm.submitted "
 				>
 				  <option selected disabled [value]=null >เลือกสถานีปลายทาง</option>
 				  <option
@@ -89,7 +86,7 @@
 				   >> {{ endstation.idStation }} | {{ endstation.btsStationNameTH }}
 				  </option>
 				</select>
-				<span *ngIf=" !selectedEndStation  && ngtripForm.submitted  " class="danger">เลือกสถานีปลายทาง</span>
+				<span *ngIf=" !this.tripForm.get('EndLineStation')?.value   && ngtripForm.submitted  " class="danger">เลือกสถานีปลายทาง</span>
 				<span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
 			  </div>
 			</div>

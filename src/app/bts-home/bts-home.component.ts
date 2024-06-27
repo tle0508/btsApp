@@ -5,8 +5,7 @@ import { Station } from '../Station';
 import { Trip } from '../Trip';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LineStation } from '../LineStation';
-import { log } from 'node:util';
-import { error } from 'node:console';
+
 
 @Component({
   selector: 'app-bts-home',
@@ -18,23 +17,17 @@ export class BtsHomeComponent implements OnInit {
 
   tripForm = new FormGroup({
     StartLineStation: new FormControl('', [Validators.required]),
-    StartStation: new FormControl('', [Validators.required]),
+    StartStation: new FormControl(null, [Validators.required]),
     EndLineStation: new FormControl('', [Validators.required]),
-    EndStation: new FormControl('', [Validators.required]),
+    EndStation: new FormControl(null, [Validators.required]),
   });
 
   limeGreenLineBts: Station[] = [];
   blueLineBts: Station[] = [];
-  
   selectedStartLineStations: Station[] = [];
-  selectedStartStation: number = 0;
-
-  selectedEndLineColor: string = 'เลือกสายปลายทาง';
   selectedEndLineStations: Station[] = [];
-  selectedEndStation: number=0;
   price: number = <number>{};
   tripResult: Trip = <Trip>{};
-
   lineStation: LineStation[] = [];
 
  
@@ -45,26 +38,26 @@ export class BtsHomeComponent implements OnInit {
     console.log(this.tripForm);
 	  this.getAllLineStations();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
+    this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
     this.tripForm.get('EndStation')?.disable();
   }
 
   open(content: TemplateRef<any>) {
-    console.log( this.tripForm.get('StartStation')?.value);
-    console.log(  this.tripForm.get('EndStation')?.value);
-   
+    const startStation = this.tripForm.get('StartStation')?.value;
+    const endStation = this.tripForm.get('EndStation')?.value; 
     if (!this.areStationsEqual()) {
-      if (this.selectedStartStation != 0 && this.selectedStartStation != null 
-        &&  this.selectedEndStation != 0 && this.selectedEndStation != null) {
+      if ( startStation != null &&  endStation != null) {
         this.modalService.open(content, {
-        ariaLabelledBy: 'modal-basic-title',
+          ariaLabelledBy: 'modal-basic-title',
         });
-     
-        this.getData(this.selectedStartStation, this.selectedEndStation);
+        this.getData(startStation, endStation);
+      } else {
+        console.log('ข้อมูลไม่ครบ');
       }
-      console.log("ข้อมูลไม่ครบ");
     }
   }
+  
 
    closeModal() {
 		this.modalService.dismissAll();
@@ -79,7 +72,6 @@ export class BtsHomeComponent implements OnInit {
       this.selectedStartLineStations = this.blueLineBts;
     }
     this.tripForm.get('StartStation')?.reset();
-    this.tripForm.updateValueAndValidity();
     this.tripForm.get('StartStation')?.enable();
   }
 
@@ -91,7 +83,6 @@ export class BtsHomeComponent implements OnInit {
       this.selectedEndLineStations = this.blueLineBts;
     }
     this.tripForm.get('EndStation')?.reset();
-    this.tripForm.updateValueAndValidity();
     this.tripForm.get('EndStation')?.enable();
   }
 
@@ -131,6 +122,6 @@ export class BtsHomeComponent implements OnInit {
   }
 
   areStationsEqual(): boolean {
-    return this.selectedStartStation == this.selectedEndStation;
+    return this.tripForm.get('StartStation')?.value  == this.tripForm.get('EndStation')?.value ;
   }
 }
