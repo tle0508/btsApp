@@ -16,13 +16,8 @@ export class AdminService {
 		return lastValueFrom(this.http.get<Price[]>(`${BtsService.API_URL}prices/AllPrices`));
 	}
 	updatePrice(id: number, price: number): Promise<Price> {
-		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}prices/${id}?price=${price}`, {}));
+		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}prices/${id}/${price}`, {}));
 		
 	}
-	getAllPricesExtension(): Promise<Price[]> {
-		return lastValueFrom(this.http.get<Price[]>(`${BtsService.API_URL}pricesExtension/AllPrices`));
-	}
-	updatePriceExtension(id: number, price: number): Promise<Price> {
-		return lastValueFrom(this.http.put<Price>(`${BtsService.API_URL}pricesExtension/${id}?price=${price}`, {}));
-	}
+	
 }

@@ -11,4 +11,5 @@ export type Station = {
   extension: boolean;
   activate: boolean;
   url:string;
+  extensionGroupNumber :number;
 };

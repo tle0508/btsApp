@@ -27,11 +27,14 @@ export class ExtensionBtsComponent implements OnInit {
   selectedEndLineStations: Station[] = [];
   tripResult: TripExtension = <TripExtension>{};
   lineStation: LineStation[] = [];
-  
+
+  price!:number;
+  extensionPrice!:number;
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
     this.getAllLineStations();
+    this.getPriceExtension();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
     this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
@@ -39,9 +42,8 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   getPriceLabel(): string {
-    return this.tripResult.priceModel.price === 0 ? 'ฟรี' : `${this.tripResult.priceModel.price} บาท`;
+    return this.price === 0 ? 'ฟรี' : `${this.price} บาท`;
   }
-
 
   open(content: TemplateRef<any>) {
     const startStation = this.tripForm.get('StartStation')?.value;
@@ -85,15 +87,33 @@ export class ExtensionBtsComponent implements OnInit {
 
   getData(startStationId: number, endStationId: number): void {
     this.btsService
-      .getTripsExtensionByStartAndEndStation(startStationId, endStationId)
+      .getTripsByStartAndEndStation(startStationId, endStationId)
       .then((value)=>{
         this.tripResult = value;
-       
+         this.calculateprice(this.tripResult.priceModel.price);
       })
   }
 
+  calculateprice(Calprice:number){
+    console.log(this.tripResult.startStation.extensionGroupNumber,this.tripResult.endStation.extensionGroupNumber);
+    if(this.tripResult.startStation.extension == true && this.tripResult.endStation.extension == true){
+      if (this.tripResult.startStation.extensionGroupNumber == this.tripResult.endStation.extensionGroupNumber) {
+        Calprice = 0
+      }
+    }
+  this.price=Calprice;
+  }
+
+  getPriceExtension():void{
+    this.btsService.getPricebyId(0).then((value)=>{
+      this.extensionPrice=value.price; 
+    }).catch((error)=>{
+      console.warn(error);
+  })
+  }
+
   getByLimeGreenLineColor(): void {
-    this.btsService.getStationByLimeGreenLineColor().then((value)=>{
+    this.btsService.getStationByid(1).then((value)=>{
       this.limeGreenLineBts=value
     })
   }
@@ -106,7 +126,7 @@ export class ExtensionBtsComponent implements OnInit {
   }
 
   getByBlueLineColor(): void {
-    this.btsService.getStationByBlueLineColor().then((value=>{
+    this.btsService.getStationByid(2).then((value=>{
       this.blueLineBts=value;
     })).catch((error)=>{
       console.warn(error);

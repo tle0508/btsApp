@@ -28,17 +28,20 @@ export class BtsHomeComponent implements OnInit {
   tripResult: Trip = <Trip>{};
   lineStation: LineStation[] = [];
 
- 
+  price!:number;
+  extensionPrice!:number;
 
   ngOnInit(): void {
     this.getByLimeGreenLineColor();
     this.getByBlueLineColor();
     console.log(this.tripForm);
 	  this.getAllLineStations();
+    this.getPriceExtension();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
     this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
     this.tripForm.get('EndStation')?.disable();
+    
   }
 
   open(content: TemplateRef<any>) {
@@ -55,8 +58,6 @@ export class BtsHomeComponent implements OnInit {
       }
     }
   }
-  
-
    closeModal() {
 		this.modalService.dismissAll();
 	  }
@@ -89,14 +90,34 @@ export class BtsHomeComponent implements OnInit {
       .getTripsByStartAndEndStation(startStationId, endStationId)
       .then((value)=>{
         this.tripResult = value;
-        
+        this.calculateprice(this.tripResult.priceModel.price);
       }).catch((error)=>{
         console.warn(error);
     })
   }
-//
+
+  calculateprice(Calprice:number){
+    if (this.tripResult.startStation.extension != this.tripResult.endStation.extension ) {
+       Calprice = Calprice+this.extensionPrice;
+    }else if(this.tripResult.startStation.extension == true && this.tripResult.endStation.extension == true){
+        if (this.tripResult.startStation.extensionGroupNumber !== this.tripResult.endStation.extensionGroupNumber) {
+          Calprice = Calprice+this.extensionPrice;
+        }
+    }
+    this.price=Calprice;
+  }
+
+  getPriceExtension():void{
+    this.btsService.getPricebyId(0).then((value)=>{
+      this.extensionPrice=value.price; 
+    }).catch((error)=>{
+      console.warn(error);
+  })
+  }
+  
+
   getByLimeGreenLineColor(): void {
-    this.btsService.getStationByLimeGreenLineColor().then((value)=>{
+    this.btsService.getStationByid(1).then((value)=>{
       this.limeGreenLineBts=value
     }).catch((error)=>{
         console.warn(error);
@@ -110,9 +131,9 @@ export class BtsHomeComponent implements OnInit {
       console.warn(error);
   })
   }
-//
+
   getByBlueLineColor(): void {
-    this.btsService.getStationByBlueLineColor().then((value=>{
+    this.btsService.getStationByid(2).then((value=>{
       this.blueLineBts=value;
     })).catch((error)=>{
       console.warn(error);

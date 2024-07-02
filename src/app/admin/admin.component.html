@@ -1,7 +1,7 @@
 <div class="container" style="font-family: 'Mitr', sans-serif">
 	<div class="row">
-		<div class="col-md-6" >
-			<h2>ตารางราคาปกติ</h2>
+		<div class="col-md-12" >
+			<h2>ตารางราคา</h2>
     <table class="table table-bordered price-table">
         <thead>
             <tr>
@@ -30,35 +30,6 @@
         </tbody>
     </table>
 		</div>
-		<div class="col-md-6">
-			<h2>ตารางราคาส่วนต่อขยายที่ได้รับ</h2>
-			<table class="table table-bordered price-table">
-				<thead>
-					<tr>
-						<th class="text-center">จำนวนสถานีที่ผ่าน</th>
-						<th class="text-center">ราคา</th>
-						<th class="text-center">วันที่สร้าง</th>
-						<th class="text-center">อัปเดตครั้งล่าสุด</th>
-						<th class="text-center">แก้ไข</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let price of priceExtension">
-						<td class="text-center">
-                            {{price.stationDistance}}
-						</td>
-						<td class="text-center">
-							<b class="money">{{ price.price }} ฿</b>
-						</td>
-						<td class="text-center">{{ formatDateTime(price.createdDay) }}</td>
-						<td class="text-center">{{ formatDateTime(price.updatedDay) }}</td>
-						<td class="text-center">
-                            <button type="submit" (click)="open(contentExtension, price)"  class="yellow" mat-mini-fab aria-label="Example icon button with a edit icon"><mat-icon>edit</mat-icon></button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</div>
     
 
@@ -82,21 +53,5 @@
         </form>
     </ng-template>
 
-    <!-- modal extension -->
-    <ng-template #contentExtension let-modal>
-        <form [formGroup]="priceForm" #ngpriceForm="ngForm" (ngSubmit)="updatePriceExtension();">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-basic-title">แก้ไขราคาเดินทาง</h4>
-                <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                <input type="number" class="form-control" formControlName="price"  min="0" max="100"  [class.is-invalid]="!checkPriceValidity(this.priceForm.get('price')?.value)  && ngpriceForm.submitted" />
-                <b class="warning">* ราคาห้ามต่ำกว่า 0 บาท และห้ามเกิน 100 *</b>
-            </div>
-            <div class="modal-footer">
-                <button (click)="closeModal()" class="red" mat-mini-fab aria-label="Example icon button with a close icon"><mat-icon>close</mat-icon></button>
-                <button type="submit"  class="green" mat-mini-fab aria-label="Example icon button with a edit icon"><mat-icon>check</mat-icon></button>
-            </div>
-        </form>
-    </ng-template>
+   
 </div>

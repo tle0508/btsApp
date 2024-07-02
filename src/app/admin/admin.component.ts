@@ -15,14 +15,13 @@ export class AdminComponent implements OnInit {
   });
 
   prices: Price[] = [];
-  priceExtension: Price[] = [];
+ 
   selectedPrice: Price = {} as Price;
 
   constructor(private adminService: AdminService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.getAllPrices();
-    this.getAllPricesExtension();
   }
 
   getAllPrices(): void {
@@ -33,13 +32,6 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  getAllPricesExtension(): void {
-    this.adminService.getAllPricesExtension().then((value) => {
-      this.priceExtension = value;
-    }).catch((error) => {
-      console.warn(error);
-    });
-  }
 
   updatePrice(): void {
     const updatedPrice = this.priceForm.get('price')?.value;
@@ -54,18 +46,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  updatePriceExtension(): void {
-    const updatedPrice = this.priceForm.get('price')?.value;
-    if (this.checkPriceValidity(updatedPrice)) {
-      this.adminService.updatePriceExtension(this.selectedPrice.id, updatedPrice!).then((value) => {
-        console.log('Price updated successfully:', value);
-        this.modalService.dismissAll();
-        this.getAllPricesExtension();
-      }).catch((error) => {
-        console.warn(error);
-      });
-    }
-  }
+
 
   checkPriceValidity(updatedPrice: number | null | undefined): boolean {
     if (updatedPrice === null || updatedPrice === undefined) {

@@ -6,6 +6,7 @@ import { Trip } from '../Trip';
 import { TripExtension } from '../TripExtension';
 import { environment } from '../API_URL/environments/environment.dev';
 import { LineStation } from '../LineStation';
+import { Price } from '../Price';
 
 @Injectable({
 	providedIn: 'root',
@@ -17,14 +18,10 @@ export class BtsService {
 	constructor(private http: HttpClient) {}
 
 
-	getStationByLimeGreenLineColor(): Promise<Station[]> {
-		return lastValueFrom( this.http.get<Station[]>(`${BtsService.API_URL}bts/LineStation/1`));
+	getStationByid(id:number): Promise<Station[]> {
+		return lastValueFrom( this.http.get<Station[]>(`${BtsService.API_URL}bts/LineStation/${id}`));
 	}
 
-	getStationByBlueLineColor(): Promise<Station[]> {
-		return lastValueFrom(this.http.get<Station[]>(`${BtsService.API_URL}bts/LineStation/2`));
-	}
-	
 	getAllLineStations(): Promise<LineStation[]> {
 		return lastValueFrom(this.http.get<LineStation[]>(`${BtsService.API_URL}LineStations/AllLineStation`));
 	  }
@@ -32,7 +29,8 @@ export class BtsService {
 	getTripsByStartAndEndStation(startStationId: number, endStationId: number): Promise<Trip> {
 		return lastValueFrom(this.http.get<Trip>(`${BtsService.API_URL}trip/TripsByStartAndEndStationId/${startStationId}/${endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`));
 	}
-	getTripsExtensionByStartAndEndStation(startStationId: number, endStationId: number): Promise<TripExtension> {
-		return lastValueFrom(this.http.get<TripExtension>(`${BtsService.API_URL}tripExtension/TripsByStartAndEndStationId/${startStationId}/${endStationId}?startStationId=${startStationId}&endStationId=${endStationId}`));
+	
+	getPricebyId(id:number):Promise<Price>{
+		return lastValueFrom(this.http.get<Price>(`${BtsService.API_URL}prices/Price/${id}`))
 	}
 }
