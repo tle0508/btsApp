@@ -27,21 +27,18 @@ export class BtsHomeComponent implements OnInit {
   selectedEndLineStations: Station[] = [];
   tripResult: Trip = <Trip>{};
   lineStation: LineStation[] = [];
-
+  
   price!:number;
   extensionPrice!:number;
 
   ngOnInit(): void {
-    this.getByLimeGreenLineColor();
-    this.getByBlueLineColor();
-    console.log(this.tripForm);
+
 	  this.getAllLineStations();
     this.getPriceExtension();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
     this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
     this.tripForm.get('EndStation')?.disable();
-    
   }
 
   open(content: TemplateRef<any>) {
@@ -61,28 +58,41 @@ export class BtsHomeComponent implements OnInit {
    closeModal() {
 		this.modalService.dismissAll();
 	  }
- //
+
   onStartLineColorChange() {
-    if (
-      this.tripForm.get('StartLineStation')?.value == this.lineStation[0].color
-    ) {
-      this.selectedStartLineStations = this.limeGreenLineBts;
+    if (this.tripForm.get('StartLineStation')?.value == this.lineStation[0].color) {
+      this.getStartStationsByLineId(1);
     } else {
-      this.selectedStartLineStations = this.blueLineBts;
+      this.getStartStationsByLineId(2);
     }
     this.tripForm.get('StartStation')?.reset();
     this.tripForm.get('StartStation')?.enable();
   }
 
-  //
   onEndLineColorChange() {
     if (this.tripForm.get('EndLineStation')?.value === this.lineStation[0].color) {
-      this.selectedEndLineStations = this.limeGreenLineBts;
+      this.getEndStationsByLineId(1);
     } else {
-      this.selectedEndLineStations = this.blueLineBts;
+      this.getEndStationsByLineId(2);
     }
     this.tripForm.get('EndStation')?.reset();
     this.tripForm.get('EndStation')?.enable();
+  }
+  
+  getEndStationsByLineId(id: number) {
+    this.btsService.getStationByid(id).then((value) => {
+      this.selectedEndLineStations = value;
+    }).catch((error) => {
+      console.warn(error);
+    });
+  }
+
+  getStartStationsByLineId(id: number) {
+    this.btsService.getStationByid(id).then((value) => {
+      this.selectedStartLineStations = value;
+    }).catch((error) => {
+      console.warn(error);
+    });
   }
 
   getData(startStationId: number, endStationId: number): void {
@@ -111,18 +121,13 @@ export class BtsHomeComponent implements OnInit {
     this.btsService.getPricebyId(0).then((value)=>{
       this.extensionPrice=value.price; 
     }).catch((error)=>{
-      console.warn(error);
+      throw error;
   })
   }
+
   
 
-  getByLimeGreenLineColor(): void {
-    this.btsService.getStationByid(1).then((value)=>{
-      this.limeGreenLineBts=value
-    }).catch((error)=>{
-        console.warn(error);
-    })
-  }
+
 
   getAllLineStations(): void {
     this.btsService.getAllLineStations().then((value)=>{
@@ -132,13 +137,6 @@ export class BtsHomeComponent implements OnInit {
   })
   }
 
-  getByBlueLineColor(): void {
-    this.btsService.getStationByid(2).then((value=>{
-      this.blueLineBts=value;
-    })).catch((error)=>{
-      console.warn(error);
-  })
-  }
 
   areStationsEqual(): boolean {
     return this.tripForm.get('StartStation')?.value  == this.tripForm.get('EndStation')?.value ;

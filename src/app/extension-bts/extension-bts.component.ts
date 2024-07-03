@@ -31,8 +31,6 @@ export class ExtensionBtsComponent implements OnInit {
   price!:number;
   extensionPrice!:number;
   ngOnInit(): void {
-    this.getByLimeGreenLineColor();
-    this.getByBlueLineColor();
     this.getAllLineStations();
     this.getPriceExtension();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
@@ -64,25 +62,39 @@ export class ExtensionBtsComponent implements OnInit {
 	}
 
   onStartLineColorChange() {
-    if (
-      this.tripForm.get('StartLineStation')?.value ==  this.lineStation[0].color
-    ) {
-      this.selectedStartLineStations = this.limeGreenLineBts;
+    if (this.tripForm.get('StartLineStation')?.value == this.lineStation[0].color) {
+      this.getStartStationsByLineId(1);
     } else {
-      this.selectedStartLineStations = this.blueLineBts;
+      this.getStartStationsByLineId(2);
     }
     this.tripForm.get('StartStation')?.reset();
     this.tripForm.get('StartStation')?.enable();
   }
 
   onEndLineColorChange() {
-    if (this.tripForm.get('EndLineStation')?.value ===  this.lineStation[0].color) {
-      this.selectedEndLineStations = this.limeGreenLineBts;
+    if (this.tripForm.get('EndLineStation')?.value === this.lineStation[0].color) {
+      this.getEndStationsByLineId(1);
     } else {
-      this.selectedEndLineStations = this.blueLineBts;
+      this.getEndStationsByLineId(2);
     }
     this.tripForm.get('EndStation')?.reset();
     this.tripForm.get('EndStation')?.enable();
+  }
+  
+  getEndStationsByLineId(id: number) {
+    this.btsService.getStationByid(id).then((value) => {
+      this.selectedEndLineStations = value;
+    }).catch((error) => {
+      console.warn(error);
+    });
+  }
+
+  getStartStationsByLineId(id: number) {
+    this.btsService.getStationByid(id).then((value) => {
+      this.selectedStartLineStations = value;
+    }).catch((error) => {
+      console.warn(error);
+    });
   }
 
   getData(startStationId: number, endStationId: number): void {
@@ -112,23 +124,10 @@ export class ExtensionBtsComponent implements OnInit {
   })
   }
 
-  getByLimeGreenLineColor(): void {
-    this.btsService.getStationByid(1).then((value)=>{
-      this.limeGreenLineBts=value
-    })
-  }
   getAllLineStations(): void {
     this.btsService.getAllLineStations().then((value)=>{
       this.lineStation=value;
     }).catch((error)=>{
-      console.warn(error);
-  })
-  }
-
-  getByBlueLineColor(): void {
-    this.btsService.getStationByid(2).then((value=>{
-      this.blueLineBts=value;
-    })).catch((error)=>{
       console.warn(error);
   })
   }

@@ -37,7 +37,6 @@ export class AdminComponent implements OnInit {
     const updatedPrice = this.priceForm.get('price')?.value;
     if (this.checkPriceValidity(updatedPrice)) {
       this.adminService.updatePrice(this.selectedPrice.id, updatedPrice!).then((value) => {
-        console.log('Price updated successfully:', value);
         this.modalService.dismissAll();
         this.getAllPrices();
       }).catch((error) => {
@@ -45,8 +44,6 @@ export class AdminComponent implements OnInit {
       });
     }
   }
-
-
 
   checkPriceValidity(updatedPrice: number | null | undefined): boolean {
     if (updatedPrice === null || updatedPrice === undefined) {
