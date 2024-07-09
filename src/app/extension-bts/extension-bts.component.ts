@@ -21,18 +21,15 @@ export class ExtensionBtsComponent implements OnInit {
     EndStation: new FormControl(null, [Validators.required]),
   });
 
-  limeGreenLineBts: Station[] = [];
-  blueLineBts: Station[] = [];
   selectedStartLineStations: Station[] = [];
   selectedEndLineStations: Station[] = [];
   tripResult: TripExtension = <TripExtension>{};
   lineStation: LineStation[] = [];
-
   price!:number;
-  extensionPrice!:number;
+  googlePath: String = "https://maps.app.goo.gl/";
+
   ngOnInit(): void {
     this.getAllLineStations();
-    this.getPriceExtension();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
     this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
@@ -48,12 +45,9 @@ export class ExtensionBtsComponent implements OnInit {
     const endStation = this.tripForm.get('EndStation')?.value; 
     if (!this.areStationsEqual()) {
       if ( startStation != null && endStation != null) {
-        this.modalService.open(content, {
-        ariaLabelledBy: 'modal-basic-title',
-        });
+        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',});
         this.getData(startStation, endStation);
       }
-      console.log("ข้อมูลไม่ครบ");
     }
   }
 
@@ -84,53 +78,46 @@ export class ExtensionBtsComponent implements OnInit {
   getEndStationsByLineId(id: number) {
     this.btsService.getStationByid(id).then((value) => {
       this.selectedEndLineStations = value;
-    }).catch((error) => {
-      console.warn(error);
-    });
+    }).catch((error)=>{
+      throw error;
+  })
   }
 
   getStartStationsByLineId(id: number) {
     this.btsService.getStationByid(id).then((value) => {
       this.selectedStartLineStations = value;
-    }).catch((error) => {
-      console.warn(error);
-    });
+    }).catch((error)=>{
+      throw error;
+  })
   }
 
   getData(startStationId: number, endStationId: number): void {
-    this.btsService
-      .getTripsByStartAndEndStation(startStationId, endStationId)
-      .then((value)=>{
+    this.btsService.getTripsByStartAndEndStation(startStationId, endStationId).then((value)=>{
         this.tripResult = value;
-         this.calculateprice(this.tripResult.priceModel.price);
-      })
+         this.calculatePrice(this.tripResult.priceModel.price);
+      }).catch((error)=>{
+        throw error;
+    })
   }
 
-  calculateprice(Calprice:number){
-    console.log(this.tripResult.startStation.extensionGroupNumber,this.tripResult.endStation.extensionGroupNumber);
+  calculatePrice(calPrice:number){
     if(this.tripResult.startStation.extension == true && this.tripResult.endStation.extension == true){
       if (this.tripResult.startStation.extensionGroupNumber == this.tripResult.endStation.extensionGroupNumber) {
-        Calprice = 0
+        calPrice = 0
       }
     }
-  this.price=Calprice;
+  this.price=calPrice;
   }
 
-  getPriceExtension():void{
-    this.btsService.getPricebyId(0).then((value)=>{
-      this.extensionPrice=value.price; 
-    }).catch((error)=>{
-      console.warn(error);
-  })
-  }
 
   getAllLineStations(): void {
     this.btsService.getAllLineStations().then((value)=>{
       this.lineStation=value;
     }).catch((error)=>{
-      console.warn(error);
+      throw error;
   })
   }
+
 
   areStationsEqual(): boolean {
     return  this.tripForm.get('StartStation')?.value ==this.tripForm.get('EndStation')?.value;

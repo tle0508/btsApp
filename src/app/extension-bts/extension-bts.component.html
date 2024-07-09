@@ -17,12 +17,10 @@
 				id="linecolor" 
 				(change)="onStartLineColorChange()"
 				[class.is-invalid]=" this.tripForm.get('StartLineStation')?.value == 'เลือกสายต้นทาง' && ngtripForm.submitted "
-	
-				placeholder="เลือกสายต้นทาง"
 				>
-			  <option selected disabled>เลือกสายต้นทาง</option>
+			  <option selected disabled  >เลือกสายต้นทาง</option>
 			  <option *ngFor="let line of lineStation" [ngValue]="line.color">
-				>>{{line.lineStationNameTH}}
+				>> {{line.lineStationNameTH}}
 			  </option>
 		  </select>
 		  <span *ngIf="this.tripForm.get('StartLineStation')?.value == 'เลือกสายต้นทาง' && ngtripForm.submitted " class="danger">เลือกสายต้นทาง</span>
@@ -44,7 +42,7 @@
 				</option>
 			  </select>
 			  <span *ngIf="!this.tripForm.get('StartStation')?.value && ngtripForm.submitted " class="danger">เลือกสถานีต้นทาง</span>
-			  <span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
+			  <span *ngIf=" areStationsEqual() && this.tripForm.get('StartStation')?.value  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
 		  </div>
 		</div>
 		</div>
@@ -65,7 +63,7 @@
 				>
 				  <option selected disabled>เลือกสายปลายทาง</option>
 				  <option *ngFor="let line of lineStation" [ngValue]="line.color">
-					>>{{line.lineStationNameTH}}
+					>> {{line.lineStationNameTH}}
 				  </option>
 				</select>
 				<span *ngIf=" this.tripForm.get('EndLineStation')?.value == 'เลือกสายปลายทาง' && ngtripForm.submitted " class="danger">เลือกสายปลายทาง</span>
@@ -87,7 +85,7 @@
 				  </option>
 				</select>
 				<span *ngIf=" !this.tripForm.get('EndStation')?.value   && ngtripForm.submitted  " class="danger">เลือกสถานีปลายทาง</span>
-				<span *ngIf=" areStationsEqual()  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
+				<span *ngIf=" areStationsEqual() && this.tripForm.get('EndStation')?.value  && ngtripForm.submitted  " class="danger">สถานีต้นทางและปลายทางซ้ำกัน</span>
 			  </div>
 			</div>
 		  </div>
@@ -157,7 +155,7 @@
 		  <div class="col-md-2 ">
 			<div class="container-center">
 			  <div class="center">
-				<a href="https://maps.app.goo.gl/{{this.tripResult.startStation.url}}" target="_blank">
+				<a href="{{googlePath}}{{this.tripResult.startStation.url}}" target="_blank">
 					<div class='pin'></div>
 					<div class='pulse'></div>
 				</a>
@@ -195,7 +193,7 @@
 		  <div class="col-md-2 ">
 			<div class="container-center">
 			  <div class="center">
-				<a href="https://maps.app.goo.gl/{{this.tripResult.endStation.url}}" target="_blank">
+				<a href="{{googlePath}}{{this.tripResult.endStation.url}}" target="_blank">
 					<div class='pin'></div>
 					<div class='pulse'></div>
 				</a>

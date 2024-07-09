@@ -21,20 +21,17 @@ export class BtsHomeComponent implements OnInit {
     EndStation: new FormControl(null, [Validators.required]),
   });
 
-  limeGreenLineBts: Station[] = [];
-  blueLineBts: Station[] = [];
   selectedStartLineStations: Station[] = [];
   selectedEndLineStations: Station[] = [];
   tripResult: Trip = <Trip>{};
   lineStation: LineStation[] = [];
-  
   price!:number;
   extensionPrice!:number;
+  googlePath: String = "https://maps.app.goo.gl/";
 
   ngOnInit(): void {
-
-	  this.getAllLineStations();
     this.getPriceExtension();
+	  this.getAllLineStations();
     this.tripForm.get('StartLineStation')?.setValue("เลือกสายต้นทาง");
     this.tripForm.get('EndLineStation')?.setValue("เลือกสายปลายทาง");
     this.tripForm.get('StartStation')?.disable();
@@ -46,12 +43,8 @@ export class BtsHomeComponent implements OnInit {
     const endStation = this.tripForm.get('EndStation')?.value; 
     if (!this.areStationsEqual()) {
       if ( startStation != null &&  endStation != null) {
-        this.modalService.open(content, {
-          ariaLabelledBy: 'modal-basic-title',
-        });
+        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',});
         this.getData(startStation, endStation);
-      } else {
-        console.log('ข้อมูลไม่ครบ');
       }
     }
   }
@@ -70,7 +63,7 @@ export class BtsHomeComponent implements OnInit {
   }
 
   onEndLineColorChange() {
-    if (this.tripForm.get('EndLineStation')?.value === this.lineStation[0].color) {
+    if (this.tripForm.get('EndLineStation')?.value == this.lineStation[0].color) {
       this.getEndStationsByLineId(1);
     } else {
       this.getEndStationsByLineId(2);
@@ -82,17 +75,17 @@ export class BtsHomeComponent implements OnInit {
   getEndStationsByLineId(id: number) {
     this.btsService.getStationByid(id).then((value) => {
       this.selectedEndLineStations = value;
-    }).catch((error) => {
-      console.warn(error);
-    });
+    }).catch((error)=>{
+      throw error;
+  })
   }
 
   getStartStationsByLineId(id: number) {
     this.btsService.getStationByid(id).then((value) => {
       this.selectedStartLineStations = value;
-    }).catch((error) => {
-      console.warn(error);
-    });
+    }).catch((error)=>{
+      throw error;
+  })
   }
 
   getData(startStationId: number, endStationId: number): void {
@@ -102,19 +95,20 @@ export class BtsHomeComponent implements OnInit {
         this.tripResult = value;
         this.calculateprice(this.tripResult.priceModel.price);
       }).catch((error)=>{
-        console.warn(error);
+        throw error;
     })
   }
 
-  calculateprice(Calprice:number){
+  calculateprice(calPrice:number){
+    
     if (this.tripResult.startStation.extension != this.tripResult.endStation.extension ) {
-       Calprice = Calprice+this.extensionPrice;
+      calPrice = calPrice+this.extensionPrice;
     }else if(this.tripResult.startStation.extension == true && this.tripResult.endStation.extension == true){
         if (this.tripResult.startStation.extensionGroupNumber !== this.tripResult.endStation.extensionGroupNumber) {
-          Calprice = Calprice+this.extensionPrice;
+          calPrice = calPrice+this.extensionPrice;
         }
     }
-    this.price=Calprice;
+    this.price=calPrice;
   }
 
   getPriceExtension():void{
@@ -125,15 +119,11 @@ export class BtsHomeComponent implements OnInit {
   })
   }
 
-  
-
-
-
   getAllLineStations(): void {
     this.btsService.getAllLineStations().then((value)=>{
       this.lineStation=value;
     }).catch((error)=>{
-      console.warn(error);
+      throw error;
   })
   }
 
